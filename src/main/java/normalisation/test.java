@@ -13,15 +13,11 @@ public class test {
     public static void main(String[] args) {
         HashMap dscfdcsad;
 
-//        getJDKFunctinalInterfaces().forEach(System.out::println);
-//
-//    }
-//
-//    public static Set<Class<?>> getJDKFunctinalInterfaces() {
-//        Reflections reflections = new Reflections(new ConfigurationBuilder()
-//                .setUrls(ClasspathHelper.forPackage("java.util.function"))
-//
-//
-//        return reflections.getTypesAnnotatedWith(FunctionalInterface.class);
+        getJDKFunctinalInterfaces();
+
+    }
+
+    public static void getJDKFunctinalInterfaces() {
+
     }
 }

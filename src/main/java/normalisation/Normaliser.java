@@ -1,17 +1,11 @@
 package normalisation;
 
+import com.google.common.reflect.ClassPath;
 import org.apache.commons.io.FileUtils;
 import org.javatuples.Pair;
-import org.reflections.Reflections;
-import org.reflections.scanners.ResourcesScanner;
-import org.reflections.scanners.SubTypesScanner;
-import org.reflections.scanners.TypeAnnotationsScanner;
-import org.reflections.util.ClasspathHelper;
-import org.reflections.util.ConfigurationBuilder;
-import org.reflections.util.FilterBuilder;
 
-import java.io.*;
 import java.io.File;
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -20,8 +14,8 @@ import java.util.stream.Collectors;
 
 public class Normaliser {
 
-    private final Set<Features> enabled_features;
-    private final String output_directory;
+    final Set<Features> enabled_features;
+    final String output_directory;
 
     /**
      * Constructor for normaliser sets teh enabled features and the output directory for the normalised files
@@ -39,7 +33,7 @@ public class Normaliser {
      *
      * @param lines list of file lines
      */
-    private static void removeComments(List<String> lines) {
+    static List<String> removeComments(List<String> lines) {
         boolean searching = false;
         for (String line : lines) {
             //multi-line comments open -> /*
@@ -63,7 +57,7 @@ public class Normaliser {
                 lines.remove(line);
             }
         }
-
+        return lines;
     }
 
     /**
@@ -72,12 +66,13 @@ public class Normaliser {
      *
      * @param lines list of file lines
      */
-    private static void standardiseWhitespace(List<String> lines) {
+    static List<String> standardiseWhitespace(List<String> lines) {
         for (String line : lines) {
             if (!line.isBlank()) {
                 lines.set(lines.indexOf(line), line.replaceAll("\\s+", " ").strip().trim());
             }
         }
+        return lines;
     }
 
     /**
@@ -85,7 +80,7 @@ public class Normaliser {
      *
      * @param lines list of file lines
      */
-    private static void sortClassMembers(List<String> lines) {
+    static List<String> sortClassMembers(List<String> lines) {
 
         Stack<Character> brackets = new Stack<>();
         List<Pair<Integer, Integer>> methods = new ArrayList<>();
@@ -141,7 +136,7 @@ public class Normaliser {
             }
         }
 
-        lines = new_order;
+        return new_order;
 
     }
 
@@ -151,7 +146,7 @@ public class Normaliser {
      *
      * @param lines list of file lines
      */
-    private static void orderImports(List<String> lines) {
+    static List<String> orderImports(List<String> lines) {
 
         Map<String, Integer> import_lines = new TreeMap<>();
         lines.forEach(line -> {
@@ -161,6 +156,7 @@ public class Normaliser {
         });
         import_lines.keySet()
                 .forEach(line -> lines.set(import_lines.get(line), line));
+        return lines;
 
     }
 
@@ -169,8 +165,8 @@ public class Normaliser {
      *
      * @param lines list of file lines
      */
-    private static void standardiseMethodNames(List<String> lines) {
-
+    static List<String> standardiseMethodNames(List<String> lines) {
+        return null;
     }
 
 
@@ -179,8 +175,8 @@ public class Normaliser {
      *
      * @param lines list of file lines
      */
-     static void reduceDataTypes(List<String> lines) {
-        lines = replaceInterfaces(lines, "java.lang");
+    static List<String> reduceDataTypes(List<String> lines) {
+        return replaceInterfaces(lines, "java.lang");
     }
 
     /**
@@ -188,44 +184,41 @@ public class Normaliser {
      *
      * @param lines list of file lines
      */
-     static void reduceStructures(List<String> lines) {
-        lines = replaceInterfaces(lines, "java.util");
+    static List<String> reduceStructures(List<String> lines) {
+        return replaceInterfaces(lines, "java.util");
     }
 
 
     // not working
-    private static List<String> replaceInterfaces(List<String> lines, String package_dir) {
+    static List<String> replaceInterfaces(List<String> lines, String package_dir) {
         List<String> result = new ArrayList<>();
         Map<String, Set<String>> sub_class_map = new HashMap<>();
-        List<ClassLoader> classLoadersList = new LinkedList<ClassLoader>();
-        classLoadersList.add(ClasspathHelper.contextClassLoader());
-        classLoadersList.add(ClasspathHelper.staticClassLoader());
-
-        Reflections reflections = new Reflections(new ConfigurationBuilder()
-                .setScanners(new SubTypesScanner(false /* don't exclude Object.class */), new ResourcesScanner())
-                .setUrls(ClasspathHelper.forClassLoader(classLoadersList.toArray(new ClassLoader[0])))
-                .addUrls(ClasspathHelper.forJavaClassPath())
-                .filterInputsBy(new FilterBuilder().include(FilterBuilder.prefix(package_dir))));
-
-        // gets all interface class objects from the java.util package
-        // excludes the Collection interface as too generic
-        Set<Class> allClasses =
-                reflections.getSubTypesOf(Object.class)
-                        .stream()
-                        .filter(Class::isInterface)
-                        .filter(c -> c != Collection.class)
-                        .collect(Collectors.toSet());
 
 
-
-        // for every interface, get all implementations and store the mapping in hash map
-        for (Class<?> current_class : allClasses) {
-            Set<String> current_sub_classes = reflections.getSubTypesOf(current_class).stream()
-                    .map(Class::getSimpleName)
-                    .collect(Collectors.toSet());
-
-            sub_class_map.put(current_class.getSimpleName(), current_sub_classes);
+        ClassPath classpath = null;
+        try {
+            classpath = ClassPath.from(ClassLoader.getSystemClassLoader());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
+        System.out.println(classpath.getTopLevelClasses("java.util").size());
+        Set<Class> allClasses = classpath.getTopLevelClasses()
+                .stream()
+                .peek(x -> System.out.println(x.getResourceName()))
+                .map(ClassPath.ClassInfo::load)
+                .filter(Class::isInterface)
+                .collect(Collectors.toSet());
+
+
+//        // for every interface, get all implementations and store the mapping in hash map
+//        for (Class current_class : allClasses) {
+//                    Set<String> current_sub_classes = reflections.getSubTypesOf(current_class).stream()
+//                    .map(Class::getSimpleName)
+//                    .collect(Collectors.toSet());
+//
+//            sub_class_map.put(current_class.getSimpleName(), current_sub_classes);
+//        }
 
 
         // removes sub-interface implementations from higher level interfaces
@@ -279,7 +272,9 @@ public class Normaliser {
         }
 
         // perform enabled normalisation features
-        enabled_features.forEach(feature -> feature.perform(lines));
+        for (Features enabled_feature : enabled_features) {
+            lines = enabled_feature.perform(lines);
+        }
 
         // writes normalised file
         Files.write(output_file.toPath(), lines, Charset.defaultCharset());
@@ -305,30 +300,25 @@ public class Normaliser {
          *
          * @param lines list of file lines
          */
-        private void perform(List<String> lines) {
+        List<String> perform(List<String> lines) {
             switch (this) {
 
                 case REMOVE_COMMENTS:
-                    removeComments(lines);
-                    break;
+                    return removeComments(lines);
                 case STANDARDISE_WHITESPACE:
-                    standardiseWhitespace(lines);
-                    break;
+                    return standardiseWhitespace(lines);
                 case SORT_CLASS_MEMBERS:
-                    sortClassMembers(lines);
-                    break;
+                    return sortClassMembers(lines);
                 case ORDER_IMPORTS:
-                    orderImports(lines);
-                    break;
+                    return orderImports(lines);
                 case STANDARDISE_METHOD_NAMES:
-                    standardiseMethodNames(lines);
-                    break;
+                    return standardiseMethodNames(lines);
                 case REDUCE_DATA_TYPES:
-                    reduceDataTypes(lines);
-                    break;
+                    return reduceDataTypes(lines);
                 case REDUCE_STRUCTURES:
-                    reduceStructures(lines);
-                    break;
+                    return reduceStructures(lines);
+                default:
+                    return lines;
             }
         }
 
