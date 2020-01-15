@@ -141,6 +141,10 @@ public class Normaliser {
     }
 
 
+
+    List<List<String>> get
+
+
     /**
      * Orders the import lines alphabetically
      *
