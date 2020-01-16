@@ -17,7 +17,7 @@ public class CodeLine implements JavaElement {
     }
 
     @Override
-    public int size() {
+    public int length() {
         return code.length();
     }
 

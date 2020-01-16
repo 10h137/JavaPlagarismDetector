@@ -4,5 +4,5 @@ public interface JavaElement {
 
     public String toString();
 
-    public int size();
+    public int length();
 }

@@ -10,10 +10,9 @@ import java.util.Stack;
 
 public class Util {
 
-    public static Result getElements(String pattern, List<String> lines, Class<? extends JavaElement> element_class) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    public static List<JavaElement> getElements(String pattern, List<String> lines, Class<? extends JavaElement> element_class) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         Stack<Character> brackets = new Stack<>();
         List<JavaElement> elements = new ArrayList<>();
-        List<Variable> variables = new ArrayList<>();
 
         boolean in_method = false;
         boolean searching = false;
@@ -42,9 +41,9 @@ public class Util {
                         if (!brackets.isEmpty() && aChar != brackets.peek()) {
                             brackets.pop();
                             if (brackets.empty()) {
-                                current_method = current_method.setAt1(i+1);
+                                current_method = current_method.setAt1(i);
                                 JavaElement element = element_class
-                                        .getConstructor(List.class)
+                                        .getDeclaredConstructor(List.class)
                                         .newInstance(lines.subList(current_method.getValue0(), current_method.getValue1()));
                                 elements.add(element);
 
@@ -65,10 +64,10 @@ public class Util {
 
             }
             if (!in_method) {
-                // check for comments
-                //multi-line comments open -> /*
+                // check for comment
+                //multi-line comment open -> /*
                 String multi_open = "^[0-9]*(\\s*/\\*.*)";
-                // multi-line comments close -> */
+                // multi-line comment close -> */
                 String multi_close = "^[0-9]*(\\s*\\*/.*)";
                 // regular comment -> //
                 String regular_comment = "^[0-9]*(\\s*//.*)";
@@ -86,13 +85,13 @@ public class Util {
                     elements.add(new Comment(line));
                 } else if (isVariableDeclaration(line)) {
                     // change to detect between global and local
-                    variables.add(new GlobalVariable(line));
+                    elements.add(new Variable(line));
                 }
 
             }
 
         }
-        return new Result(elements, variables);
+        return elements;
 
     }
 

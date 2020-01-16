@@ -1,5 +1,7 @@
 package normalisation.util;
 
+import java.util.List;
+
 public class Comment implements JavaElement {
 
     private String comment;
@@ -8,8 +10,14 @@ public class Comment implements JavaElement {
         this.comment = comment;
     }
 
+    public Comment(List<Comment> comments) {
+        StringBuilder sb = new StringBuilder();
+        comments.stream().map(Comment::toString).forEach(s -> sb.append(s + "\n"));
+        comment = sb.toString();
+    }
+
     @Override
-    public int size() {
+    public int length() {
         return comment.length();
     }
 

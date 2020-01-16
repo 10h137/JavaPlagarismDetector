@@ -1,56 +1,35 @@
 package normalisation;
 
-import normalisation.util.*;
+import normalisation.util.CodeLine;
+import normalisation.util.Comment;
+import normalisation.util.JavaElement;
+import normalisation.util.Variable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static normalisation.Util.isVariableDeclaration;
 
-public class Method implements JavaElement {
+//https://www.trivago.co.uk?cpt2=8242182%2F100&sharedcid=8242182&tab=info
+//https://www.trivago.co.uk?cpt2=5522470%2F100&sharedcid=5522470&tab=gallery
 
-    String name = "";
+public class Method extends ElementContainer implements JavaElement {
+
+
     String return_type = "";
-    ProtectionLevel protection_level = ProtectionLevel.PROTECTED;
     List<Variable> args = new ArrayList<>();
-    List<Variable> local_variables = new ArrayList<>();
-    List<JavaElement> method_body = new ArrayList<>();
-
-    @Override
-
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        // appends method signature
-        sb.append(protection_level.getString()).append(" ")
-                .append(return_type)
-                .append(name)
-                .append(" (");
-        for (int i = 0; i < args.size(); i++) {
-            sb.append(args.get(i).toString());
-            if (i != args.size() - 1) sb.append(", ");
-        }
-        sb.append(") {\n");
-
-        // appends method body
-        method_body.stream().map(JavaElement::toString).forEach(s -> sb.append(s + "\n"));
-        sb.append("\n}");
-
-        return sb.toString();
-    }
-
-    @Override
-    public int size() {
-        return method_body.stream().map(JavaElement::size).reduce(Integer::sum).orElse(0);
-    }
 
 
     public Method(List<String> lines) {
+        if(lines.isEmpty()) return;
+        declaration = lines.get(0);
+        //lines.remove(0);
         boolean searching = false;
         for (String line : lines) {
-            // check for comments
-            //multi-line comments open -> /*
+            // check for comment
+            //multi-line comment open -> /*
             String multi_open = "^[0-9]*(\\s*/\\*.*)";
-            // multi-line comments close -> */
+            // multi-line comment close -> */
             String multi_close = "^[0-9]*(\\s*\\*/.*)";
             // regular comment -> //
             String regular_comment = "^[0-9]*(\\s*//.*)";
@@ -60,28 +39,37 @@ public class Method implements JavaElement {
 
             if (searching) {
                 if (line.matches(multi_close)) searching = false;
-                method_body.add(new Comment(line));
+                body.add(new Comment(line));
             } else if (line.matches(multi_open)) {
                 if (!line.matches(multi_close_single)) searching = true;
-                method_body.add(new Comment(line));
+                body.add(new Comment(line));
             } else if (line.matches(regular_comment)) {
-                method_body.add(new Comment(line));
+                body.add(new Comment(line));
             } else {
                 if (isVariableDeclaration(line)) {
                     // change to detect between global and local
-                    local_variables.add(new Variable(line));
+                    body.add(new Variable(line));
+                }else{
+                    body.add(new CodeLine(line));
                 }
-                method_body.add(new CodeLine(line));
             }
         }
+        // removes
+        body.remove(0);
+
+        combineComments();
 
     }
 
 
-    List<Variable> parseArgs(String method_signature){
+    /**
+     * Parses the method declaration line and initialises variables - method_name, protection_level, return_type, args
+     *
+     * @param method_signature
+     */
+    void parse_declaration(String method_signature) {
         List<Variable> result = new ArrayList<>();
 
-        return result;
     }
 
 

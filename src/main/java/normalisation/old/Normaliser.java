@@ -29,16 +29,16 @@ public class Normaliser {
     }
 
     /**
-     * Removes all comments from a file, this includes single & multi-line
+     * Removes all comment from a file, this includes single & multi-line
      *
      * @param lines list of file lines
      */
     static List<String> removeComments(List<String> lines) {
         boolean searching = false;
         for (String line : lines) {
-            //multi-line comments open -> /*
+            //multi-line comment open -> /*
             String multi_open = "^[0-9]*(\\s*/\\*.*)";
-            // multi-line comments close -> */
+            // multi-line comment close -> */
             String multi_close = "^[0-9]*(\\s*\\*/.*)";
             // regular comment -> //
             String regular_comment = "^[0-9]*(\\s*//.*)";
@@ -76,7 +76,7 @@ public class Normaliser {
     }
 
     /**
-     * Orders the class members (methods, global variables) by size
+     * Orders the class members (methods, global variables) by length
      *
      * @param lines list of file lines
      */
