@@ -103,6 +103,8 @@ public abstract class ElementContainer {
         return body.stream().map(JavaElement::length).reduce(Integer::sum).orElse(0) + comment.length();
     }
 
+
+
     public String getName() {
         return name;
     }

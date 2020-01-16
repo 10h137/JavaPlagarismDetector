@@ -62,6 +62,17 @@ public class Method extends ElementContainer implements JavaElement {
     }
 
 
+    public void replaceText(String target, String replacement){
+
+        for (JavaElement javaElement : body) {
+            String old = javaElement.toString();
+            //javaElement.setString(old.replaceAll(target, replacement));
+        }
+
+
+    }
+
+
     /**
      * Parses the method declaration line and initialises variables - method_name, protection_level, return_type, args
      *

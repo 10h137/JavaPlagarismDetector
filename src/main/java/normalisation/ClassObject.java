@@ -35,6 +35,10 @@ public class ClassObject extends ElementContainer implements JavaElement {
     }
 
 
+    public void normaliseMethodNames(){
+
+    }
+
 
 }
 
