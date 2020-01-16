@@ -1,6 +1,6 @@
-package normalisation;
+package normalisation.util;
 
-public class Comment implements JavaElement  {
+public class Comment implements JavaElement {
 
     private String comment;
 

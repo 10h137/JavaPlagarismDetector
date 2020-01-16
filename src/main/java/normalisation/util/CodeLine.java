@@ -1,8 +1,6 @@
 package normalisation.util;
 
-import normalisation.JavaElement;
-
-class CodeLine implements JavaElement {
+public class CodeLine implements JavaElement {
 
     private String code;
 

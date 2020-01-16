@@ -1,4 +1,4 @@
-package normalisation;
+package normalisation.old;
 
 import com.google.common.reflect.ClassPath;
 import org.apache.commons.io.FileUtils;
@@ -139,10 +139,6 @@ public class Normaliser {
         return new_order;
 
     }
-
-
-
-    List<List<String>> get
 
 
     /**

@@ -1,6 +1,6 @@
 import comparison.ComparisonAlgorithm;
 import comparison.ComparisonResult;
-import normalisation.Normaliser;
+import normalisation.old.Normaliser;
 import report.ReportGenerator;
 
 import java.io.*;
@@ -10,7 +10,7 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import normalisation.Normaliser.Features;
+import normalisation.old.Normaliser.Features;
 
 class Main {
 

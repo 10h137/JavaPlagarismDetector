@@ -10,7 +10,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
-import normalisation.Normaliser;
+import normalisation.old.Normaliser;
 
 import java.io.File;
 import java.util.HashSet;

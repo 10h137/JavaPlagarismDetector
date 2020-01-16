@@ -1,4 +1,4 @@
-package normalisation;
+package normalisation.old;
 
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;

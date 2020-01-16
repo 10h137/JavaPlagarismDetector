@@ -22,5 +22,9 @@ public class Variable {
         return is_final ? "final " + str : str;
     }
 
+    public Variable(String line){
+
+    }
+
 
 }
