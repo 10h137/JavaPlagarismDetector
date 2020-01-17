@@ -116,7 +116,7 @@ public abstract class ElementContainer {
     }
 
     public void setName(String name) {
-        this.declaration.replace(this.name, name);
+        this.declaration = this.declaration.replace(this.name, name);
         this.name = name;
     }
 

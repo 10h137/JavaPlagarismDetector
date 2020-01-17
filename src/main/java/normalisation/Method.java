@@ -3,7 +3,6 @@ package normalisation;
 import normalisation.util.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static normalisation.Util.isVariableDeclaration;
@@ -20,8 +19,9 @@ public class Method extends ElementContainer implements JavaElement {
 
 
     public Method(List<String> lines) {
-        if(lines.isEmpty()) return;
+        if (lines.isEmpty()) return;
         declaration = lines.get(0);
+        parseDeclaration(declaration);
         //lines.remove(0);
         boolean searching = false;
         for (String line : lines) {
@@ -48,7 +48,7 @@ public class Method extends ElementContainer implements JavaElement {
                 if (isVariableDeclaration(line)) {
                     // change to detect between global and local
                     body.add(new Variable(line));
-                }else{
+                } else {
                     body.add(new CodeLine(line));
                 }
             }
@@ -57,17 +57,6 @@ public class Method extends ElementContainer implements JavaElement {
         body.remove(0);
 
         combineComments();
-
-    }
-
-
-    public void replaceText(String target, String replacement){
-
-        for (JavaElement javaElement : body) {
-            String old = javaElement.toString();
-            //javaElement.setString(old.replaceAll(target, replacement));
-        }
-
 
     }
 
@@ -82,25 +71,39 @@ public class Method extends ElementContainer implements JavaElement {
         method_signature.matches("^[0-9]*\\s*(final)?\\s*[A-z]+\\s+[A-z]+\\s*(=.*)?;.*\\s*");
     }
 
-    public void parseDeclaration(String declaration){
+    public void parseDeclaration(String declaration) {
         declaration = declaration.replace(")", "");
         String[] s = declaration.split("\\(");
-        String[] dec = s[0].split("s+");
-        String[] args = s[1].split("s+");
+        String[] dec = s[0].split("\\s+");
+        String[] args = s[1].split("\\s+");
 
-            String current_str = dec[1];
-            List<String> modifiers = Arrays.asList(new String[]{"public", "private", "protected"});
-            if(modifiers.contains(current_str)){
+        switch (dec.length) {
+            case 3:
+                protection_level = ProtectionLevel.PACKAGE_PRIVATE;
+                is_static = false;
 
-            }else{
-                this.protection_level = ProtectionLevel.PACKAGE_PRIVATE;
-            }
+                break;
+            case 4:
+                if (dec[1].equals("static")) {
+                    protection_level = ProtectionLevel.PACKAGE_PRIVATE;
+                    is_static = true;
 
-            if(current_str.equals("static")) this.is_static = true;
+                } else {
+                    protection_level = ProtectionLevel.valueOf(dec[1].toUpperCase());
+                    is_static = false;
+                }
+                break;
+            case 5:
+                protection_level = ProtectionLevel.valueOf(dec[1].toUpperCase());
+                is_static = true;
+            default:
 
-        for (int i = 2; i < dec.length; i++) {
-            //current_str = dec
         }
+
+        name = dec[dec.length - 1];
+        return_type = dec[dec.length - 2];
+
+
     }
 
 

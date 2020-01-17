@@ -16,12 +16,15 @@ public class TestClass {
     public int test1(){
 
 
-        Comparator a = new Comparator() {
+        Comparator a=new Comparator() {{}
             @Override
             public int compare(Object o, Object t1) {
-                return 0;
+                return  0==0 ? 0 : 0 ;
             }
         };
+
+
+        main(null);
         return 0;
 
     }

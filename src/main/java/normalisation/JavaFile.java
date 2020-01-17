@@ -38,7 +38,23 @@ public class JavaFile extends ElementContainer {
             lines.set(i, lines.get(i).replaceAll("\\)", " ) "));
             lines.set(i, lines.get(i).replaceAll("\\{", " { "));
             lines.set(i, lines.get(i).replaceAll("}", " } "));
+            lines.set(i, lines.get(i).replaceAll(";", " ; "));
+            lines.set(i, lines.get(i).replaceAll("=", " = "));
+            lines.set(i, lines.get(i).replaceAll("=\\s*=", " == "));
 
+            String line = lines.get(i);
+            char[] charArray = line.toCharArray();
+            for (int j = 0; j < charArray.length; j++) {
+                char c = charArray[j];
+                if(c == '{') {
+                    String start = line.substring(0, j+1);
+                    String end = line.substring(j+1, line.length() - 1);
+                    lines.set(i, start);
+                    if (!end.strip().trim().isBlank()) lines.add(i + 1, end);
+                    break;
+                }
+
+            }
         }
 
         // remove empty lines and normalise whitespace
