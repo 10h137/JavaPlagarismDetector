@@ -1,5 +1,6 @@
 package normalisation;
 
+import com.google.errorprone.annotations.Var;
 import normalisation.util.*;
 
 import java.util.ArrayList;
@@ -73,9 +74,11 @@ public class Method extends ElementContainer implements JavaElement {
 
     public void parseDeclaration(String declaration) {
         declaration = declaration.replace(")", "");
+        declaration = declaration.replace("{", "");
+
         String[] s = declaration.split("\\(");
         String[] dec = s[0].split("\\s+");
-        String[] args = s[1].split("\\s+");
+        String[] args = s[1].split("\\s*,\\s*");
 
         switch (dec.length) {
             case 3:
@@ -104,6 +107,9 @@ public class Method extends ElementContainer implements JavaElement {
         return_type = dec[dec.length - 2];
 
 
+        for (String arg : args) {
+            this.args.add(new Variable(arg));
+        }
     }
 
 
