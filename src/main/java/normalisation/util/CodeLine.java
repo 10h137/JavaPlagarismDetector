@@ -1,6 +1,8 @@
 package normalisation.util;
 
-public class CodeLine implements JavaElement {
+import normalisation.Text;
+
+public class CodeLine implements JavaElement, Text {
 
     private String code;
 
@@ -23,5 +25,10 @@ public class CodeLine implements JavaElement {
 
     public String toString() {
         return code;
+    }
+
+    @Override
+    public void setText(String text) {
+        code = text;
     }
 }

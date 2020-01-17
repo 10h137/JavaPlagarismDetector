@@ -1,11 +1,9 @@
 package normalisation;
 
-import normalisation.util.CodeLine;
-import normalisation.util.Comment;
-import normalisation.util.JavaElement;
-import normalisation.util.Variable;
+import normalisation.util.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static normalisation.Util.isVariableDeclaration;
@@ -17,6 +15,7 @@ public class Method extends ElementContainer implements JavaElement {
 
 
     String return_type = "";
+    boolean is_static = false;
     List<Variable> args = new ArrayList<>();
 
 
@@ -78,9 +77,30 @@ public class Method extends ElementContainer implements JavaElement {
      *
      * @param method_signature
      */
-    void parse_declaration(String method_signature) {
+    void parse_local_variable(String method_signature) {
         List<Variable> result = new ArrayList<>();
+        method_signature.matches("^[0-9]*\\s*(final)?\\s*[A-z]+\\s+[A-z]+\\s*(=.*)?;.*\\s*");
+    }
 
+    public void parseDeclaration(String declaration){
+        declaration = declaration.replace(")", "");
+        String[] s = declaration.split("\\(");
+        String[] dec = s[0].split("s+");
+        String[] args = s[1].split("s+");
+
+            String current_str = dec[1];
+            List<String> modifiers = Arrays.asList(new String[]{"public", "private", "protected"});
+            if(modifiers.contains(current_str)){
+
+            }else{
+                this.protection_level = ProtectionLevel.PACKAGE_PRIVATE;
+            }
+
+            if(current_str.equals("static")) this.is_static = true;
+
+        for (int i = 2; i < dec.length; i++) {
+            //current_str = dec
+        }
     }
 
 

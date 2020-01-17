@@ -1,6 +1,8 @@
 package normalisation;
 
-import normalisation.util.*;
+import normalisation.util.Comment;
+import normalisation.util.JavaElement;
+import normalisation.util.Variable;
 import org.javatuples.Pair;
 
 import java.lang.reflect.InvocationTargetException;
@@ -15,7 +17,7 @@ public class Util {
         List<JavaElement> elements = new ArrayList<>();
 
         boolean in_method = false;
-        boolean searching = false;
+        boolean in_comment = false;
 
 
         Pair<Integer, Integer> current_method = new Pair<>(0, 0);
@@ -23,12 +25,9 @@ public class Util {
 
             String line = lines.get(i);
 
-            if (line.matches(pattern)) {
+            if (line.matches(pattern) && !in_method) {
                 in_method = true;
-                //brackets.push('{');
                 current_method = current_method.setAt0(i);
-                System.out.println("bbvbgjvjg");
-
             }
 
             if (in_method) {
@@ -36,7 +35,7 @@ public class Util {
                 for (char aChar : chars) {
                     if (aChar == '{' || aChar == '}') {
                         // checks if bracket in string
-                        if(checkInString(line, aChar)) continue;
+                        if (checkInString(line, aChar)) continue;
 
                         if (!brackets.isEmpty() && aChar != brackets.peek()) {
                             brackets.pop();
@@ -47,7 +46,6 @@ public class Util {
                                         .newInstance(lines.subList(current_method.getValue0(), current_method.getValue1()));
                                 elements.add(element);
 
-                                System.out.println("hbkhbbhhkbk");
                                 current_method = new Pair<>(0, 0);
                                 in_method = false;
 
@@ -75,16 +73,15 @@ public class Util {
                 /* comment */
                 String multi_close_single = ".*\\*/$";
 
-                if (searching) {
-                    if (line.matches(multi_close)) searching = false;
+                if (in_comment) {
+                    if (line.matches(multi_close)) in_comment = false;
                     elements.add(new Comment(line));
                 } else if (line.matches(multi_open)) {
-                    if (!line.matches(multi_close_single)) searching = true;
+                    if (!line.matches(multi_close_single)) in_comment = true;
                     elements.add(new Comment(line));
                 } else if (line.matches(regular_comment)) {
                     elements.add(new Comment(line));
                 } else if (isVariableDeclaration(line)) {
-                    // change to detect between global and local
                     elements.add(new Variable(line));
                 }
 
@@ -95,13 +92,13 @@ public class Util {
 
     }
 
-    static boolean checkInString(String line, int index){
+    static boolean checkInString(String line, int index) {
         return false;
     }
 
 
     public static boolean isVariableDeclaration(String line) {
-        return false;
+        return line.matches("^[0-9]*\\s*((public\\s+)|(private\\s+)|(protected\\s+)|)(static\\s+)?\\s*(final)?\\s*[A-z]+\\s+[A-z]+\\s*((=.+;)|;).*\\s*");
     }
 
 }

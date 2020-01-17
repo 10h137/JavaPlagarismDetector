@@ -69,10 +69,22 @@ public abstract class ElementContainer {
         if (comment != null) sb.append(comment.toString());
         sb.append(declaration + "\n");
 
+        int last_num = 0;
         // append body elements
-        body.stream().map(JavaElement::toString).forEach(s -> sb.append(s + "\n"));
+        for (int i = 0; i < body.size(); i++) {
+            JavaElement javaElement = body.get(i);
+            String s = javaElement.toString();
 
-        if (!(this instanceof JavaFile)) sb.append("}");
+            //TODO fix
+            if (i == body.size() - 1) {
+                String[] a = s.split("\n");
+                last_num = Integer.parseInt(a[a.length - 1].split(" ")[0]) + 1;
+            }
+            sb.append(s + "\n");
+        }
+
+
+        if (!(this instanceof JavaFile)) sb.append(last_num + " }");
 
         return sb.toString();
     }
@@ -103,6 +115,22 @@ public abstract class ElementContainer {
         return body.stream().map(JavaElement::length).reduce(Integer::sum).orElse(0) + comment.length();
     }
 
+    public void setName(String name) {
+        this.declaration.replace(this.name, name);
+        this.name = name;
+    }
+
+
+    public void replaceText(String target, String replacement) {
+        for (JavaElement javaElement : body) {
+            if (javaElement instanceof ElementContainer)
+                ((ElementContainer) javaElement).replaceText(target, replacement);
+            else if (javaElement instanceof Text) {
+                String old = javaElement.toString();
+                ((Text) javaElement).setText(old.replaceAll(target, replacement));
+            }
+        }
+    }
 
 
     public String getName() {

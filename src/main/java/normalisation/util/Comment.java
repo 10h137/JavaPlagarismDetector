@@ -1,8 +1,10 @@
 package normalisation.util;
 
+import normalisation.Text;
+
 import java.util.List;
 
-public class Comment implements JavaElement {
+public class Comment implements JavaElement, Text {
 
     private String comment;
 
@@ -23,5 +25,10 @@ public class Comment implements JavaElement {
 
     public String toString(){
         return comment;
+    }
+
+    @Override
+    public void setText(String text) {
+        comment = text;
     }
 }

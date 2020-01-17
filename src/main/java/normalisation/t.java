@@ -15,6 +15,7 @@ public class t {
 
 
         JavaFile c = new JavaFile(new File("src/main/java/normalisation/TestClass.java"));
+        c.body.stream().filter(x -> x instanceof ClassObject).map(ClassObject.class::cast).forEach(ClassObject::normaliseMethodNames);
         System.out.println(c.toString());
         File a = new File("src/main/java/normalisation/TestClass.java");
         List<String> lines = preProcess(Files.readAllLines(Paths.get(a.getAbsolutePath())));

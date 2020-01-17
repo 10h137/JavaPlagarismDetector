@@ -1,11 +1,11 @@
 package normalisation;
 
 import normalisation.util.JavaElement;
-import normalisation.util.Variable;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static normalisation.Util.getElements;
 
@@ -35,8 +35,23 @@ public class ClassObject extends ElementContainer implements JavaElement {
     }
 
 
-    public void normaliseMethodNames(){
+    public void normaliseMethodNames() {
+        List<ElementContainer> methods = body.stream()
+                .filter(e -> e instanceof ElementContainer)
+                .map(ElementContainer.class::cast)
+                .collect(Collectors.toList());
 
+        for (int i = 0; i < methods.size(); i++) {
+            String new_name = this.name + "method" + i;
+            ElementContainer current_method = methods.get(i);
+            String old_name = current_method.getName();
+
+            current_method.setName(new_name);
+            for (ElementContainer method : methods) {
+                // TODO add ( to replace string after normalising
+                method.replaceText(old_name + " (", new_name + " (");
+            }
+        }
     }
 
 

@@ -1,7 +1,5 @@
 package normalisation;
 
-import normalisation.util.JavaElement;
-
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -34,6 +32,15 @@ public class JavaFile extends ElementContainer {
     static List<String> preProcess(List<String> lines) {
 
 
+        // pads brackets with spaces
+        for (int i = 0; i < lines.size(); i++) {
+            lines.set(i, lines.get(i).replaceAll("\\(", " ( "));
+            lines.set(i, lines.get(i).replaceAll("\\)", " ) "));
+            lines.set(i, lines.get(i).replaceAll("\\{", " { "));
+            lines.set(i, lines.get(i).replaceAll("}", " } "));
+
+        }
+
         // remove empty lines and normalise whitespace
         for (int i = 0; i < lines.size(); i++) {
             String line = lines.get(i);
@@ -41,18 +48,15 @@ public class JavaFile extends ElementContainer {
             if (new_line.isBlank()) {
                 lines.remove(i);
                 i--;
-            }
-            else lines.set(lines.indexOf(line), new_line);
+            } else lines.set(lines.indexOf(line), new_line);
         }
 
 
         // number lines in file to allow for comparison to original after normalisation
         for (int i = 0; i < lines.size(); i++) {
-            // add exception if starts with number
             String line = i + " " + lines.get(i);
             lines.set(i, line);
         }
-
 
         return lines;
     }
