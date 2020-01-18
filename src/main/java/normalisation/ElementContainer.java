@@ -1,12 +1,10 @@
 package normalisation;
 
-import normalisation.util.Comment;
-import normalisation.util.JavaElement;
-import normalisation.util.ProtectionLevel;
+import normalisation.util.*;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public abstract class ElementContainer {
@@ -29,6 +27,73 @@ public abstract class ElementContainer {
             if (element instanceof Comment) body.remove(i);
             else if (element instanceof ElementContainer) ((ElementContainer) element).removeComments();
         }
+    }
+
+
+    public void replaceInterfaces() {
+
+        Map<String, Set<String>> map = new HashMap<>();
+        Set<String> k = new HashSet<>();
+        k.add("HashMap");
+        map.put("Map", k);
+
+        List<Text> text_elements = body.stream()
+                .filter(x -> Arrays.asList(x.getClass().getInterfaces()).contains(Text.class))
+                .map(Text.class::cast)
+                .collect(Collectors.toList());
+
+        body.stream().filter(x -> x instanceof ElementContainer)
+                .map(ElementContainer.class::cast)
+                .forEach(ElementContainer::replaceInterfaces);
+
+        for (Text text_element : text_elements) {
+            int old_index = 0;
+            while (true) {
+                String text = text_element.toString();
+                //TODO fix regex for nested <<>>
+                Pattern pattern = Pattern.compile("[A-z]+\\s*<.*>");
+                Matcher matcher = pattern.matcher(text);
+                if (matcher.find()) {
+                    int start = matcher.start();
+                    if (start <= old_index) {
+                        old_index++;
+                        continue;
+                    }
+                    old_index = start;
+                    String match = text.substring(start, matcher.end());
+                    char[] a = match.toCharArray();
+                    int end_index = 0;
+                    for (int i = 0; i < a.length; i++) {
+                        char c = a[i];
+                        System.out.println(c + " " + i);
+                        if (c == '<') {
+                            end_index = i + start;
+                            break;
+                        }
+
+                    }
+                    match = text.substring(start, end_index);
+                    String prefix = text.substring(0, start);
+                    String remainder = text.substring(end_index);
+                    for (String s : map.keySet()) {
+                        if (map.get(s).contains(match)) {
+                            match = s;
+                            StringBuilder sb = new StringBuilder(prefix);
+                            sb.append(match);
+                            sb.append(remainder);
+                            text_element.setText(sb.toString());
+                            break;
+                        }
+                    }
+                    break;
+
+                } else {
+                    break;
+                }
+
+            }
+        }
+
     }
 
     public void combineComments() {
@@ -67,7 +132,7 @@ public abstract class ElementContainer {
         // sb.append(protection_level.getString() + " " + class_name + " {\n");
 
         if (comment != null) sb.append(comment.toString());
-        sb.append(declaration + "\n");
+        sb.append(declaration).append("\n");
 
         int last_num = 0;
         // append body elements
@@ -89,8 +154,20 @@ public abstract class ElementContainer {
         return sb.toString();
     }
 
+    public List<Variable> getVariables() {
+
+        List<Variable> variables = new ArrayList<>();
+        for (JavaElement javaElement : body) {
+            if (javaElement instanceof Variable) variables.add((Variable) javaElement);
+            if (javaElement instanceof ElementContainer)
+                variables.addAll(((ElementContainer) javaElement).getVariables());
+        }
+        return variables;
+    }
+
     public void sortElements() {
-        if(this instanceof Method) return;
+        // TODO shouldnt be aware of implementations
+        if (this instanceof Method) return;
         List<JavaElement> sorted_containers = body.stream()
                 .filter(e -> e instanceof ElementContainer)
                 .map(ElementContainer.class::cast)

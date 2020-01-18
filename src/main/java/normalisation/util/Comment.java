@@ -1,7 +1,5 @@
 package normalisation.util;
 
-import normalisation.Text;
-
 import java.util.List;
 
 public class Comment implements JavaElement, Text {

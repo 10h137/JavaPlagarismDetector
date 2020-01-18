@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static normalisation.Util.getElements;
 
@@ -93,13 +94,9 @@ public class JavaFile extends ElementContainer {
      * @return
      */
     public List<String> getImports(List<String> lines) {
-        List<String> import_lines = new ArrayList<>();
-        for (String line : lines) {
-            if (line.matches("^[0-9]*\\s*import\\s+.*")) {
-                import_lines.add(line);
-            }
-        }
-        return import_lines;
+        return lines.stream()
+                .filter(line -> line.matches("^[0-9]*\\s*import\\s+.*"))
+                .collect(Collectors.toList());
     }
 
 

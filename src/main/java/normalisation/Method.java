@@ -1,6 +1,5 @@
 package normalisation;
 
-import com.google.errorprone.annotations.Var;
 import normalisation.util.*;
 
 import java.util.ArrayList;
@@ -65,7 +64,13 @@ public class Method extends ElementContainer implements JavaElement {
 
     }
 
-    
+
+    @Override
+    public List<Variable> getVariables(){
+        List<Variable> variables = super.getVariables();
+        variables.addAll(args);
+        return variables;
+    }
     public void parseDeclaration(String declaration) {
         declaration = declaration.replace(")", "");
         declaration = declaration.replace("{", "");
@@ -84,7 +89,8 @@ public class Method extends ElementContainer implements JavaElement {
         try {
             Integer.parseInt(dec[0].strip());
             i = 1;
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
         for (; i < dec.length - 2; i++) {
             if (!is_static) is_static = dec[i].equals("static");
             if (protection_strings.contains(dec[i]) && !dec[i].isBlank()) {
@@ -94,12 +100,10 @@ public class Method extends ElementContainer implements JavaElement {
 
         if (protection_level == null) protection_level = ProtectionLevel.PACKAGE_PRIVATE;
         for (String arg : args) {
-            if(arg.isBlank()) continue;
+            if (arg.isBlank()) continue;
             this.args.add(new Variable(arg));
         }
     }
-
-
 
 
 }

@@ -1,6 +1,7 @@
 package normalisation;
 
 import java.util.Comparator;
+import java.util.HashMap;
 
 public class TestClass {
 
@@ -12,6 +13,7 @@ public class TestClass {
 
     public int test1(){
 
+        HashMap<String, String> l = new HashMap();
 
         Comparator abcd=new Comparator() {{}
             @Override

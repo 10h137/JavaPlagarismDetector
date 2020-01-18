@@ -105,8 +105,9 @@ public class Util {
     }
 
 
+    //TODO fix to ignore return statements
     public static boolean isVariableDeclaration(String line) {
-        return line.matches("^[0-9]*\\s*((public\\s+)|(private\\s+)|(protected\\s+)|)(static\\s+)?\\s*(final)?\\s*[A-z]+\\s+[A-z]+\\s*((=.+)|;).*\\s*");
+        return line.matches("^[0-9]*\\s*((public\\s+)|(private\\s+)|(protected\\s+)|)(static\\s+)?\\s*(final)?\\s*([A-z]|<|>)+\\s+[A-z]+\\s*((=.+)|;).*\\s*");
     }
 
 }
