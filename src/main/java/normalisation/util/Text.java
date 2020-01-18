@@ -1,5 +1,5 @@
 package normalisation.util;
 
 public interface Text {
-    public void setText(String text);
+    void setText(String text);
 }

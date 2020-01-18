@@ -26,7 +26,7 @@ public class GUI extends Application {
 
     }
 
-    static Set<Normaliser.Features> enabled_features = new HashSet<>();
+    static final Set<Normaliser.Features> enabled_features = new HashSet<>();
 
     private void initUI(Stage stage) {
 
@@ -62,9 +62,7 @@ public class GUI extends Application {
         DirectoryChooser input_dir_chooser = new DirectoryChooser();
         Button btn_input_dir = new Button("Select Input Directory");
         AtomicReference<File> input_dir = new AtomicReference<>();
-        btn_input_dir.setOnAction(e -> {
-            input_dir.set(input_dir_chooser.showDialog(stage));
-        });
+        btn_input_dir.setOnAction(e -> input_dir.set(input_dir_chooser.showDialog(stage)));
 
         hb_in.getChildren().add(t1);
         hb_in.getChildren().add(btn_input_dir);
@@ -80,9 +78,7 @@ public class GUI extends Application {
         DirectoryChooser output_dir_chooser = new DirectoryChooser();
         Button btn_output_dir = new Button("Select Output Directory");
         AtomicReference<File> output_dir = new AtomicReference<>();
-        btn_output_dir.setOnAction(e -> {
-            output_dir.set(output_dir_chooser.showDialog(stage));
-        });
+        btn_output_dir.setOnAction(e -> output_dir.set(output_dir_chooser.showDialog(stage)));
 
         hb_out.getChildren().add(t2);
         hb_out.getChildren().add(btn_output_dir);

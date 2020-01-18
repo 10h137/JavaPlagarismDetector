@@ -4,9 +4,7 @@ import normalisation.old.Normaliser;
 import report.ReportGenerator;
 
 import java.io.*;
-import java.io.File;
 import java.nio.file.*;
-import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
 

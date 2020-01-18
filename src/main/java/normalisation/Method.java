@@ -19,7 +19,7 @@ public class Method extends ElementContainer implements JavaElement {
 
     String return_type = "";
     boolean is_static = false;
-    List<Variable> args = new ArrayList<>();
+    final List<Variable> args = new ArrayList<>();
 
 
     public Method(List<String> lines) {
@@ -48,18 +48,15 @@ public class Method extends ElementContainer implements JavaElement {
                 body.add(new Comment(line));
             } else if (line.matches(regular_comment)) {
                 body.add(new Comment(line));
+            } else if (isVariableDeclaration(line)) {
+                // change to detect between global and local
+                body.add(new Variable(line));
             } else {
-                if (isVariableDeclaration(line)) {
-                    // change to detect between global and local
-                    body.add(new Variable(line));
-                } else {
-                    body.add(new CodeLine(line));
-                }
+                body.add(new CodeLine(line));
             }
         }
         // removes
         body.remove(0);
-
         combineComments();
 
     }
@@ -99,10 +96,9 @@ public class Method extends ElementContainer implements JavaElement {
         }
 
         if (protection_level == null) protection_level = ProtectionLevel.PACKAGE_PRIVATE;
-        for (String arg : args) {
-            if (arg.isBlank()) continue;
-            this.args.add(new Variable(arg));
-        }
+        Arrays.stream(args)
+                .filter(arg -> !arg.isBlank())
+                .forEach(arg -> this.args.add(new Variable(arg)));
     }
 
 

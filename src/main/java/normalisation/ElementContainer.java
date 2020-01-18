@@ -2,10 +2,13 @@ package normalisation;
 
 import normalisation.util.*;
 
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
+
+import static normalisation.MapFile.replacement_map;
 
 public abstract class ElementContainer {
 
@@ -31,12 +34,6 @@ public abstract class ElementContainer {
 
 
     public void replaceInterfaces() {
-
-        Map<String, Set<String>> map = new HashMap<>();
-        Set<String> k = new HashSet<>();
-        k.add("HashMap");
-        map.put("Map", k);
-
         List<Text> text_elements = body.stream()
                 .filter(x -> Arrays.asList(x.getClass().getInterfaces()).contains(Text.class))
                 .map(Text.class::cast)
@@ -47,53 +44,39 @@ public abstract class ElementContainer {
                 .forEach(ElementContainer::replaceInterfaces);
 
         for (Text text_element : text_elements) {
-            int old_index = 0;
-            while (true) {
-                String text = text_element.toString();
-                //TODO fix regex for nested <<>>
-                Pattern pattern = Pattern.compile("[A-z]+\\s*<.*>");
-                Matcher matcher = pattern.matcher(text);
-                if (matcher.find()) {
-                    int start = matcher.start();
-                    if (start <= old_index) {
-                        old_index++;
-                        continue;
+            String text = text_element.toString();
+            for (String interface_key : replacement_map.keySet()) {
+                List<String> implementations = replacement_map.get(interface_key);
+                for (String implementation : implementations) {
+                    if (text.contains(implementation)) {
+                        text_element.setText(text.replaceAll(implementation, interface_key));
+                        text = text_element.toString();
                     }
-                    old_index = start;
-                    String match = text.substring(start, matcher.end());
-                    char[] a = match.toCharArray();
-                    int end_index = 0;
-                    for (int i = 0; i < a.length; i++) {
-                        char c = a[i];
-                        System.out.println(c + " " + i);
-                        if (c == '<') {
-                            end_index = i + start;
-                            break;
-                        }
-
-                    }
-                    match = text.substring(start, end_index);
-                    String prefix = text.substring(0, start);
-                    String remainder = text.substring(end_index);
-                    for (String s : map.keySet()) {
-                        if (map.get(s).contains(match)) {
-                            match = s;
-                            StringBuilder sb = new StringBuilder(prefix);
-                            sb.append(match);
-                            sb.append(remainder);
-                            text_element.setText(sb.toString());
-                            break;
-                        }
-                    }
-                    break;
-
-                } else {
-                    break;
                 }
-
             }
         }
+    }
 
+
+    public void normaliseMethodNames() {
+        List<ElementContainer> methods = body.stream()
+                .filter(e -> e instanceof ElementContainer)
+                .map(ElementContainer.class::cast)
+                .collect(Collectors.toList());
+
+        methods.forEach(ElementContainer::normaliseMethodNames);
+
+        for (int i = 0; i < methods.size(); i++) {
+            String new_name = this.name + "method" + i;
+            ElementContainer current_method = methods.get(i);
+            String old_name = current_method.getName();
+
+            current_method.setName(new_name);
+            for (ElementContainer method : methods) {
+                // TODO add ( to replace string after normalising
+                method.replaceText(old_name + " \\(", new_name + " \\(");
+            }
+        }
     }
 
     public void combineComments() {
@@ -102,19 +85,18 @@ public abstract class ElementContainer {
         Comment combined_comment = null;
         List<Comment> comments = new ArrayList<>();
         for (JavaElement javaElement : body) {
-
             if (javaElement instanceof Comment) {
                 comments.add((Comment) javaElement);
-            } else if (!comments.isEmpty()) {
-                combined_comment = new Comment(comments);
-                comments.clear();
-                if (javaElement instanceof ElementContainer) {
-                    ((ElementContainer) javaElement).setComment(combined_comment);
-                } else {
-                    new_elements.add(combined_comment);
-                }
-                new_elements.add(javaElement);
             } else {
+                if (!comments.isEmpty()) {
+                    combined_comment = new Comment(comments);
+                    comments.clear();
+                    if (javaElement instanceof ElementContainer) {
+                        ((ElementContainer) javaElement).setComment(combined_comment);
+                    } else {
+                        new_elements.add(combined_comment);
+                    }
+                }
                 new_elements.add(javaElement);
             }
         }
@@ -127,10 +109,6 @@ public abstract class ElementContainer {
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
-
-        // append class method_declaration
-        // sb.append(protection_level.getString() + " " + class_name + " {\n");
-
         if (comment != null) sb.append(comment.toString());
         sb.append(declaration).append("\n");
 
@@ -148,9 +126,7 @@ public abstract class ElementContainer {
             sb.append(s + "\n");
         }
 
-
         if (!(this instanceof JavaFile)) sb.append(last_num + " }");
-
         return sb.toString();
     }
 
@@ -190,7 +166,10 @@ public abstract class ElementContainer {
     }
 
     public int length() {
-        return body.stream().map(JavaElement::length).reduce(Integer::sum).orElse(0) + comment.length();
+        return body.stream()
+                .map(JavaElement::length)
+                .reduce(Integer::sum)
+                .orElse(0) + comment.length();
     }
 
     public void setName(String name) {

@@ -2,9 +2,9 @@ package normalisation.util;
 
 public interface JavaElement {
 
-    public String toString();
+    String toString();
 
-    public int length();
+    int length();
 
 
 }

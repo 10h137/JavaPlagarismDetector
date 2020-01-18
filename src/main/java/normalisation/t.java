@@ -3,13 +3,8 @@ package normalisation;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static normalisation.JavaFile.preProcess;
 
 public class t {
 
@@ -18,10 +13,11 @@ public class t {
 
         JavaFile c = new JavaFile(new File("src/main/java/normalisation/TestClass.java"));
         c.sortImports();
-        c.getVariables().forEach(v -> System.out.println(v.getType()+" " +v.getName() ));
         c.replaceInterfaces();
+        c.sortElements();
+        c.normaliseMethodNames();
+        c.removeComments();
 
-        c.body.stream().filter(x -> x instanceof ClassObject).map(ClassObject.class::cast).peek(ClassObject::sortElements).forEach(ClassObject::normaliseMethodNames);
         System.out.println(c.toString());
         File a = new File("src/main/java/normalisation/TestClass.java");
         Pattern pattern = Pattern.compile("[A-z]+\\s*<.*>");
