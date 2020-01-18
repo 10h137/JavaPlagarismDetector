@@ -22,7 +22,16 @@ public class JavaFile extends ElementContainer {
         combineComments();
     }
 
-
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < imports.size(); i++) {
+            String anImport = imports.get(i);
+            sb.append(anImport);
+            if(i!=imports.size()-1) sb.append("\n");
+        }
+        return sb.toString() + super.toString();
+    }
     /**
      * Normalises whitespace and numbers lines
      *

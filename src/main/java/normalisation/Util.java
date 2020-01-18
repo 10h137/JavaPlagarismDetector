@@ -32,10 +32,11 @@ public class Util {
 
             if (in_method) {
                 char[] chars = line.toCharArray();
-                for (char aChar : chars) {
+                for (int j = 0; j < chars.length; j++) {
+                    char aChar = chars[j];
                     if (aChar == '{' || aChar == '}') {
                         // checks if bracket in string
-                        if (checkInString(line, aChar)) continue;
+                        if (checkInString(line, j)) continue;
 
                         if (!brackets.isEmpty() && aChar != brackets.peek()) {
                             brackets.pop();
@@ -93,12 +94,19 @@ public class Util {
     }
 
     static boolean checkInString(String line, int index) {
-        return false;
+        char[] right = line.substring(index).toCharArray();
+        int right_count = 0;
+        for (char c : right) {
+            if(c == '"') right_count++;
+        }
+
+        // TODO fix for all comment patterns
+        return (!(right_count%2==0)) || line.matches("^[0-9]*(\\s*//.*\\s*)");
     }
 
 
     public static boolean isVariableDeclaration(String line) {
-        return line.matches("^[0-9]*\\s*((public\\s+)|(private\\s+)|(protected\\s+)|)(static\\s+)?\\s*(final)?\\s*[A-z]+\\s+[A-z]+\\s*((=.+;)|;).*\\s*");
+        return line.matches("^[0-9]*\\s*((public\\s+)|(private\\s+)|(protected\\s+)|)(static\\s+)?\\s*(final)?\\s*[A-z]+\\s+[A-z]+\\s*((=.+)|;).*\\s*");
     }
 
 }

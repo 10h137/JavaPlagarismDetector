@@ -4,7 +4,7 @@ import normalisation.Text;
 
 public class CodeLine implements JavaElement, Text {
 
-    private String code;
+    private String code = "";
 
     public String getCode() {
         return code;

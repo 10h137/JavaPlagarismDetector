@@ -4,7 +4,9 @@ import com.google.errorprone.annotations.Var;
 import normalisation.util.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static normalisation.Util.isVariableDeclaration;
 
@@ -12,6 +14,8 @@ import static normalisation.Util.isVariableDeclaration;
 //https://www.trivago.co.uk?cpt2=5522470%2F100&sharedcid=5522470&tab=gallery
 
 public class Method extends ElementContainer implements JavaElement {
+
+    //TODO sort arguments alphabetically and length on data type
 
 
     String return_type = "";
@@ -61,17 +65,7 @@ public class Method extends ElementContainer implements JavaElement {
 
     }
 
-
-    /**
-     * Parses the method declaration line and initialises variables - method_name, protection_level, return_type, args
-     *
-     * @param method_signature
-     */
-    void parse_local_variable(String method_signature) {
-        List<Variable> result = new ArrayList<>();
-        method_signature.matches("^[0-9]*\\s*(final)?\\s*[A-z]+\\s+[A-z]+\\s*(=.*)?;.*\\s*");
-    }
-
+    
     public void parseDeclaration(String declaration) {
         declaration = declaration.replace(")", "");
         declaration = declaration.replace("{", "");
@@ -80,37 +74,32 @@ public class Method extends ElementContainer implements JavaElement {
         String[] dec = s[0].split("\\s+");
         String[] args = s[1].split("\\s*,\\s*");
 
-        switch (dec.length) {
-            case 3:
-                protection_level = ProtectionLevel.PACKAGE_PRIVATE;
-                is_static = false;
-
-                break;
-            case 4:
-                if (dec[1].equals("static")) {
-                    protection_level = ProtectionLevel.PACKAGE_PRIVATE;
-                    is_static = true;
-
-                } else {
-                    protection_level = ProtectionLevel.valueOf(dec[1].toUpperCase());
-                    is_static = false;
-                }
-                break;
-            case 5:
-                protection_level = ProtectionLevel.valueOf(dec[1].toUpperCase());
-                is_static = true;
-            default:
-
-        }
-
         name = dec[dec.length - 1];
         return_type = dec[dec.length - 2];
 
+        List<String> protection_strings = Arrays.stream(ProtectionLevel.values())
+                .map(ProtectionLevel::getString)
+                .collect(Collectors.toList());
+        int i = 0;
+        try {
+            Integer.parseInt(dec[0].strip());
+            i = 1;
+        } catch (Exception ignored) {}
+        for (; i < dec.length - 2; i++) {
+            if (!is_static) is_static = dec[i].equals("static");
+            if (protection_strings.contains(dec[i]) && !dec[i].isBlank()) {
+                protection_level = ProtectionLevel.valueOf(dec[i].toUpperCase());
+            }
+        }
 
+        if (protection_level == null) protection_level = ProtectionLevel.PACKAGE_PRIVATE;
         for (String arg : args) {
+            if(arg.isBlank()) continue;
             this.args.add(new Variable(arg));
         }
     }
+
+
 
 
 }

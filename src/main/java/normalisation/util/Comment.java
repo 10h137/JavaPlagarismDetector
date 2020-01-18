@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Comment implements JavaElement, Text {
 
-    private String comment;
+    private String comment = "";
 
     public Comment(String comment){
         this.comment = comment;

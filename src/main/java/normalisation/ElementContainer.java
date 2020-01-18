@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 public abstract class ElementContainer {
 
-    protected Comment comment = null;
+    protected Comment comment = new Comment("");
     protected List<JavaElement> body = new ArrayList<>();
 
     protected String declaration = "";
@@ -90,6 +90,7 @@ public abstract class ElementContainer {
     }
 
     public void sortElements() {
+        if(this instanceof Method) return;
         List<JavaElement> sorted_containers = body.stream()
                 .filter(e -> e instanceof ElementContainer)
                 .map(ElementContainer.class::cast)

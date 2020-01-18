@@ -4,6 +4,7 @@ import normalisation.util.JavaElement;
 import normalisation.util.ProtectionLevel;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,32 +38,28 @@ public class ClassObject extends ElementContainer implements JavaElement {
             }
         }
 
-        // TODO handle interface keyword
-        switch (class_word_index) {
-            case 1:
-                protection_level = ProtectionLevel.PACKAGE_PRIVATE;
-                is_abstract = false;
-                break;
-            case 2:
-                if (s[1].equals("abstract")) {
-                    is_abstract = true;
-                    protection_level = ProtectionLevel.PACKAGE_PRIVATE;
-                } else {
-                    is_abstract = false;
-                    protection_level = ProtectionLevel.valueOf(s[1].toUpperCase());
-                }
-                break;
-            case 3:
-                protection_level = ProtectionLevel.valueOf(s[1].toUpperCase());
-                is_abstract = true;
-                break;
-            default:
-        }
-
         name = s[class_word_index + 1];
 
+        List<String> protection_strings = Arrays.stream(ProtectionLevel.values())
+                .map(ProtectionLevel::getString)
+                .collect(Collectors.toList());
+        int i = 0;
+        try {
+            Integer.parseInt(s[0].strip());
+            i = 1;
+        } catch (Exception ignored) {}
+        for (; i < class_word_index; i++) {
+            if (!is_abstract) is_abstract = s[i].equals("abstract");
+            if (protection_strings.contains(s[i]) && !s[i].isBlank()) {
+                protection_level = ProtectionLevel.valueOf(s[i].toUpperCase());
+            }
+        }
+
+        if (protection_level == null) protection_level = ProtectionLevel.PACKAGE_PRIVATE;
 
     }
+
+
 
 
     public void normaliseMethodNames() {
