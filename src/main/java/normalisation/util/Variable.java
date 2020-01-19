@@ -12,6 +12,11 @@ public class Variable implements JavaElement, Text{
     // change to enum or object
     private String type;
     private String name;
+
+    public String getDeclaration() {
+        return declaration;
+    }
+
     private String declaration = "";
 
     public Variable(String line) {

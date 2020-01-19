@@ -60,7 +60,9 @@ public class ClassObject extends ElementContainer implements JavaElement {
     }
 
 
-
+public List<Method> getMethods(){
+        return body.stream().filter(x -> x instanceof Method).map(Method.class::cast).collect(Collectors.toList());
+}
 
 
 

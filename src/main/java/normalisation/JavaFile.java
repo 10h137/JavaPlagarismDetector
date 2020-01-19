@@ -104,6 +104,12 @@ public class JavaFile extends ElementContainer {
         Collections.sort(imports);
     }
 
+    public List<ClassObject> getClasses(){
+       return  body.stream().filter(x -> x instanceof ClassObject)
+               .map(ClassObject.class::cast)
+               .collect(Collectors.toList());
+    }
+
 
 }
 
