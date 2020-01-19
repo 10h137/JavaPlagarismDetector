@@ -34,55 +34,47 @@ public abstract class ElementContainer {
 
 
     public void replaceInterfaces() {
-        List<Text> text_elements = body.stream()
-                .filter(x -> Arrays.asList(x.getClass().getInterfaces()).contains(Text.class))
-                .map(Text.class::cast)
-                .collect(Collectors.toList());
-
-        body.stream().filter(x -> x instanceof ElementContainer)
-                .map(ElementContainer.class::cast)
-                .forEach(ElementContainer::replaceInterfaces);
-
-        for (Text text_element : text_elements) {
-            String text = text_element.toString();
-            for (String interface_key : replacement_map.keySet()) {
-                List<String> implementations = replacement_map.get(interface_key);
-                for (String implementation : implementations) {
-                    if (text.contains(implementation)) {
-                        text_element.setText(text.replaceAll("\\b" + implementation+"\\b", interface_key));
-                        text = text_element.toString();
+        for (JavaElement javaElement : body) {
+            if (javaElement instanceof ElementContainer) {
+                for (String interface_key : replacement_map.keySet()) {
+                    List<String> implementations = replacement_map.get(interface_key);
+                    for (String implementation : implementations) {
+                        ((ElementContainer) javaElement).replaceText(implementation, interface_key);
+                        ((ElementContainer) javaElement).replaceInterfaces();
                     }
                 }
             }
         }
+
+    }
+
+    public List<ElementContainer> getContainers() {
+        return body.stream()
+                .filter(e -> e instanceof ElementContainer)
+                .map(ElementContainer.class::cast)
+                .collect(Collectors.toList());
     }
 
 
     public void normaliseMethodNames() {
-        List<ElementContainer> methods = body.stream()
-                .filter(e -> e instanceof ElementContainer)
-                .map(ElementContainer.class::cast)
-                .collect(Collectors.toList());
+        List<ElementContainer> containers = getContainers();
 
-        methods.forEach(ElementContainer::normaliseMethodNames);
-
-        for (int i = 0; i < methods.size(); i++) {
-            String new_name = this.name + "method" + i;
-            ElementContainer current_method = methods.get(i);
+        for (int i = 0; i < containers.size(); i++) {
+            ElementContainer current_method = containers.get(i);
+            String new_name = this.name + current_method.getClass().getSimpleName() + i;
             String old_name = current_method.getName();
-
             current_method.setName(new_name);
-            for (ElementContainer method : methods) {
-                // TODO add ( to replace string after normalising
-                method.replaceText(old_name, new_name);
-            }
+            containers.forEach(method -> method.replaceText(old_name, new_name));
         }
+
+        containers.forEach(ElementContainer::normaliseMethodNames);
     }
+
 
     public void combineComments() {
 
         List<JavaElement> new_elements = new ArrayList<>();
-        Comment combined_comment = null;
+        Comment combined_comment;
         List<Comment> comments = new ArrayList<>();
         for (JavaElement javaElement : body) {
             if (javaElement instanceof Comment) {
@@ -131,11 +123,10 @@ public abstract class ElementContainer {
     }
 
     public List<Variable> getVariables() {
-
         List<Variable> variables = new ArrayList<>();
         for (JavaElement javaElement : body) {
             if (javaElement instanceof Variable) variables.add((Variable) javaElement);
-            if (javaElement instanceof ElementContainer)
+            else if (javaElement instanceof ElementContainer)
                 variables.addAll(((ElementContainer) javaElement).getVariables());
         }
         return variables;
@@ -143,9 +134,7 @@ public abstract class ElementContainer {
 
     public void sortElements() {
         if (this instanceof Method) return;
-        List<JavaElement> sorted_containers = body.stream()
-                .filter(e -> e instanceof ElementContainer)
-                .map(ElementContainer.class::cast)
+        List<JavaElement> sorted_containers = getContainers().stream()
                 .peek(ElementContainer::sortElements)
                 .sorted(Comparator
                         .comparingInt(ElementContainer::length)
@@ -171,26 +160,24 @@ public abstract class ElementContainer {
                 .orElse(0) + comment.length();
     }
 
-    public void setName(String name) {
-        this.declaration = this.declaration.replace(this.name, name);
-        this.name = name;
-    }
-
-
     public void replaceText(String target, String replacement) {
         for (JavaElement javaElement : body) {
             if (javaElement instanceof ElementContainer)
                 ((ElementContainer) javaElement).replaceText(target, replacement);
             else if (Arrays.asList(javaElement.getClass().getInterfaces()).contains(Text.class)) {
                 String old = javaElement.toString();
-                ((Text) javaElement).setText(old.replaceAll("\\b" +target+"\\b", replacement));
+                ((Text) javaElement).setText(old.replaceAll("\\b" + target + "\\b", replacement));
             }
         }
     }
 
-
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.declaration = this.declaration.replace(this.name, name);
+        this.name = name;
     }
 
 }

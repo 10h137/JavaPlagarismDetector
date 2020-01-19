@@ -41,6 +41,9 @@ public class Variable implements JavaElement, Text{
         return declaration.length();
     }
 
+
+    //TODO  fix for multi line variable declaration
+
     public void parseDeclaration(String line){
         this.declaration = line.trim().strip();
         // add variable parsing

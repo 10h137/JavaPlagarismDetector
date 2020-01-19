@@ -12,7 +12,12 @@ public class Comment implements JavaElement, Text {
 
     public Comment(List<Comment> comments) {
         StringBuilder sb = new StringBuilder();
-        comments.stream().map(Comment::toString).forEach(s -> sb.append(s + "\n"));
+        for (int i = 0; i < comments.size(); i++) {
+            Comment comment1 = comments.get(i);
+            String s = comment1.toString();
+            sb.append(s);
+            if(i!= comments.size() -1) sb.append("/n");
+        }
         comment = sb.toString();
     }
 

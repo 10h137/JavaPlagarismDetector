@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static normalisation.Util.checkInString;
 import static normalisation.Util.getElements;
 
 public class JavaFile extends ElementContainer {
@@ -55,7 +56,7 @@ public class JavaFile extends ElementContainer {
             char[] charArray = line.toCharArray();
             for (int j = 0; j < charArray.length; j++) {
                 char c = charArray[j];
-                if(c == '{') {
+                if(c == '{' && !checkInString(line, j)) {
                     String start = line.substring(0, j+1);
                     String end = line.substring(j+1, line.length() - 1);
                     lines.set(i, start);

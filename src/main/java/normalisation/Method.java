@@ -7,10 +7,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static normalisation.Util.getComments;
 import static normalisation.Util.isVariableDeclaration;
 
-//https://www.trivago.co.uk?cpt2=8242182%2F100&sharedcid=8242182&tab=info
-//https://www.trivago.co.uk?cpt2=5522470%2F100&sharedcid=5522470&tab=gallery
+
 
 public class Method extends ElementContainer implements JavaElement, Text{
 
@@ -27,39 +27,17 @@ public class Method extends ElementContainer implements JavaElement, Text{
         declaration = lines.get(0);
         parseDeclaration(declaration);
         //lines.remove(0);
-        boolean searching = false;
+        boolean in_comment = false;
         for (String line : lines) {
-            // check for comment
-            //multi-line comment open -> /*
-            String multi_open = "^[0-9]*(\\s*/\\*.*)";
-            // multi-line comment close -> */
-            String multi_close = "^[0-9]*(\\s*\\*/.*)";
-            // regular comment -> //
-            String regular_comment = "^[0-9]*(\\s*//.*)";
-            // check if it is instance of single line 'multi-line comment' e.g.
-            /* comment */
-            String multi_close_single = ".*\\*/$";
-
-            if (searching) {
-                if (line.matches(multi_close)) searching = false;
-                body.add(new Comment(line));
-            } else if (line.matches(multi_open)) {
-                if (!line.matches(multi_close_single)) searching = true;
-                body.add(new Comment(line));
-            } else if (line.matches(regular_comment)) {
-                body.add(new Comment(line));
-            } else if (isVariableDeclaration(line)) {
-                // change to detect between global and local
-                body.add(new Variable(line));
-            } else {
-                body.add(new CodeLine(line));
-            }
+           getComments(body, in_comment, line, true);
         }
         // removes
         body.remove(0);
         combineComments();
 
     }
+
+
 
 
     @Override
@@ -69,12 +47,16 @@ public class Method extends ElementContainer implements JavaElement, Text{
         return variables;
     }
     public void parseDeclaration(String declaration) {
-        declaration = declaration.replace(")", "");
         declaration = declaration.replace("{", "");
 
         String[] s = declaration.split("\\(");
-        String[] dec = s[0].split("\\s+");
-        String[] args = s[1].split("\\s*,\\s*");
+        int split_index = declaration.indexOf("(");
+        String start = declaration.substring(0, split_index-1);
+        String end = declaration.substring(split_index+1, findLastIndex(declaration, ')'));
+        end = end.replace(")", "");
+
+        String[] dec = start.split("\\s+");
+        String[] args = end.split("\\s*,\\s*");
 
         name = dec[dec.length - 1];
         return_type = dec[dec.length - 2];
@@ -106,5 +88,15 @@ public class Method extends ElementContainer implements JavaElement, Text{
     public void setText(String text) {
         this.declaration = text;
         parseDeclaration(declaration);
+    }
+
+    static int findLastIndex(String str, Character x)
+    {
+        // Traverse from right
+        for (int i = str.length() - 1; i >= 0; i--)
+            if (str.charAt(i) == x)
+                return i;
+
+        return -1;
     }
 }

@@ -1,9 +1,11 @@
 package normalisation;
 
+import normalisation.util.JavaElement;
+
 import java.util.Comparator;
 import java.util.HashMap;
 
-public class TestClass {
+public class TestClass extends ElementContainer {
 
     public static void main(String[] args) {
      int hello = 0;

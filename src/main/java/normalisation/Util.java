@@ -1,5 +1,6 @@
 package normalisation;
 
+import normalisation.util.CodeLine;
 import normalisation.util.Comment;
 import normalisation.util.JavaElement;
 import normalisation.util.Variable;
@@ -7,8 +8,11 @@ import org.javatuples.Pair;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
+
+import static normalisation.Util.CommentPatterns.*;
 
 public class Util {
 
@@ -63,29 +67,7 @@ public class Util {
 
             }
             if (!in_method) {
-                // check for comment
-                //multi-line comment open -> /*
-                String multi_open = "^[0-9]*(\\s*/\\*.*)";
-                // multi-line comment close -> */
-                String multi_close = "^[0-9]*(\\s*\\*/.*)";
-                // regular comment -> //
-                String regular_comment = "^[0-9]*(\\s*//.*)";
-                // check if it is instance of single line 'multi-line comment' e.g.
-                /* comment */
-                String multi_close_single = ".*\\*/$";
-
-                if (in_comment) {
-                    if (line.matches(multi_close)) in_comment = false;
-                    elements.add(new Comment(line));
-                } else if (line.matches(multi_open)) {
-                    if (!line.matches(multi_close_single)) in_comment = true;
-                    elements.add(new Comment(line));
-                } else if (line.matches(regular_comment)) {
-                    elements.add(new Comment(line));
-                } else if (isVariableDeclaration(line)) {
-                    elements.add(new Variable(line));
-                }
-
+                getComments(elements, in_comment, line, false);
             }
 
         }
@@ -93,21 +75,74 @@ public class Util {
 
     }
 
-    static boolean checkInString(String line, int index) {
+    //TODO fix for escaped quotations in string
+
+    public static boolean checkInString(String line, int index) {
         char[] right = line.substring(index).toCharArray();
         int right_count = 0;
+        int right_count_2 = 0;
         for (char c : right) {
-            if(c == '"') right_count++;
+            if (c == '"') right_count++;
+            if (c == '\'') right_count_2++;
+
         }
 
         // TODO fix for all comment patterns
-        return (!(right_count%2==0)) || line.matches("^[0-9]*(\\s*//.*\\s*)");
+        boolean in_comment = Arrays.stream(values())
+                .map(CommentPatterns::getValue)
+                .anyMatch(line::matches);
+        return ((right_count % 2 != 0)) || (right_count_2 % 2 != 0) || in_comment;
     }
 
+    public static void getComments(List<JavaElement> body, boolean in_comment, String line, boolean get_code_lines) {
+
+        if (in_comment) {
+            if (line.matches(MULTI_CLOSE.getValue())) in_comment = false;
+            body.add(new Comment(line));
+        } else if (line.matches(MULTI_OPEN.getValue())) {
+            if (!line.matches(MULTI_CLOSE_SINGLE_LINE.getValue())) in_comment = true;
+            body.add(new Comment(line));
+        } else if (line.matches(REGULAR_COMMENT.getValue())) {
+            body.add(new Comment(line));
+        } else if (isVariableDeclaration(line)) {
+            // change to detect between global and local
+            body.add(new Variable(line));
+        } else if(get_code_lines){
+            body.add(new CodeLine(line));
+        }
+
+    }
 
     //TODO fix to ignore return statements
     public static boolean isVariableDeclaration(String line) {
         return line.matches("^[0-9]*\\s*((public\\s+)|(private\\s+)|(protected\\s+)|)(static\\s+)?\\s*(final)?\\s*([A-z]|<|>)+\\s+[A-z]+\\s*((=.+)|;).*\\s*");
+    }
+
+
+    public enum CommentPatterns {
+        MULTI_OPEN,
+        MULTI_CLOSE,
+        REGULAR_COMMENT,
+        MULTI_CLOSE_SINGLE_LINE;
+
+        public String getValue() {
+            switch (this) {
+                //multi-line comment open -> /*
+                case MULTI_OPEN:
+                    return "^[0-9]*(\\s*/\\*.*)";
+                // multi-line comment close -> */
+                case MULTI_CLOSE:
+                    return "^[0-9]*(\\s*\\*/.*)";
+                // regular comment -> //
+                case REGULAR_COMMENT:
+                    return "^[0-9]*(\\s*//.*)";
+                // check if it is instance of single line 'multi-line comment' e.g.
+                case MULTI_CLOSE_SINGLE_LINE:
+                    return "^[0-9]*.*\\*/$";
+                default:
+                    return "";
+            }
+        }
     }
 
 }
