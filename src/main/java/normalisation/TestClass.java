@@ -15,6 +15,7 @@ public class TestClass {
 
         HashMap<String, String> l = new HashMap();
 //vdsvsdvfvfsdvd
+        int intinit = 9;
         Comparator abcd=new Comparator() {{}
             @Override
             public int compare(Object o, Object t1) {

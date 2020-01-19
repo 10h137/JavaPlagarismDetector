@@ -12,7 +12,7 @@ import static normalisation.Util.isVariableDeclaration;
 //https://www.trivago.co.uk?cpt2=8242182%2F100&sharedcid=8242182&tab=info
 //https://www.trivago.co.uk?cpt2=5522470%2F100&sharedcid=5522470&tab=gallery
 
-public class Method extends ElementContainer implements JavaElement {
+public class Method extends ElementContainer implements JavaElement, Text{
 
     //TODO sort arguments alphabetically and length on data type
 
@@ -102,4 +102,9 @@ public class Method extends ElementContainer implements JavaElement {
     }
 
 
+    @Override
+    public void setText(String text) {
+        this.declaration = text;
+        parseDeclaration(declaration);
+    }
 }

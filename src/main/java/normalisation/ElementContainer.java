@@ -49,7 +49,7 @@ public abstract class ElementContainer {
                 List<String> implementations = replacement_map.get(interface_key);
                 for (String implementation : implementations) {
                     if (text.contains(implementation)) {
-                        text_element.setText(text.replaceAll(implementation, interface_key));
+                        text_element.setText(text.replaceAll("\\b" + implementation+"\\b", interface_key));
                         text = text_element.toString();
                     }
                 }
@@ -74,7 +74,7 @@ public abstract class ElementContainer {
             current_method.setName(new_name);
             for (ElementContainer method : methods) {
                 // TODO add ( to replace string after normalising
-                method.replaceText(old_name + " \\(", new_name + " \\(");
+                method.replaceText(old_name, new_name);
             }
         }
     }
@@ -142,7 +142,6 @@ public abstract class ElementContainer {
     }
 
     public void sortElements() {
-        // TODO shouldnt be aware of implementations
         if (this instanceof Method) return;
         List<JavaElement> sorted_containers = body.stream()
                 .filter(e -> e instanceof ElementContainer)
@@ -182,9 +181,9 @@ public abstract class ElementContainer {
         for (JavaElement javaElement : body) {
             if (javaElement instanceof ElementContainer)
                 ((ElementContainer) javaElement).replaceText(target, replacement);
-            else if (javaElement instanceof Text) {
+            else if (Arrays.asList(javaElement.getClass().getInterfaces()).contains(Text.class)) {
                 String old = javaElement.toString();
-                ((Text) javaElement).setText(old.replaceAll(target, replacement));
+                ((Text) javaElement).setText(old.replaceAll("\\b" +target+"\\b", replacement));
             }
         }
     }
