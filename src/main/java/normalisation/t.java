@@ -1,5 +1,7 @@
 package normalisation;
 
+import normalisation.elements.elementContainers.JavaFile;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;

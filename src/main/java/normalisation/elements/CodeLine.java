@@ -1,4 +1,6 @@
-package normalisation.util;
+package normalisation.elements;
+
+import normalisation.util.Text;
 
 public class CodeLine implements JavaElement, Text {
 

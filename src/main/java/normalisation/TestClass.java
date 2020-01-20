@@ -1,6 +1,6 @@
 package normalisation;
 
-import normalisation.util.JavaElement;
+import normalisation.elements.elementContainers.ElementContainer;
 
 import java.util.Comparator;
 import java.util.HashMap;

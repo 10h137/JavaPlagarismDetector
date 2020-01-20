@@ -1,6 +1,6 @@
 package comparison;
 
-class StringComparison implements ComparisonAlgorithm {
+public class StringComparison implements ComparisonAlgorithm {
 
 
 }

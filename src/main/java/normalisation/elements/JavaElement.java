@@ -1,4 +1,4 @@
-package normalisation.util;
+package normalisation.elements;
 
 public interface JavaElement {
 

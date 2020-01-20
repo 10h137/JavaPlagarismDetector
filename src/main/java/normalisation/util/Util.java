@@ -1,18 +1,20 @@
-package normalisation;
+package normalisation.util;
 
-import normalisation.util.CodeLine;
-import normalisation.util.Comment;
-import normalisation.util.JavaElement;
-import normalisation.util.Variable;
+import comparison.MethodComparison;
+import normalisation.elements.elementContainers.ClassObject;
+import normalisation.elements.elementContainers.JavaFile;
+import normalisation.elements.elementContainers.Method;
+import normalisation.elements.CodeLine;
+import normalisation.elements.Comment;
+import normalisation.elements.JavaElement;
+import normalisation.elements.Variable;
 import org.javatuples.Pair;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
+import java.util.stream.Collectors;
 
-import static normalisation.Util.CommentPatterns.*;
+import static normalisation.util.Util.CommentPatterns.*;
 
 public class Util {
 
@@ -110,6 +112,44 @@ public class Util {
         } else if(get_code_lines){
             body.add(new CodeLine(line));
         }
+
+    }
+
+    public static List<MethodComparison> compareMethods(JavaFile file1, JavaFile file2){
+        List<Method> methods1 = file1.getClasses().stream()
+                .map(ClassObject::getMethods)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+
+        List<Method> methods2 = file2.getClasses().stream()
+                .map(ClassObject::getMethods)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+
+        Set<Method> methods_to_be_processed = new HashSet<>(methods1);
+        methods_to_be_processed.addAll(methods2);
+
+        List<MethodComparison> comparisons = new ArrayList<>();
+        for (int i = 0; i < methods1.size(); i++) {
+            for (int j = i+1; j < methods2.size(); j++) {
+                comparisons.add(new MethodComparison(methods1.get(i), methods2.get(j)));
+            }
+        }
+
+        List<MethodComparison> best_comparisons = new ArrayList<>();
+        // TODO check if in descending order
+        comparisons.sort(Collections.reverseOrder());
+
+
+        for (MethodComparison comparison : comparisons) {
+            if(methods_to_be_processed.contains(comparison.m1) && methods_to_be_processed.contains(comparison.m1)){
+                best_comparisons.add(comparison);
+            }
+            methods_to_be_processed.remove(comparison.m1);
+            methods_to_be_processed.remove(comparison.m2);
+        }
+
+        return  best_comparisons;
 
     }
 

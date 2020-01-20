@@ -1,4 +1,4 @@
-package normalisation;
+package normalisation.elements.elementContainers;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,9 +9,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static normalisation.Util.checkInString;
-import static normalisation.Util.getElements;
+import static normalisation.util.Util.checkInString;
+import static normalisation.util.Util.getElements;
 
+
+/**
+ *
+ */
 public class JavaFile extends ElementContainer {
 
     private List<String> imports;
@@ -104,6 +108,10 @@ public class JavaFile extends ElementContainer {
         Collections.sort(imports);
     }
 
+    /**
+     *
+     * @return
+     */
     public List<ClassObject> getClasses(){
        return  body.stream().filter(x -> x instanceof ClassObject)
                .map(ClassObject.class::cast)

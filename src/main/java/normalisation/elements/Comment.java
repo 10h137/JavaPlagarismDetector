@@ -1,4 +1,6 @@
-package normalisation.util;
+package normalisation.elements;
+
+import normalisation.util.Text;
 
 import java.util.List;
 

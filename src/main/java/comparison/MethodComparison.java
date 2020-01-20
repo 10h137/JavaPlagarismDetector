@@ -1,11 +1,15 @@
-package normalisation;
+package comparison;
 
-import normalisation.util.Variable;
+import normalisation.elements.elementContainers.Method;
+import normalisation.elements.Variable;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ *
+ */
 public class MethodComparison  implements Comparable<MethodComparison>{
 
     int var_count_score;
@@ -15,9 +19,14 @@ public class MethodComparison  implements Comparable<MethodComparison>{
     int line_count_score;
     int method_size_score;
     int string_similarity;
-    Method m1;
-    Method m2;
+    public Method m1;
+    public Method m2;
 
+    /**
+     *
+     * @param m1
+     * @param m2
+     */
     public MethodComparison(Method m1, Method m2){
 
         this.m1 = m1;
@@ -48,6 +57,12 @@ public class MethodComparison  implements Comparable<MethodComparison>{
         string_similarity = (int) (StringUtils.getJaroWinklerDistance(m1.toString(), m2.toString()) * 100);
     }
 
+    /**
+     *
+     * @param s1
+     * @param s2
+     * @return
+     */
     public int getMatchScore(List<String> s1, List<String> s2) {
         int var_type_match_count = 0;
         for (int i = 0; i < s1.size(); i++) {
@@ -74,6 +89,10 @@ public class MethodComparison  implements Comparable<MethodComparison>{
         return this.getTotalScore() - methodComparison.getTotalScore();
     }
 
+    /**
+     *
+     * @return
+     */
     public int getTotalScore(){
         return var_count_score + var_type_score + var_name_score + exact_declaration_score + line_count_score + method_size_score + string_similarity;
     }

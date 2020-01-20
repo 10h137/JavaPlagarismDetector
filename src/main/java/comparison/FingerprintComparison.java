@@ -1,5 +1,7 @@
 package comparison;
 
+import normalisation.elements.elementContainers.JavaFile;
+
 import java.io.*;
 import java.util.*;
 
@@ -8,16 +10,16 @@ public class FingerprintComparison implements ComparisonAlgorithm {
     private Map<File, Set<Integer>> file_fingerprints;
 
     @Override
-    public List<ComparisonResult> compareFiles(List<File> files) {
+    public ComparisonResult compareFiles(JavaFile file1, JavaFile file2) {
         int SUBSTRING_SIZE = 5;
 
-        for (File file : files) {
-            try {
-                file_fingerprints.put(file, getFingerprints(file, SUBSTRING_SIZE));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+//        for (File file : files) {
+//            try {
+//                file_fingerprints.put(file, getFingerprints(file, SUBSTRING_SIZE));
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
 
 
         return null;

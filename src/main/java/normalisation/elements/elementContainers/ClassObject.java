@@ -1,6 +1,6 @@
-package normalisation;
+package normalisation.elements.elementContainers;
 
-import normalisation.util.JavaElement;
+import normalisation.elements.JavaElement;
 import normalisation.util.ProtectionLevel;
 
 import java.lang.reflect.InvocationTargetException;
@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static normalisation.Util.getElements;
+import static normalisation.util.Util.getElements;
 
 public class ClassObject extends ElementContainer implements JavaElement {
 

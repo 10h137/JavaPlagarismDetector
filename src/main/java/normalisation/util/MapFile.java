@@ -1,4 +1,4 @@
-package normalisation;
+package normalisation.util;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -7,7 +7,7 @@ import java.util.List;
 public class MapFile {
 
 
-    static final HashMap<String, List<String>> replacement_map = new HashMap<>();
+    public static final HashMap<String, List<String>> replacement_map = new HashMap<>();
 
     static {
         List<String> map_implementations = Arrays.asList("HashMap", "TreeMap", "LinkedHashMap", "ConcurrentHashMap", "ConcurrentSkipListMap",

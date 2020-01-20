@@ -1,10 +1,13 @@
-package normalisation.util;
+package normalisation.elements;
+
+import normalisation.util.ProtectionLevel;
+import normalisation.util.Text;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Variable implements JavaElement, Text{
+public class Variable implements JavaElement, Text {
     boolean is_final;
     ProtectionLevel protection_level = null;
     boolean is_static;

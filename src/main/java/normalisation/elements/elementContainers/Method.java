@@ -1,5 +1,7 @@
-package normalisation;
+package normalisation.elements.elementContainers;
 
+import normalisation.elements.JavaElement;
+import normalisation.elements.Variable;
 import normalisation.util.*;
 
 import java.util.ArrayList;
@@ -7,11 +9,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static normalisation.Util.getComments;
-import static normalisation.Util.isVariableDeclaration;
+import static normalisation.util.Util.getComments;
 
 
-
+/**
+ *
+ */
 public class Method extends ElementContainer implements JavaElement, Text{
 
     //TODO sort arguments alphabetically and length on data type
@@ -21,7 +24,10 @@ public class Method extends ElementContainer implements JavaElement, Text{
     boolean is_static = false;
     final List<Variable> args = new ArrayList<>();
 
-
+    /**
+     *
+     * @param lines
+     */
     public Method(List<String> lines) {
         if (lines.isEmpty()) return;
         declaration = lines.get(0);
@@ -46,6 +52,12 @@ public class Method extends ElementContainer implements JavaElement, Text{
         variables.addAll(args);
         return variables;
     }
+
+
+    /**
+     *
+     * @param declaration
+     */
     public void parseDeclaration(String declaration) {
         declaration = declaration.replace("{", "");
 
@@ -90,6 +102,12 @@ public class Method extends ElementContainer implements JavaElement, Text{
         parseDeclaration(declaration);
     }
 
+    /**
+     *
+     * @param str
+     * @param x
+     * @return
+     */
     static int findLastIndex(String str, Character x)
     {
         // Traverse from right

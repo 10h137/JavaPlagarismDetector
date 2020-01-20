@@ -1,5 +1,8 @@
-package normalisation;
+package normalisation.elements.elementContainers;
 
+import normalisation.elements.Comment;
+import normalisation.elements.JavaElement;
+import normalisation.elements.Variable;
 import normalisation.util.*;
 
 import java.util.ArrayList;
@@ -8,12 +11,15 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static normalisation.MapFile.replacement_map;
+import static normalisation.util.MapFile.replacement_map;
 
+/**
+ *
+ */
 public abstract class ElementContainer {
 
     protected Comment comment = new Comment("");
-    protected List<JavaElement> body = new ArrayList<>();
+    public List<JavaElement> body = new ArrayList<>();
 
     protected String declaration = "";
     protected String name = "";
@@ -23,6 +29,9 @@ public abstract class ElementContainer {
         return protection_level;
     }
 
+    /**
+     *
+     */
     public void removeComments() {
         comment = null;
         for (int i = 0; i < body.size(); i++) {
@@ -32,7 +41,9 @@ public abstract class ElementContainer {
         }
     }
 
-
+    /**
+     *
+     */
     public void replaceInterfaces() {
         for (JavaElement javaElement : body) {
             if (javaElement instanceof ElementContainer) {
@@ -48,6 +59,10 @@ public abstract class ElementContainer {
 
     }
 
+    /**
+     *
+     * @return
+     */
     public List<ElementContainer> getContainers() {
         return body.stream()
                 .filter(e -> e instanceof ElementContainer)
@@ -56,6 +71,9 @@ public abstract class ElementContainer {
     }
 
 
+    /**
+     *
+     */
     public void normaliseMethodNames() {
         List<ElementContainer> containers = getContainers();
 
@@ -70,7 +88,9 @@ public abstract class ElementContainer {
         containers.forEach(ElementContainer::normaliseMethodNames);
     }
 
-
+    /**
+     *
+     */
     public void combineComments() {
 
         List<JavaElement> new_elements = new ArrayList<>();
@@ -95,10 +115,19 @@ public abstract class ElementContainer {
         body = new_elements;
     }
 
+    /**
+     *
+     * @param class_comments
+     */
     public void setComment(Comment class_comments) {
         this.comment = class_comments;
     }
 
+
+    /**
+     *
+     * @return
+     */
     public String toString() {
         StringBuilder sb = new StringBuilder();
         if (comment != null) sb.append(comment.toString());
@@ -122,6 +151,11 @@ public abstract class ElementContainer {
         return sb.toString();
     }
 
+
+    /**
+     *
+     * @return
+     */
     public List<Variable> getVariables() {
         List<Variable> variables = new ArrayList<>();
         for (JavaElement javaElement : body) {
@@ -132,6 +166,9 @@ public abstract class ElementContainer {
         return variables;
     }
 
+    /**
+     *
+     */
     public void sortElements() {
         if (this instanceof Method) return;
         List<JavaElement> sorted_containers = getContainers().stream()
@@ -153,6 +190,11 @@ public abstract class ElementContainer {
 
     }
 
+
+    /**
+     *
+     * @return
+     */
     public int length() {
         return body.stream()
                 .map(JavaElement::length)
@@ -160,6 +202,12 @@ public abstract class ElementContainer {
                 .orElse(0) + comment.length();
     }
 
+
+    /**
+     *
+     * @param target
+     * @param replacement
+     */
     public void replaceText(String target, String replacement) {
         for (JavaElement javaElement : body) {
             if (javaElement instanceof ElementContainer)
@@ -171,10 +219,19 @@ public abstract class ElementContainer {
         }
     }
 
+
+    /**
+     *
+     * @return
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     *
+     * @param name
+     */
     public void setName(String name) {
         this.declaration = this.declaration.replace(this.name, name);
         this.name = name;

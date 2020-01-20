@@ -1,9 +1,11 @@
 package comparison;
 
+import normalisation.elements.elementContainers.JavaFile;
+
 public interface ComparisonAlgorithm {
 
 
-    default java.util.List<ComparisonResult> compareFiles(java.util.List<java.io.File> files) {
+    default ComparisonResult compareFiles(JavaFile file1, JavaFile file2) {
         return null;
     }
 
