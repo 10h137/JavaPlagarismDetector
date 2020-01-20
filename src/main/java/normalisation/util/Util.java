@@ -1,6 +1,6 @@
 package normalisation.util;
 
-import comparison.MethodComparison;
+import comparison.resultObjects.MethodComparison;
 import normalisation.elements.elementContainers.ClassObject;
 import normalisation.elements.elementContainers.JavaFile;
 import normalisation.elements.elementContainers.Method;

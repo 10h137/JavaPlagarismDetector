@@ -1,5 +1,7 @@
-import comparison.ComparisonAlgorithm;
-import comparison.FileComparison;
+package comparison;
+
+import comparison.algorithms.ComparisonAlgorithm;
+import comparison.resultObjects.FileComparison;
 import normalisation.Normaliser;
 import normalisation.elements.elementContainers.JavaFile;
 
@@ -17,6 +19,9 @@ public class Runner {
 
 
     public static List<FileComparison> run(Set<Normaliser.Features> enabled_features, File input_dir, ComparisonAlgorithm algorithm) throws IOException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+
+
+        int THRESHOLD = 50;
 
         Normaliser normaliser = new Normaliser(enabled_features);
 
@@ -37,6 +42,9 @@ public class Runner {
                 comparisons.add(new FileComparison(java_files.get(i), java_files.get(j), algorithm));
             }
         }
+
+        // filter only file comparisons that exceed a certain similarity threshold
+        comparisons = comparisons.stream().filter(x -> x.getScore() > THRESHOLD).collect(Collectors.toList());
 
         return  comparisons;
 

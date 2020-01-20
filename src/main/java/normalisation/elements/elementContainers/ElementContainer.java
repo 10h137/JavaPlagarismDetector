@@ -30,7 +30,7 @@ public abstract class ElementContainer {
     }
 
     /**
-     *
+     * recursively removes all comment objects
      */
     public void removeComments() {
         comment = null;
@@ -42,7 +42,8 @@ public abstract class ElementContainer {
     }
 
     /**
-     *
+     *  Replaces all data java data types and structure implementations with a corresponding interface or keyword
+     *  e.g HashMap -> Map, long -> Integer, BigInt -> Integer
      */
     public void replaceInterfaces() {
         for (JavaElement javaElement : body) {
@@ -60,7 +61,7 @@ public abstract class ElementContainer {
     }
 
     /**
-     *
+     *  returns all element containers in the body
      * @return
      */
     public List<ElementContainer> getContainers() {
@@ -72,7 +73,7 @@ public abstract class ElementContainer {
 
 
     /**
-     *
+     * Normalises method names, //TODO
      */
     public void normaliseMethodNames() {
         List<ElementContainer> containers = getContainers();
@@ -89,7 +90,8 @@ public abstract class ElementContainer {
     }
 
     /**
-     *
+     *  Merges consecutive comments into single comment objects and merges comments with any element container they immediately precede
+     *  e.g. comments directly before a method will be merged with the method object, and the method object will have its comment attribute set to this comment
      */
     public void combineComments() {
 
@@ -125,8 +127,8 @@ public abstract class ElementContainer {
 
 
     /**
-     *
-     * @return
+     * recursivley generates the string representation of all the nested containers and the other elements in the body and combines them
+     * @return a string of the current element container e.g a java class's code or a methods code
      */
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -153,8 +155,8 @@ public abstract class ElementContainer {
 
 
     /**
-     *
-     * @return
+     * Collects all variables in the containers body as well as nested variable objects contained in other element containers
+     * @return List of all variables within this container and its sub-containers
      */
     public List<Variable> getVariables() {
         List<Variable> variables = new ArrayList<>();
@@ -167,7 +169,8 @@ public abstract class ElementContainer {
     }
 
     /**
-     *
+     *  Sorts all elements in the body, element containers are sorted by lenth then protection level then by name
+     *  Comments are sorted by length and placed before the sorted containers
      */
     public void sortElements() {
         if (this instanceof Method) return;
@@ -192,8 +195,8 @@ public abstract class ElementContainer {
 
 
     /**
-     *
-     * @return
+     * calculates the total lenth of all elements
+     * @return total length
      */
     public int length() {
         return body.stream()
@@ -221,16 +224,16 @@ public abstract class ElementContainer {
 
 
     /**
-     *
-     * @return
+     * Gets the name of the container e.g. class name
+     * @return Container name
      */
     public String getName() {
         return name;
     }
 
     /**
-     *
-     * @param name
+     *  Sets the name of the container
+     * @param name new name
      */
     public void setName(String name) {
         this.declaration = this.declaration.replace(this.name, name);

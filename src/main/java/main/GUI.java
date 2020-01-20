@@ -1,6 +1,9 @@
-import comparison.ComparisonAlgorithm;
-import comparison.FingerprintComparison;
-import comparison.StringComparison;
+package main;
+
+import comparison.Runner;
+import comparison.algorithms.ComparisonAlgorithm;
+import comparison.algorithms.FingerprintComparison;
+import comparison.algorithms.StringComparison;
 import javafx.application.Application;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -17,7 +20,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
-import comparison.FileComparison;
+import comparison.resultObjects.FileComparison;
 import normalisation.Normaliser;
 
 import java.io.File;
@@ -34,6 +37,7 @@ public class GUI extends Application {
 
     AtomicReference<File> input_dir;
     AtomicReference<File> output_dir;
+    List<FileComparison> file_comparisons = new ArrayList<>();
 
     public static void main(String[] args) {
         launch(args);
@@ -69,11 +73,13 @@ public class GUI extends Application {
         comboBox.getItems().add("Fingerprint");
         comboBox.getItems().add("String");
 
+        // performs file comparisons
         btn_run.setOnAction(x -> {
             ComparisonAlgorithm c = null;
+
             try {
                 c = class_map.get(comboBox.getValue()).getConstructor().newInstance();
-                List<FileComparison> comparisons = Runner.run(enabled_features, input_dir.get(), c);
+                file_comparisons = Runner.run(enabled_features, input_dir.get(), c);
 
             } catch (InstantiationException e) {
                 e.printStackTrace();
@@ -86,6 +92,7 @@ public class GUI extends Application {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
 
         });
 

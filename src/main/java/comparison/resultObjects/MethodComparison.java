@@ -1,4 +1,4 @@
-package comparison;
+package comparison.resultObjects;
 
 import normalisation.elements.elementContainers.Method;
 import normalisation.elements.Variable;
@@ -23,9 +23,9 @@ public class MethodComparison  implements Comparable<MethodComparison>{
     public Method m2;
 
     /**
-     *
-     * @param m1
-     * @param m2
+     *  Compares two methods on a range of properties (matching variable count etc) and calculates set of scores
+     * @param m1 1st method
+     * @param m2 2nd method
      */
     public MethodComparison(Method m1, Method m2){
 
@@ -58,10 +58,10 @@ public class MethodComparison  implements Comparable<MethodComparison>{
     }
 
     /**
-     *
-     * @param s1
-     * @param s2
-     * @return
+     * This method counts the number of matching pairs between two string lists and returns a match percentage
+     * @param s1 1st list of strings
+     * @param s2 2nd list of strings
+     * @return integer 0-100%
      */
     public int getMatchScore(List<String> s1, List<String> s2) {
         int var_type_match_count = 0;
@@ -90,10 +90,36 @@ public class MethodComparison  implements Comparable<MethodComparison>{
     }
 
     /**
-     *
-     * @return
+     *  Combines all scores into a singe int value
+     * @return combined comparison score 0-100
      */
     public int getTotalScore(){
-        return var_count_score + var_type_score + var_name_score + exact_declaration_score + line_count_score + method_size_score + string_similarity;
+        return (var_count_score + var_type_score + var_name_score + exact_declaration_score + line_count_score + method_size_score + string_similarity) / 7;
     }
+
+
+
+    public String getReport(){
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("Comparing " + m1.getName() + " and " + m2.getName() + "\n");
+        sb.append("Variable count ");
+        sb.append(var_count_score + "\n");
+        sb.append("Type count ");
+        sb.append(var_type_score + "\n");
+        sb.append("Variable Name match ");
+        sb.append(var_name_score + "\n");
+        sb.append("Declaration match ");
+        sb.append(exact_declaration_score + "\n");
+        sb.append("Line count ");
+        sb.append(line_count_score + "\n");
+        sb.append("Method Size ");
+        sb.append(method_size_score + "\n");
+        sb.append("String comparison ");
+        sb.append(string_similarity + "\n");
+
+        return sb.toString();
+
+    }
+
 }
