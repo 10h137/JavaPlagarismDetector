@@ -72,6 +72,7 @@ public class GUI extends Application {
         ComboBox comboBox = new ComboBox();
         comboBox.getItems().add("Fingerprint");
         comboBox.getItems().add("String");
+        grid_pane.add(comboBox, 1,1);
 
         // performs file comparisons
         btn_run.setOnAction(x -> {
