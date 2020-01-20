@@ -24,6 +24,7 @@ public class JavaFile extends ElementContainer {
         List<String> lines = preProcess(Files.readAllLines(Paths.get(file.getAbsolutePath())));
         body = getElements(".*class\\s+.*\\{\\s*", lines, ClassObject.class);
         imports = getImports(lines);
+        name= file.getName();
         combineComments();
     }
 

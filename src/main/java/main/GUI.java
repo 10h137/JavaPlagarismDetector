@@ -5,14 +5,14 @@ import comparison.algorithms.ComparisonAlgorithm;
 import comparison.algorithms.FingerprintComparison;
 import comparison.algorithms.StringComparison;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableArray;
+import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
@@ -37,7 +37,10 @@ public class GUI extends Application {
 
     AtomicReference<File> input_dir;
     AtomicReference<File> output_dir;
+    FileComparison selected_comparison = null;
     List<FileComparison> file_comparisons = new ArrayList<>();
+    ObservableList<String> a = FXCollections.observableArrayList();
+
 
     public static void main(String[] args) {
         launch(args);
@@ -74,6 +77,29 @@ public class GUI extends Application {
         comboBox.getItems().add("String");
         grid_pane.add(comboBox, 1,1);
 
+
+        ListView comparisons = new ListView();
+        comparisons.setPrefWidth(300);
+        comparisons.setPrefHeight(200);
+        a.add("test");
+
+
+        ScrollPane comparison_info = new ScrollPane();
+        comparison_info.setPrefHeight(200);
+        comparison_info.setPrefWidth(150);
+
+        Text info = new Text();
+        comparison_info.setContent(info);
+
+        comparisons.setItems(a);
+        comparisons.setOnMouseClicked(l ->{
+            selected_comparison = file_comparisons.get(comparisons.getSelectionModel().getSelectedIndex());
+            String report_string = selected_comparison.getReport();
+            info.setText(report_string);
+        });
+
+
+
         // performs file comparisons
         btn_run.setOnAction(x -> {
             ComparisonAlgorithm c = null;
@@ -81,7 +107,12 @@ public class GUI extends Application {
             try {
                 c = class_map.get(comboBox.getValue()).getConstructor().newInstance();
                 file_comparisons = Runner.run(enabled_features, input_dir.get(), c);
-
+                System.out.println(file_comparisons.size());
+                a.clear();
+                for (FileComparison file_comparison : file_comparisons) {
+                    a.add(file_comparison.getName());
+                }
+                comparisons.refresh();
             } catch (InstantiationException e) {
                 e.printStackTrace();
             } catch (IllegalAccessException e) {
@@ -97,16 +128,10 @@ public class GUI extends Application {
 
         });
 
-        ScrollPane comparisons = new ScrollPane();
-        comparisons.setPrefWidth(300);
-        comparisons.setPrefHeight(200);
 
-        ScrollPane comparison_info = new ScrollPane();
-        comparison_info.setPrefHeight(200);
-        comparison_info.setPrefWidth(150);
 
-        Text info = new Text();
-        comparison_info.setContent(info);
+
+
 
         Button btn_expand_comparison = new Button("Expand Comparison");
         btn_expand_comparison.setAlignment(Pos.TOP_CENTER);

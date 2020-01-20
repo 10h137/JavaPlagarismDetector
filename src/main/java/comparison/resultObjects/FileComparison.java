@@ -16,7 +16,7 @@ public class FileComparison {
     int algorithm_score = 0;
     ComparisonResult res;
     // TODO change
-    int THRESHOLD = 50;
+    int THRESHOLD = -1;
 
 
     public FileComparison(JavaFile file1, JavaFile file2, ComparisonAlgorithm alg){
@@ -32,6 +32,10 @@ public class FileComparison {
 
     public int getScore(){
         return algorithm_score;
+    }
+
+    public String getName(){
+        return file1.getName() + " <--> " + file2.getName();
     }
 
     public String getReport(){

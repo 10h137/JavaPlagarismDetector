@@ -21,7 +21,7 @@ public class Runner {
     public static List<FileComparison> run(Set<Normaliser.Features> enabled_features, File input_dir, ComparisonAlgorithm algorithm) throws IOException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
 
 
-        int THRESHOLD = 50;
+        int THRESHOLD = -1;
 
         Normaliser normaliser = new Normaliser(enabled_features);
 
