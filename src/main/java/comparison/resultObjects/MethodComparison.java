@@ -19,6 +19,15 @@ public class MethodComparison  implements Comparable<MethodComparison>{
     int line_count_score;
     int method_size_score;
     int string_similarity;
+
+    public Method getM1() {
+        return m1;
+    }
+
+    public Method getM2() {
+        return m2;
+    }
+
     public Method m1;
     public Method m2;
 
@@ -140,6 +149,10 @@ public class MethodComparison  implements Comparable<MethodComparison>{
 
         return sb.toString();
 
+    }
+
+    public String getName(){
+        return m1.getName() + " <--> " + m2.getName();
     }
 
 }

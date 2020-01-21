@@ -11,8 +11,22 @@ import java.util.stream.Collectors;
 public class FileComparison {
 
 
+    public List<MethodComparison> getMethod_comparisons() {
+        return method_comparisons;
+    }
+
     private List<MethodComparison> method_comparisons = new ArrayList<>();
-    private JavaFile file1, file2;
+    private JavaFile file1;
+
+    public JavaFile getFile1() {
+        return file1;
+    }
+
+    public JavaFile getFile2() {
+        return file2;
+    }
+
+    private JavaFile file2;
     int algorithm_score = 0;
     ComparisonResult res;
     // TODO change

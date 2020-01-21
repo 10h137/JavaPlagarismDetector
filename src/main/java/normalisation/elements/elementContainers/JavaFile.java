@@ -20,12 +20,19 @@ public class JavaFile extends ElementContainer {
 
     private List<String> imports;
 
+    public File getFile() {
+        return file;
+    }
+
+    private File file;
+
     public JavaFile(File file) throws IOException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         List<String> lines = preProcess(Files.readAllLines(Paths.get(file.getAbsolutePath())));
         body = getElements(".*class\\s+.*\\{\\s*", lines, ClassObject.class);
         imports = getImports(lines);
         name= file.getName();
         combineComments();
+        this.file = file;
     }
 
     @Override
