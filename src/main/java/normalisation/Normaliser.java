@@ -8,14 +8,14 @@ import java.util.*;
 
 public class Normaliser {
 
-    final Set<Features> enabled_features;
+    final EnumSet<Features> enabled_features;
 
     /**
      * Constructor for normaliser sets teh enabled features and the output directory for the normalised files
      *
      * @param enabled_features set of feature enums representing steps to be applied during the normalisation process
      */
-    public Normaliser(Set<Features> enabled_features) {
+    public Normaliser(EnumSet<Features> enabled_features) {
         this.enabled_features = enabled_features;
     }
 

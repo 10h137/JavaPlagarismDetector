@@ -86,4 +86,9 @@ public class Variable implements JavaElement, Text {
         this.declaration = text;
         parseDeclaration(declaration);
     }
+
+    @Override
+    public String getText() {
+        return toString();
+    }
 }

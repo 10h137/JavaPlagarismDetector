@@ -35,7 +35,7 @@ public class Method extends ElementContainer implements JavaElement, Text{
         //lines.remove(0);
         boolean in_comment = false;
         for (String line : lines) {
-           getComments(body, in_comment, line, true);
+            getComments(body, in_comment, line, true);
         }
         // removes
         body.remove(0);
@@ -100,11 +100,6 @@ public class Method extends ElementContainer implements JavaElement, Text{
     public void setText(String text) {
         this.declaration = text;
         parseDeclaration(declaration);
-    }
-
-    @Override
-    public String getText() {
-        return declaration;
     }
 
     /**

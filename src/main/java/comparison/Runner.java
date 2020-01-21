@@ -11,6 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
 public class Runner {
 
 
-    public static List<FileComparison> run(Set<Normaliser.Features> enabled_features, File input_dir, ComparisonAlgorithm algorithm) throws IOException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+    public static List<FileComparison> run(EnumSet<Normaliser.Features> enabled_features, File input_dir, ComparisonAlgorithm algorithm) throws IOException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
 
 
         int THRESHOLD = -1;

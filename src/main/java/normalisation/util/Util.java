@@ -1,5 +1,6 @@
 package normalisation.util;
 
+import comparison.resultObjects.ComparisonResult;
 import comparison.resultObjects.MethodComparison;
 import normalisation.elements.elementContainers.ClassObject;
 import normalisation.elements.elementContainers.JavaFile;
@@ -131,18 +132,23 @@ public class Util {
 
         List<MethodComparison> comparisons = new ArrayList<>();
         for (int i = 0; i < methods1.size(); i++) {
-            for (int j = i+1; j < methods2.size(); j++) {
+            for (int j = i; j < methods2.size(); j++) {
                 comparisons.add(new MethodComparison(methods1.get(i), methods2.get(j)));
             }
         }
 
         List<MethodComparison> best_comparisons = new ArrayList<>();
         // TODO check if in descending order
-        comparisons.sort(Collections.reverseOrder());
+        comparisons.sort(Comparator.comparingInt(MethodComparison::getTotalScore));
+        Collections.reverse(comparisons);
+
+        for (MethodComparison comparison : comparisons) {
+            System.out.println(comparison.getReport());
+        }
 
 
         for (MethodComparison comparison : comparisons) {
-            if(methods_to_be_processed.contains(comparison.m1) && methods_to_be_processed.contains(comparison.m1)){
+            if(methods_to_be_processed.contains(comparison.m1) && methods_to_be_processed.contains(comparison.m2)){
                 best_comparisons.add(comparison);
             }
             methods_to_be_processed.remove(comparison.m1);

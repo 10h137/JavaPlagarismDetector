@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 public class GUI extends Application {
 
 
-    static final Set<Normaliser.Features> enabled_features = new HashSet<>();
+    static final EnumSet<Normaliser.Features> enabled_features = EnumSet.noneOf(Normaliser.Features.class);
 
 
     AtomicReference<File> input_dir;
@@ -315,7 +315,7 @@ public class GUI extends Application {
             CheckBox btn = new CheckBox(text);
             btn.setOnAction(x -> {
                 if (btn.isSelected()) enabled_features.add(value);
-                else enabled_features.add(value);
+                else enabled_features.remove(value);
             });
             vbox.getChildren().add(btn);
         }

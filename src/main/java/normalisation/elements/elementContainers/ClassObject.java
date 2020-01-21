@@ -26,7 +26,7 @@ public class ClassObject extends ElementContainer implements JavaElement {
      *
      * @param declaration_line
      */
-    private void parseDeclaration(String declaration_line) {
+    public void parseDeclaration(String declaration_line) {
         this.declaration = declaration_line;
         String[] s = declaration_line.split("\\s+");
         int class_word_index = 0;

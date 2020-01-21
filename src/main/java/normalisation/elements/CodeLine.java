@@ -23,4 +23,9 @@ public class CodeLine implements JavaElement, Text {
     public void setText(String text) {
         code = text;
     }
+
+    @Override
+    public String getText() {
+        return toString();
+    }
 }

@@ -1,5 +1,6 @@
 package comparison.algorithms;
 
+import com.github.s3curitybug.similarityuniformfuzzyhash.UniformFuzzyHash;
 import comparison.resultObjects.ComparisonResult;
 import normalisation.elements.elementContainers.JavaFile;
 
@@ -11,19 +12,17 @@ public class FingerprintComparison implements ComparisonAlgorithm {
     private Map<File, Set<Integer>> file_fingerprints;
 
     @Override
-    public ComparisonResult compareFiles(JavaFile file1, JavaFile file2) {
+    public double compareFiles(JavaFile file1, JavaFile file2) {
         int SUBSTRING_SIZE = 5;
 
-//        for (File file : files) {
-//            try {
-//                file_fingerprints.put(file, getFingerprints(file, SUBSTRING_SIZE));
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
+        UniformFuzzyHash hash1 = new UniformFuzzyHash(file1.toString(), 5);
+        UniformFuzzyHash hash2 = new UniformFuzzyHash(file2.toString(), 5);
+
+        int file1_size = file1.length();
+        int file2_size = file2.length();
 
 
-        return null;
+        return file1_size > file2_size ? hash2.similarity(hash1) :  hash1.similarity(hash2);
     }
 
 

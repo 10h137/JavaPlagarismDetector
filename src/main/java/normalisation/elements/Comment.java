@@ -36,4 +36,9 @@ public class Comment implements JavaElement, Text {
     public void setText(String text) {
         comment = text;
     }
+
+    @Override
+    public String getText() {
+        return toString();
+    }
 }

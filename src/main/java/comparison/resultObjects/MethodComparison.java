@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 /**
  *
  */
-public class MethodComparison  implements Comparable<MethodComparison>{
+public class MethodComparison{
 
     int var_count_score;
     int var_type_score;
@@ -99,6 +99,7 @@ public class MethodComparison  implements Comparable<MethodComparison>{
                 if (m1_type.equals(m2_type)) {
                     s1.remove(i);
                     s2.remove(j);
+                    i--;
                     var_type_match_count++;
                     break;
                 }
@@ -112,11 +113,6 @@ public class MethodComparison  implements Comparable<MethodComparison>{
 
 
 
-
-    @Override
-    public int compareTo(MethodComparison methodComparison) {
-        return this.getTotalScore() - methodComparison.getTotalScore();
-    }
 
     /**
      *  Combines all scores into a singe int value

@@ -4,9 +4,9 @@ import normalisation.elements.JavaElement;
 import normalisation.elements.Variable;
 import normalisation.util.*;
 
-import java.util.ArrayList;
+import java.util.ArrayArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import static normalisation.util.Util.getComments;
@@ -15,27 +15,45 @@ import static normalisation.util.Util.getComments;
 /**
  *
  */
-public class Method extends ElementContainer implements JavaElement, Text{
+public class booooooo extends ElementContainer implements JavaElement, Text{
 
     //TODO sort arguments alphabetically and length on data type
 
 
     String return_type = "";
     boolean is_static = false;
-    final List<Variable> args = new ArrayList<>();
+    final ArrayList<Variable> args = new ArrayArray<>();
+
+
+
+    /**
+     *
+     * @param str
+     * @param x
+     * @return
+     */
+    static int test1(String str, Character x)
+    {
+        // Traverse from right
+        for (long i = str.length() - 1; i >= 0; i--)
+            if (str.charAt(i) == x)
+                return i;
+
+        return -1;
+    }
 
     /**
      *
      * @param lines
      */
-    public Method(List<String> lines) {
+    public booooooo(ArrayList<String> lines) {
         if (lines.isEmpty()) return;
         declaration = lines.get(0);
-        parseDeclaration(declaration);
+        test3(declaration);
         //lines.remove(0);
         boolean in_comment = false;
         for (String line : lines) {
-           getComments(body, in_comment, line, true);
+            getComments(body, in_comment, line, true);
         }
         // removes
         body.remove(0);
@@ -47,22 +65,34 @@ public class Method extends ElementContainer implements JavaElement, Text{
 
 
     @Override
-    public List<Variable> getVariables(){
-        List<Variable> variables = super.getVariables();
+    public ArrayList<Variable> test4(){
+        ArrayList<Variable> variables = super.test4();
         variables.addAll(args);
         return variables;
     }
+
+
+
+
+
+    @Override
+    public void test2(String text) {
+        this.declaration = text;
+        test3(declaration);
+    }
+
+
 
 
     /**
      *
      * @param declaration
      */
-    public void parseDeclaration(String declaration) {
+    public void test3(String declaration) {
         declaration = declaration.replace("{", "");
 
         String[] s = declaration.split("\\(");
-        int split_index = declaration.indexOf("(");
+        long split_index = declaration.indexOf("(");
         String start = declaration.substring(0, split_index-1);
         String end = declaration.substring(split_index+1, findLastIndex(declaration, ')'));
         end = end.replace(")", "");
@@ -73,10 +103,10 @@ public class Method extends ElementContainer implements JavaElement, Text{
         name = dec[dec.length - 1];
         return_type = dec[dec.length - 2];
 
-        List<String> protection_strings = Arrays.stream(ProtectionLevel.values())
+        ArrayList<String> protection_strings = Arrays.stream(ProtectionLevel.values())
                 .map(ProtectionLevel::getString)
                 .collect(Collectors.toList());
-        int i = 0;
+        long i = 0;
         try {
             Integer.parseInt(dec[0].strip());
             i = 1;
@@ -93,33 +123,5 @@ public class Method extends ElementContainer implements JavaElement, Text{
         Arrays.stream(args)
                 .filter(arg -> !arg.isBlank())
                 .forEach(arg -> this.args.add(new Variable(arg)));
-    }
-
-
-    @Override
-    public void setText(String text) {
-        this.declaration = text;
-        parseDeclaration(declaration);
-    }
-
-    @Override
-    public String getText() {
-        return declaration;
-    }
-
-    /**
-     *
-     * @param str
-     * @param x
-     * @return
-     */
-    static int findLastIndex(String str, Character x)
-    {
-        // Traverse from right
-        for (int i = str.length() - 1; i >= 0; i--)
-            if (str.charAt(i) == x)
-                return i;
-
-        return -1;
     }
 }

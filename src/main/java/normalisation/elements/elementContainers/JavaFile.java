@@ -30,7 +30,6 @@ public class JavaFile extends ElementContainer {
         List<String> lines = preProcess(Files.readAllLines(Paths.get(file.getAbsolutePath())));
         body = getElements(".*class\\s+.*\\{\\s*", lines, ClassObject.class);
         imports = getImports(lines);
-        name= file.getName();
         combineComments();
         this.file = file;
     }
@@ -89,12 +88,6 @@ public class JavaFile extends ElementContainer {
             } else lines.set(lines.indexOf(line), new_line);
         }
 
-
-        // number lines in file to allow for comparison to original after normalisation
-        for (int i = 0; i < lines.size(); i++) {
-            String line = i + " " + lines.get(i);
-            lines.set(i, line);
-        }
 
         return lines;
     }

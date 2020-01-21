@@ -33,7 +33,7 @@ public abstract class ElementContainer {
      * recursively removes all comment objects
      */
     public void removeComments() {
-        comment = null;
+        comment.setText("");
         for (int i = 0; i < body.size(); i++) {
             JavaElement element = body.get(i);
             if (element instanceof Comment) body.remove(i);
@@ -135,21 +135,14 @@ public abstract class ElementContainer {
         if (comment != null) sb.append(comment.toString());
         sb.append(declaration).append("\n");
 
-        int last_num = 0;
         // append body elements
         for (int i = 0; i < body.size(); i++) {
             JavaElement javaElement = body.get(i);
             String s = javaElement.toString();
-
-            //TODO fix
-            if (i == body.size() - 1) {
-                String[] a = s.split("\n");
-                last_num = Integer.parseInt(a[a.length - 1].split(" ")[0]) + 1;
-            }
             sb.append(s + "\n");
         }
 
-        if (!(this instanceof JavaFile)) sb.append(last_num + " }");
+        if (!(this instanceof JavaFile)) sb.append("}");
         return sb.toString();
     }
 
@@ -169,7 +162,7 @@ public abstract class ElementContainer {
     }
 
     /**
-     *  Sorts all elements in the body, element containers are sorted by lenth then protection level then by name
+     *  Sorts all elements in the body, element containers are sorted by lenth then protection level
      *  Comments are sorted by length and placed before the sorted containers
      */
     public void sortElements() {
@@ -179,7 +172,7 @@ public abstract class ElementContainer {
                 .sorted(Comparator
                         .comparingInt(ElementContainer::length)
                         .thenComparing(ElementContainer::getProtection_level)
-                        .thenComparing(ElementContainer::getName))
+                )
                 .map(JavaElement.class::cast)
                 .collect(Collectors.toList());
 
@@ -215,8 +208,8 @@ public abstract class ElementContainer {
         for (JavaElement javaElement : body) {
             if (javaElement instanceof ElementContainer)
                 ((ElementContainer) javaElement).replaceText(target, replacement);
-            else if (Arrays.asList(javaElement.getClass().getInterfaces()).contains(Text.class)) {
-                String old = javaElement.toString();
+            if (Arrays.asList(javaElement.getClass().getInterfaces()).contains(Text.class)) {
+                String old = ((Text)javaElement).getText();
                 ((Text) javaElement).setText(old.replaceAll("\\b" + target + "\\b", replacement));
             }
         }

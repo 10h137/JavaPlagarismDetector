@@ -28,7 +28,6 @@ public class FileComparison {
 
     private JavaFile file2;
     int algorithm_score = 0;
-    ComparisonResult res;
     // TODO change
     int THRESHOLD = -1;
 
@@ -40,7 +39,7 @@ public class FileComparison {
         method_comparisons = Util.compareMethods(file1, file2).stream()
                 .filter(x -> x.getTotalScore() > THRESHOLD)
                 .collect(Collectors.toList());
-        res = alg.compareFiles(file1, file2);
+        algorithm_score = (int) (alg.compareFiles(file1, file2) * 100);
     }
 
 
@@ -49,7 +48,7 @@ public class FileComparison {
     }
 
     public String getName(){
-        return file1.getName() + " <--> " + file2.getName();
+        return file1.getFile().getName() + " <--> " + file2.getFile().getName();
     }
 
     public String getReport(){

@@ -27,6 +27,8 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compile group: 'org.reflections', name: 'reflections', version: '0.9.10'
 
+    compile group: 'com.github.s3curitybug', name: 'similarity-uniform-fuzzy-hash', version: '1.8.4'
+
     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
 
