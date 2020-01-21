@@ -22,7 +22,7 @@ public class Method extends ElementContainer implements JavaElement, Text{
 
     String return_type = "";
     boolean is_static = false;
-    final List<Variable> args = new ArrayList<>();
+    List<Variable> args = new ArrayList<>();
 
     /**
      *
@@ -90,6 +90,7 @@ public class Method extends ElementContainer implements JavaElement, Text{
         }
 
         if (protection_level == null) protection_level = ProtectionLevel.PACKAGE_PRIVATE;
+        this.args.clear();
         Arrays.stream(args)
                 .filter(arg -> !arg.isBlank())
                 .forEach(arg -> this.args.add(new Variable(arg)));
