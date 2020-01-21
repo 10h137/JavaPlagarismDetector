@@ -79,7 +79,7 @@ public class GUI extends Application {
 
 
         ListView comparisons = new ListView();
-        comparisons.setPrefWidth(300);
+        comparisons.setPrefWidth(400);
         comparisons.setPrefHeight(200);
         a.add("test");
 
@@ -98,7 +98,7 @@ public class GUI extends Application {
             info.setText(report_string);
         });
 
-
+//TODO arrow keys
 
         // performs file comparisons
         btn_run.setOnAction(x -> {
@@ -158,14 +158,10 @@ public class GUI extends Application {
 
 
 
-    public TilePane getNormalisationCheckBoxes() {
+    public VBox getNormalisationCheckBoxes() {
 
 
-        TilePane tile_pane = new TilePane();
-        tile_pane.setPrefColumns(2);
-        tile_pane.setTileAlignment(Pos.CENTER_LEFT);
-        tile_pane.setHgap(20);
-        tile_pane.setVgap(10);
+        VBox vbox = new VBox(10);
         for (Normaliser.Features value : Normaliser.Features.values()) {
             String text = value.toString().toLowerCase().replace('_', ' ');
             text = text.substring(0, 1).toUpperCase() + text.substring(1);
@@ -174,9 +170,9 @@ public class GUI extends Application {
                 if (btn.isSelected()) enabled_features.add(value);
                 else enabled_features.add(value);
             });
-            tile_pane.getChildren().add(btn);
+            vbox.getChildren().add(btn);
         }
-        return tile_pane;
+        return vbox;
 
     }
 

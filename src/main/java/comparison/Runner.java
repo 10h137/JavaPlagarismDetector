@@ -24,7 +24,6 @@ public class Runner {
         int THRESHOLD = -1;
 
         Normaliser normaliser = new Normaliser(enabled_features);
-
         List<File> files = Files.walk(input_dir.toPath())
                 .filter(Files::isRegularFile)
                 .map(Path::toString)
@@ -34,6 +33,10 @@ public class Runner {
         List<JavaFile> java_files = new ArrayList<>();
         for (File file : files) {
             java_files.add(new JavaFile(file));
+        }
+
+        for (JavaFile java_file : java_files) {
+          normaliser.normaliseFile(java_file);
         }
 
         List<FileComparison> comparisons = new ArrayList<>();

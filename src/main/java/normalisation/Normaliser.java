@@ -27,12 +27,11 @@ public class Normaliser {
      * @return
      * @throws IOException
      */
-    public JavaFile normaliseFile(java.io.File input) throws IOException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
-        JavaFile file = new JavaFile(input);
+    public JavaFile normaliseFile(JavaFile input) throws IOException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
         // perform enabled normalisation features
-        enabled_features.forEach(enabled_feature -> enabled_feature.perform(file));
+        enabled_features.forEach(enabled_feature -> enabled_feature.perform(input));
 
-        return file;
+        return input;
     }
 
 

@@ -37,15 +37,15 @@ public class MethodComparison  implements Comparable<MethodComparison>{
         var_count_score = (int) (((double) Math.min(m1_var_count, m2_var_count) / (double) Math.max(m1_var_count, m2_var_count)) * 100);
 
         List<String> m1_types = m1.getVariables().stream().map(Variable::getType).collect(Collectors.toList());
-        List<String> m2_types = m1.getVariables().stream().map(Variable::getType).collect(Collectors.toList());
+        List<String> m2_types = m2.getVariables().stream().map(Variable::getType).collect(Collectors.toList());
         var_type_score = getMatchScore(m1_types, m2_types);
 
         List<String> m1_names = m1.getVariables().stream().map(Variable::getName).collect(Collectors.toList());
-        List<String> m2_names = m1.getVariables().stream().map(Variable::getName).collect(Collectors.toList());
+        List<String> m2_names = m2.getVariables().stream().map(Variable::getName).collect(Collectors.toList());
         var_name_score = getMatchScore(m1_names, m2_names);
 
         List<String> m1_dec = m1.getVariables().stream().map(Variable::getDeclaration).collect(Collectors.toList());
-        List<String> m2_dec = m1.getVariables().stream().map(Variable::getDeclaration).collect(Collectors.toList());
+        List<String> m2_dec = m2.getVariables().stream().map(Variable::getDeclaration).collect(Collectors.toList());
         exact_declaration_score = getMatchScore(m1_dec, m2_dec);
 
         int m1_line_count = m1.body.size();
@@ -54,7 +54,23 @@ public class MethodComparison  implements Comparable<MethodComparison>{
 
         method_size_score = (int) (((double) Math.min(m1.length(), m2.length()) / (double) Math.max(m1.length(), m2.length())) * 100);
 
-        string_similarity = (int) (StringUtils.getJaroWinklerDistance(m1.toString(), m2.toString()) * 100);
+        String new1 = m1.toString().replaceAll("\\s+", "");
+        new1 =new1.replaceAll(";", "");
+        new1 =new1.replaceAll("\\)", "");
+        new1 =new1.replaceAll("\\(", "");
+        new1 =new1.replaceAll("\\{", "");
+        new1 =new1.replaceAll("}", "");
+
+
+
+
+        String new2 = m2.toString().replaceAll("\\s+", "");
+        new2 =new2.replaceAll(";", "");
+        new2 =new2.replaceAll("\\)", "");
+        new2 =new2.replaceAll("\\(", "");
+        new2 =new2.replaceAll("\\{", "");
+        new2 =new2.replaceAll("}", "");
+        string_similarity = (int) (StringUtils.getJaroWinklerDistance(new1, new2) * 100);
     }
 
     /**
@@ -64,6 +80,8 @@ public class MethodComparison  implements Comparable<MethodComparison>{
      * @return integer 0-100%
      */
     public int getMatchScore(List<String> s1, List<String> s2) {
+        int s1_size = s1.size();
+        int s2_size = s2.size();
         int var_type_match_count = 0;
         for (int i = 0; i < s1.size(); i++) {
             String m1_type = s1.get(i);
@@ -78,7 +96,9 @@ public class MethodComparison  implements Comparable<MethodComparison>{
 
             }
         }
-        return (int) (((double) var_type_match_count / (double) Math.max(s1.size(), s2.size())) * 100);
+        int r = (int) (((double) var_type_match_count / (double) Math.max(s1_size, s2_size)) * 100);
+        if(r>100) System.out.println(var_type_match_count + " " + s1_size + " " + s2_size);
+        return r;
     }
 
 
@@ -104,19 +124,19 @@ public class MethodComparison  implements Comparable<MethodComparison>{
         StringBuilder sb = new StringBuilder();
         sb.append("Comparing " + m1.getName() + " and " + m2.getName() + "\n");
         sb.append("Variable count ");
-        sb.append(var_count_score + "\n");
+        sb.append(var_count_score + "%\n");
         sb.append("Type count ");
-        sb.append(var_type_score + "\n");
+        sb.append(var_type_score + "%\n");
         sb.append("Variable Name match ");
-        sb.append(var_name_score + "\n");
+        sb.append(var_name_score + "%\n");
         sb.append("Declaration match ");
-        sb.append(exact_declaration_score + "\n");
+        sb.append(exact_declaration_score + "%\n");
         sb.append("Line count ");
-        sb.append(line_count_score + "\n");
+        sb.append(line_count_score + "%\n");
         sb.append("Method Size ");
-        sb.append(method_size_score + "\n");
+        sb.append(method_size_score + "%\n");
         sb.append("String comparison ");
-        sb.append(string_similarity + "\n");
+        sb.append(string_similarity + "%\n");
 
         return sb.toString();
 
