@@ -8,11 +8,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Variable implements JavaElement, Text {
+    boolean global;
     private boolean is_final;
     private ProtectionLevel protection_level = null;
     private boolean is_static;
-    boolean global;
-    // change to enum or object
     private String type;
     private String name;
     private String declaration = "";
@@ -23,7 +22,6 @@ public class Variable implements JavaElement, Text {
 
     private void parseDeclaration(String line) {
         this.declaration = line.trim().strip();
-        // add variable parsing
 
         String dec = declaration.split("(\\s*=)|(\\s*;)")[0];
         String[] s = dec.split("\\s+");

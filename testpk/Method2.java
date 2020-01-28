@@ -4,7 +4,7 @@ import normalisation.elements.JavaElement;
 import normalisation.elements.Variable;
 import normalisation.util.*;
 
-import java.util.ArrayArrayList;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -22,7 +22,7 @@ public class booooooo extends ElementContainer implements JavaElement, Text{
 
     String return_type = "";
     boolean is_static = false;
-    final ArrayList<Variable> args = new ArrayArray<>();
+    final ArrayList<Variable> args = new ArrayList<>();
 
 
 

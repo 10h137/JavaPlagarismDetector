@@ -21,8 +21,8 @@ public class Method extends ElementContainer implements JavaElement, Text {
     //TODO sort arguments alphabetically and length on data type
 
 
-    private boolean is_static = false;
     private final List<Variable> args = new ArrayList<>();
+    private boolean is_static = false;
 
     /**
      * @param lines

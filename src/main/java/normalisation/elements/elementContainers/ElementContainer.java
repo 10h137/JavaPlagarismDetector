@@ -20,10 +20,10 @@ import static normalisation.util.MapFile.replacement_map;
 public abstract class ElementContainer {
 
     public List<JavaElement> body = new ArrayList<>();
-    private Comment comment = new Comment("");
     String declaration = "";
     String name = "";
     ProtectionLevel protection_level = ProtectionLevel.PROTECTED;
+    private Comment comment = new Comment("");
 
     private ProtectionLevel getProtection_level() {
         return protection_level;
@@ -39,8 +39,7 @@ public abstract class ElementContainer {
             if (element instanceof Comment) {
                 body.remove(i);
                 i--;
-            }
-            else if (element instanceof ElementContainer) ((ElementContainer) element).removeComments();
+            } else if (element instanceof ElementContainer) ((ElementContainer) element).removeComments();
         }
     }
 

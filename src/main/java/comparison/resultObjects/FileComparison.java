@@ -11,12 +11,12 @@ import java.util.stream.Collectors;
 public class FileComparison {
 
 
-    private int algorithm_score = 0;
     // TODO change
     private final int THRESHOLD = -1;
-    private List<MethodComparison> method_comparisons = new ArrayList<>();
     private final JavaFile file1;
     private final JavaFile file2;
+    private int algorithm_score = 0;
+    private List<MethodComparison> method_comparisons = new ArrayList<>();
 
     /**
      * Creates a file comparison by comparing all methods in file 1 with all methods in file 2

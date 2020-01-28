@@ -99,7 +99,6 @@ public class MethodComparison {
             }
         }
         int r = (int) (((double) var_type_match_count / (double) Math.max(s1_size, s2_size)) * 100);
-        if (r > 100) System.out.println(var_type_match_count + " " + s1_size + " " + s2_size);
         return r;
     }
 

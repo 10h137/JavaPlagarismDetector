@@ -35,14 +35,11 @@ public class GUI extends Application {
 
 
     private static final EnumSet<Normaliser.Features> enabled_features = EnumSet.noneOf(Normaliser.Features.class);
-
-
+    private final ObservableList<String> comparison_name_strings = FXCollections.observableArrayList();
     private AtomicReference<File> input_dir;
     private AtomicReference<File> output_dir;
     private FileComparison selected_comparison = null;
     private List<FileComparison> file_comparison_objects = new ArrayList<>();
-    private final ObservableList<String> comparison_name_strings = FXCollections.observableArrayList();
-
 
     public static void main(String[] args) {
         launch(args);
