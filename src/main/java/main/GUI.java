@@ -52,9 +52,12 @@ public class GUI extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         initUI(stage);
-
     }
 
+    /**
+     *
+     * @param stage
+     */
     private void initUI(Stage stage) {
 
         // map mapping dropdown selection strings to class objects
@@ -106,8 +109,9 @@ public class GUI extends Application {
         Button btn_run = new Button("Run");
         // performs file comparisons
         btn_run.setOnAction(x -> {
-            ComparisonAlgorithm selected_class = null;
-
+            ComparisonAlgorithm selected_class;
+            // TODO update selected item for expand button
+            info.setText("");
             try {
                 // creates instance of selected class
                 selected_class = class_map.get(comboBox.getValue()).getConstructor().newInstance();
@@ -128,12 +132,10 @@ public class GUI extends Application {
         });
 
 
-
         // button to expand the selected compariosn in a new window
         Button btn_expand_comparison = new Button("Expand Comparison");
         GridPane.setHalignment(btn_expand_comparison, HPos.CENTER);
         btn_expand_comparison.setOnAction(x -> expandedWindow(selected_comparison));
-
 
         // creates layout
         GridPane grid_pane = new GridPane();
@@ -160,44 +162,29 @@ public class GUI extends Application {
     }
 
 
-    public void expandedWindow(FileComparison expanded_comparison){
+    /**
+     *
+     * @param expanded_comparison
+     */
+    public void expandedWindow(FileComparison expanded_comparison) {
         TabPane tab_pane = new TabPane();
 
+        tab_pane.getTabs().add(getNormalisedTab(expanded_comparison));
+        tab_pane.getTabs().add(getOriginalTab(expanded_comparison));
+        tab_pane.getTabs().add(getMethodTab(expanded_comparison));
 
-        Tab normalised_tab = new Tab("Normalised");
-        Tab original_tab = new Tab("Original" );
-        Tab method_tab = new Tab("Methods" );
-        normalised_tab.setClosable(false);
-        original_tab.setClosable(false);
-        method_tab.setClosable(false);
+        Stage stage2 = new Stage();
+        stage2.setTitle(expanded_comparison.getName());
+        stage2.setScene(new Scene(tab_pane, 1200, 900));
+        stage2.show();
+    }
 
-
-
-
-        tab_pane.getTabs().add(normalised_tab);
-        tab_pane.getTabs().add(original_tab);
-        tab_pane.getTabs().add(method_tab);
-
-
-
-
-        // normlaised text
-        HBox normalised_container = new HBox(25);
-        normalised_container.setAlignment(Pos.CENTER);
-        normalised_container.setPrefSize(1200, 900);
-        ScrollPane normalised_scroll_1 = new ScrollPane();
-        normalised_scroll_1.setPrefSize(650, 800);
-        Text normalised_txt_1 = new Text(expanded_comparison.getFile1().toString());
-        normalised_scroll_1.setContent(normalised_txt_1);
-        ScrollPane normalised_scroll_2 = new ScrollPane();
-        normalised_scroll_2.setPrefSize(650, 800);
-        Text normalised_txt_2 = new Text(expanded_comparison.getFile2().toString());
-        normalised_scroll_2.setContent(normalised_txt_2);
-
-        normalised_container.getChildren().addAll(normalised_scroll_1, normalised_scroll_2);
-        normalised_tab.setContent(normalised_container);
-
-
+    /**
+     *
+     * @param expanded_comparison
+     * @return
+     */
+    public Tab getOriginalTab(FileComparison expanded_comparison){
         // original text
         HBox original_container = new HBox(25);
         original_container.setAlignment(Pos.CENTER);
@@ -222,11 +209,50 @@ public class GUI extends Application {
         original_scroll_2.setContent(original_txt_2);
 
         original_container.getChildren().addAll(original_scroll_1, original_scroll_2);
+
+        Tab original_tab = new Tab("Original");
+        original_tab.setClosable(false);
         original_tab.setContent(original_container);
 
+        return original_tab;
+
+    }
+
+    /**
+     *
+     * @param expanded_comparison
+     * @return
+     */
+    public Tab getNormalisedTab(FileComparison expanded_comparison){
+        // normlaised text
+        HBox normalised_container = new HBox(25);
+        normalised_container.setAlignment(Pos.CENTER);
+        normalised_container.setPrefSize(1200, 900);
+        ScrollPane normalised_scroll_1 = new ScrollPane();
+        normalised_scroll_1.setPrefSize(650, 800);
+        Text normalised_txt_1 = new Text(expanded_comparison.getFile1().toString());
+        normalised_scroll_1.setContent(normalised_txt_1);
+        ScrollPane normalised_scroll_2 = new ScrollPane();
+        normalised_scroll_2.setPrefSize(650, 800);
+        Text normalised_txt_2 = new Text(expanded_comparison.getFile2().toString());
+        normalised_scroll_2.setContent(normalised_txt_2);
+
+        normalised_container.getChildren().addAll(normalised_scroll_1, normalised_scroll_2);
 
 
+        Tab normalised_tab = new Tab("Normalised");
+        normalised_tab.setClosable(false);
+        normalised_tab.setContent(normalised_container);
 
+        return normalised_tab;
+    }
+
+    /**
+     *
+     * @param expanded_comparison
+     * @return
+     */
+    public Tab getMethodTab(FileComparison expanded_comparison) {
         // method text
         HBox method_container = new HBox(25);
         method_container.setAlignment(Pos.CENTER);
@@ -245,9 +271,11 @@ public class GUI extends Application {
 
         VBox list_info_container = new VBox(25);
 
-        ListView method_list = new ListView();
+        ListView<String> method_list = new ListView<>();
         List<MethodComparison> method_comparisons = expanded_comparison.getMethod_comparisons();
-        List<String> method_comparison_strings_tmp = method_comparisons.stream().map(MethodComparison::getName).collect(Collectors.toList());
+        List<String> method_comparison_strings_tmp = method_comparisons.stream()
+                .map(MethodComparison::getName)
+                .collect(Collectors.toList());
 
         ObservableList<String> comparison_name_strings = FXCollections.observableArrayList(method_comparison_strings_tmp);
 
@@ -263,49 +291,35 @@ public class GUI extends Application {
         // on clicked update info text
         method_list.setOnMouseClicked(l -> {
             MethodComparison comparison = method_comparisons.get(method_list.getSelectionModel().getSelectedIndex());
-            Method m1 = comparison.getM1();
-            Method m2 = comparison.getM2();
-
-            String method_string_1 = m1.toString();
-            String method_string_2 = m2.toString();
-
-            method_txt_1.setText(method_string_1);
-            method_txt_2.setText(method_string_2);
+            method_txt_1.setText(comparison.getM1().toString());
+            method_txt_2.setText(comparison.getM2().toString());
             comparison_info.setText(comparison.getReport());
 
         });
         // on arrow key actions update info text to new selection
         method_list.setOnKeyPressed(x -> {
-
             if (x.getCode() == KeyCode.DOWN || x.getCode() == KeyCode.UP) {
                 MethodComparison comparison = method_comparisons.get(method_list.getSelectionModel().getSelectedIndex());
-                Method m1 = comparison.getM1();
-                Method m2 = comparison.getM2();
-
-                String method_string_1 = m1.toString();
-                String method_string_2 = m2.toString();
-
-                method_txt_1.setText(method_string_1);
-                method_txt_2.setText(method_string_2);
+                method_txt_1.setText(comparison.getM1().toString());
+                method_txt_2.setText(comparison.getM2().toString());
                 comparison_info.setText(comparison.getReport());
-
-
             }
         });
 
 
         method_container.getChildren().add(0, list_info_container);
 
+        Tab method_tab = new Tab("Methods");
+        method_tab.setClosable(false);
         method_tab.setContent(method_container);
 
-
-        Stage stage2 = new Stage();
-        stage2.setTitle(expanded_comparison.getName());
-        stage2.setScene(new Scene(tab_pane, 1200, 900));
-        stage2.show();
+        return method_tab;
     }
 
-
+    /**
+     *
+     * @return
+     */
     public VBox getNormalisationCheckBoxes() {
 
         VBox vbox = new VBox(10);
@@ -324,7 +338,11 @@ public class GUI extends Application {
     }
 
 
-
+    /**
+     * Creates a VBox cintaioning a text box for the current selected directory and a file select button
+     * @param stage
+     * @return
+     */
     public VBox getDirectoryEntryBox(Stage stage) {
 
         VBox container = new VBox(10);
