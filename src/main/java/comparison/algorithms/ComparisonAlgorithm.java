@@ -1,6 +1,5 @@
 package comparison.algorithms;
 
-import comparison.resultObjects.ComparisonResult;
 import normalisation.elements.elementContainers.JavaFile;
 
 public interface ComparisonAlgorithm {

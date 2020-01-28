@@ -1,11 +1,15 @@
 package comparison.algorithms;
 
 import com.github.s3curitybug.similarityuniformfuzzyhash.UniformFuzzyHash;
-import comparison.resultObjects.ComparisonResult;
 import normalisation.elements.elementContainers.JavaFile;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class FingerprintComparison implements ComparisonAlgorithm {
 
@@ -22,7 +26,7 @@ public class FingerprintComparison implements ComparisonAlgorithm {
         int file2_size = file2.length();
 
 
-        return file1_size > file2_size ? hash2.similarity(hash1) :  hash1.similarity(hash2);
+        return file1_size > file2_size ? hash2.similarity(hash1) : hash1.similarity(hash2);
     }
 
 
@@ -44,8 +48,6 @@ public class FingerprintComparison implements ComparisonAlgorithm {
 
         return fingerprints;
     }
-
-
 
 
 }

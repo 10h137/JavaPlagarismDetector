@@ -1,4 +1,4 @@
 package comparison.resultObjects;
 
-public class ComparisonResult {
+class ComparisonResult {
 }

@@ -1,6 +1,7 @@
 package normalisation.util;
 
 public interface Text {
-    void setText(String text);
     String getText();
+
+    void setText(String text);
 }

@@ -2,13 +2,11 @@ package normalisation;
 
 import normalisation.elements.elementContainers.JavaFile;
 
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.EnumSet;
 
 public class Normaliser {
 
-    final EnumSet<Features> enabled_features;
+    private final EnumSet<Features> enabled_features;
 
     /**
      * Constructor for normaliser sets teh enabled features and the output directory for the normalised files
@@ -24,14 +22,11 @@ public class Normaliser {
      * Performs normalisation on a file by first copying it and then applying all enabled features
      *
      * @param input
-     * @return
-     * @throws IOException
      */
-    public JavaFile normaliseFile(JavaFile input) throws IOException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+    public void normaliseFile(JavaFile input) {
         // perform enabled normalisation features
         enabled_features.forEach(enabled_feature -> enabled_feature.perform(input));
 
-        return input;
     }
 
 

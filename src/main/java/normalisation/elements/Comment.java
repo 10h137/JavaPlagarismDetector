@@ -8,7 +8,7 @@ public class Comment implements JavaElement, Text {
 
     private String comment = "";
 
-    public Comment(String comment){
+    public Comment(String comment) {
         this.comment = comment;
     }
 
@@ -18,9 +18,13 @@ public class Comment implements JavaElement, Text {
             Comment comment1 = comments.get(i);
             String s = comment1.toString();
             sb.append(s);
-            if(i!= comments.size() -1) sb.append("/n");
+            if (i != comments.size() - 1) sb.append("/n");
         }
         comment = sb.toString();
+    }
+
+    public String toString() {
+        return comment;
     }
 
     @Override
@@ -28,17 +32,13 @@ public class Comment implements JavaElement, Text {
         return comment.length();
     }
 
-    public String toString(){
-        return comment;
+    @Override
+    public String getText() {
+        return toString();
     }
 
     @Override
     public void setText(String text) {
         comment = text;
-    }
-
-    @Override
-    public String getText() {
-        return toString();
     }
 }

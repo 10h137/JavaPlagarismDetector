@@ -8,7 +8,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class t {
+class t {
 
     public static void main(String[] args) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, IOException {
 
@@ -38,7 +38,7 @@ public class t {
 
     }
 
-    public int dscdscd(){
+    public int dscdscd() {
         return 0;
     }
 }

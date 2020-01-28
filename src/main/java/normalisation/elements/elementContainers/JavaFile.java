@@ -19,11 +19,6 @@ import static normalisation.util.Util.getElements;
 public class JavaFile extends ElementContainer {
 
     private List<String> imports;
-
-    public File getFile() {
-        return file;
-    }
-
     private File file;
 
     public JavaFile(File file) throws IOException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
@@ -34,23 +29,13 @@ public class JavaFile extends ElementContainer {
         this.file = file;
     }
 
-    @Override
-    public String toString(){
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < imports.size(); i++) {
-            String anImport = imports.get(i);
-            sb.append(anImport);
-            if(i!=imports.size()-1) sb.append("\n");
-        }
-        return sb.toString() + super.toString();
-    }
     /**
      * Normalises whitespace and numbers lines
      *
      * @param lines
      * @return
      */
-    static List<String> preProcess(List<String> lines) {
+    private static List<String> preProcess(List<String> lines) {
 
 
         // pads brackets with spaces
@@ -67,9 +52,9 @@ public class JavaFile extends ElementContainer {
             char[] charArray = line.toCharArray();
             for (int j = 0; j < charArray.length; j++) {
                 char c = charArray[j];
-                if(c == '{' && !checkInString(line, j)) {
-                    String start = line.substring(0, j+1);
-                    String end = line.substring(j+1, line.length() - 1);
+                if (c == '{' && !checkInString(line, j)) {
+                    String start = line.substring(0, j + 1);
+                    String end = line.substring(j + 1, line.length() - 1);
                     lines.set(i, start);
                     if (!end.strip().trim().isBlank()) lines.add(i + 1, end);
                     break;
@@ -98,25 +83,40 @@ public class JavaFile extends ElementContainer {
      * @param lines
      * @return
      */
-    public List<String> getImports(List<String> lines) {
+    private List<String> getImports(List<String> lines) {
         return lines.stream()
                 .filter(line -> line.matches("^[0-9]*\\s*import\\s+.*"))
                 .collect(Collectors.toList());
     }
 
+    public File getFile() {
+        return file;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < imports.size(); i++) {
+            String anImport = imports.get(i);
+            sb.append(anImport);
+            if (i != imports.size() - 1) sb.append("\n");
+        }
+        return sb.toString() + super.toString();
+    }
 
     public void sortImports() {
         Collections.sort(imports);
     }
 
     /**
+     * Returns list of all classes within the file
      *
-     * @return
+     * @return list of ClassObject's
      */
-    public List<ClassObject> getClasses(){
-       return  body.stream().filter(x -> x instanceof ClassObject)
-               .map(ClassObject.class::cast)
-               .collect(Collectors.toList());
+    public List<ClassObject> getClasses() {
+        return body.stream().filter(x -> x instanceof ClassObject)
+                .map(ClassObject.class::cast)
+                .collect(Collectors.toList());
     }
 
 

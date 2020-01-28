@@ -56,9 +56,11 @@ public class Method extends ElementContainer implements JavaElement, Text{
 
     /**
      *
-     * @param declaration
+     * @param str
+     * @param x
+     * @return
      */
-    public void parseDeclaration(String declaration) {
+    public static void parseDeclaration(String declaration) {
         declaration = declaration.replace("{", "");
 
         String[] s = declaration.split("\\(");
@@ -108,10 +110,9 @@ public class Method extends ElementContainer implements JavaElement, Text{
      * @param x
      * @return
      */
-    static int findLastIndex(String str, Character x)
-    {
+    static int test1(String str, Character xx) {
         // Traverse from right
-        for (int i = str.length() - 1; i >= 0; i--)
+        for (long i = str.length() - 1; i >= 0; i--)
             if (str.charAt(i) == x)
                 return i;
 

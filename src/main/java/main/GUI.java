@@ -22,7 +22,6 @@ import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import normalisation.Normaliser;
-import normalisation.elements.elementContainers.Method;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -35,14 +34,14 @@ import java.util.stream.Collectors;
 public class GUI extends Application {
 
 
-    static final EnumSet<Normaliser.Features> enabled_features = EnumSet.noneOf(Normaliser.Features.class);
+    private static final EnumSet<Normaliser.Features> enabled_features = EnumSet.noneOf(Normaliser.Features.class);
 
 
-    AtomicReference<File> input_dir;
-    AtomicReference<File> output_dir;
-    FileComparison selected_comparison = null;
-    List<FileComparison> file_comparison_objects = new ArrayList<>();
-    ObservableList<String> comparison_name_strings = FXCollections.observableArrayList();
+    private AtomicReference<File> input_dir;
+    private AtomicReference<File> output_dir;
+    private FileComparison selected_comparison = null;
+    private List<FileComparison> file_comparison_objects = new ArrayList<>();
+    private final ObservableList<String> comparison_name_strings = FXCollections.observableArrayList();
 
 
     public static void main(String[] args) {
@@ -50,13 +49,14 @@ public class GUI extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         initUI(stage);
     }
 
     /**
+     * Initialises the main window with all elements
      *
-     * @param stage
+     * @param stage - current stage
      */
     private void initUI(Stage stage) {
 
@@ -132,7 +132,7 @@ public class GUI extends Application {
         });
 
 
-        // button to expand the selected compariosn in a new window
+        // button to expand the selected comparison in a new window
         Button btn_expand_comparison = new Button("Expand Comparison");
         GridPane.setHalignment(btn_expand_comparison, HPos.CENTER);
         btn_expand_comparison.setOnAction(x -> expandedWindow(selected_comparison));
@@ -163,10 +163,11 @@ public class GUI extends Application {
 
 
     /**
+     * Creates a new window expanding the currently selected comparison
      *
-     * @param expanded_comparison
+     * @param expanded_comparison - currently selected comparison
      */
-    public void expandedWindow(FileComparison expanded_comparison) {
+    private void expandedWindow(FileComparison expanded_comparison) {
         TabPane tab_pane = new TabPane();
 
         tab_pane.getTabs().add(getNormalisedTab(expanded_comparison));
@@ -180,11 +181,113 @@ public class GUI extends Application {
     }
 
     /**
+     * Creates box of checkboxes, one for eah normalisation feature
      *
-     * @param expanded_comparison
-     * @return
+     * @return - VBox containing check boxes
      */
-    public Tab getOriginalTab(FileComparison expanded_comparison){
+    private VBox getNormalisationCheckBoxes() {
+
+        VBox vbox = new VBox(10);
+        for (Normaliser.Features value : Normaliser.Features.values()) {
+            String text = value.toString().toLowerCase().replace('_', ' ');
+            text = text.substring(0, 1).toUpperCase() + text.substring(1);
+            CheckBox btn = new CheckBox(text);
+            btn.setOnAction(x -> {
+                if (btn.isSelected()) enabled_features.add(value);
+                else enabled_features.remove(value);
+            });
+            vbox.getChildren().add(btn);
+        }
+        return vbox;
+
+    }
+
+    /**
+     * Creates a VBox containing a text box for the current selected directory and a file select button
+     *
+     * @param stage - current stage
+     * @return - VBox containing file selection buttons and text boxes
+     */
+    private VBox getDirectoryEntryBox(Stage stage) {
+
+        VBox container = new VBox(10);
+        // input directory
+
+        HBox hb_in = new HBox(10);
+        Text t1 = new Text("Input dir");
+
+        DirectoryChooser input_dir_chooser = new DirectoryChooser();
+        Button btn_input_dir = new Button("Select Input Directory");
+        input_dir = new AtomicReference<>();
+        btn_input_dir.setOnAction(e -> {
+            input_dir.set(input_dir_chooser.showDialog(stage));
+            t1.setText(input_dir.get().toPath().toString());
+        });
+
+        hb_in.getChildren().add(t1);
+        hb_in.getChildren().add(btn_input_dir);
+        hb_in.setAlignment(Pos.CENTER_RIGHT);
+        container.getChildren().add(hb_in);
+
+
+        //output directory
+        HBox hb_out = new HBox(10);
+        Text t2 = new Text("Output dir");
+
+        DirectoryChooser output_dir_chooser = new DirectoryChooser();
+        Button btn_output_dir = new Button("Select Output Directory");
+        output_dir = new AtomicReference<>();
+        btn_output_dir.setOnAction(e -> {
+            output_dir.set(output_dir_chooser.showDialog(stage));
+            t2.setText(output_dir.get().toPath().toString());
+        });
+
+        hb_out.getChildren().add(t2);
+        hb_out.getChildren().add(btn_output_dir);
+        hb_out.setAlignment(Pos.CENTER_RIGHT);
+        container.getChildren().add(hb_out);
+
+        return container;
+
+    }
+
+    /**
+     * Creates the normalisation tab which displays the two normalised files side by side
+     *
+     * @param expanded_comparison - comparison being expanded
+     * @return - Tab displaying normalised files
+     */
+    private Tab getNormalisedTab(FileComparison expanded_comparison) {
+        // normalised text
+        HBox normalised_container = new HBox(25);
+        normalised_container.setAlignment(Pos.CENTER);
+        normalised_container.setPrefSize(1200, 900);
+        ScrollPane normalised_scroll_1 = new ScrollPane();
+        normalised_scroll_1.setPrefSize(650, 800);
+        Text normalised_txt_1 = new Text(expanded_comparison.getFile1().toString());
+        normalised_scroll_1.setContent(normalised_txt_1);
+        ScrollPane normalised_scroll_2 = new ScrollPane();
+        normalised_scroll_2.setPrefSize(650, 800);
+        Text normalised_txt_2 = new Text(expanded_comparison.getFile2().toString());
+        normalised_scroll_2.setContent(normalised_txt_2);
+
+        normalised_container.getChildren().addAll(normalised_scroll_1, normalised_scroll_2);
+
+
+        Tab normalised_tab = new Tab("Normalised");
+        normalised_tab.setClosable(false);
+        normalised_tab.setContent(normalised_container);
+
+        return normalised_tab;
+    }
+
+    /**
+     * Creates the original tab which displays the two original files side by side
+     *
+     * @param expanded_comparison - comparison being expanded
+     * @return - Tab displaying original files
+     */
+    private Tab getOriginalTab(FileComparison expanded_comparison) {
         // original text
         HBox original_container = new HBox(25);
         original_container.setAlignment(Pos.CENTER);
@@ -219,40 +322,13 @@ public class GUI extends Application {
     }
 
     /**
+     * Creates the method tab which displays a list of method comparisons,
+     * when one is selected the method strings are displayed side by side
      *
-     * @param expanded_comparison
-     * @return
+     * @param expanded_comparison - comparison being expanded
+     * @return - Tab displaying method comparisons
      */
-    public Tab getNormalisedTab(FileComparison expanded_comparison){
-        // normlaised text
-        HBox normalised_container = new HBox(25);
-        normalised_container.setAlignment(Pos.CENTER);
-        normalised_container.setPrefSize(1200, 900);
-        ScrollPane normalised_scroll_1 = new ScrollPane();
-        normalised_scroll_1.setPrefSize(650, 800);
-        Text normalised_txt_1 = new Text(expanded_comparison.getFile1().toString());
-        normalised_scroll_1.setContent(normalised_txt_1);
-        ScrollPane normalised_scroll_2 = new ScrollPane();
-        normalised_scroll_2.setPrefSize(650, 800);
-        Text normalised_txt_2 = new Text(expanded_comparison.getFile2().toString());
-        normalised_scroll_2.setContent(normalised_txt_2);
-
-        normalised_container.getChildren().addAll(normalised_scroll_1, normalised_scroll_2);
-
-
-        Tab normalised_tab = new Tab("Normalised");
-        normalised_tab.setClosable(false);
-        normalised_tab.setContent(normalised_container);
-
-        return normalised_tab;
-    }
-
-    /**
-     *
-     * @param expanded_comparison
-     * @return
-     */
-    public Tab getMethodTab(FileComparison expanded_comparison) {
+    private Tab getMethodTab(FileComparison expanded_comparison) {
         // method text
         HBox method_container = new HBox(25);
         method_container.setAlignment(Pos.CENTER);
@@ -314,75 +390,5 @@ public class GUI extends Application {
         method_tab.setContent(method_container);
 
         return method_tab;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public VBox getNormalisationCheckBoxes() {
-
-        VBox vbox = new VBox(10);
-        for (Normaliser.Features value : Normaliser.Features.values()) {
-            String text = value.toString().toLowerCase().replace('_', ' ');
-            text = text.substring(0, 1).toUpperCase() + text.substring(1);
-            CheckBox btn = new CheckBox(text);
-            btn.setOnAction(x -> {
-                if (btn.isSelected()) enabled_features.add(value);
-                else enabled_features.remove(value);
-            });
-            vbox.getChildren().add(btn);
-        }
-        return vbox;
-
-    }
-
-
-    /**
-     * Creates a VBox cintaioning a text box for the current selected directory and a file select button
-     * @param stage
-     * @return
-     */
-    public VBox getDirectoryEntryBox(Stage stage) {
-
-        VBox container = new VBox(10);
-        // input directory
-
-        HBox hb_in = new HBox(10);
-        Text t1 = new Text("Input dir");
-
-        DirectoryChooser input_dir_chooser = new DirectoryChooser();
-        Button btn_input_dir = new Button("Select Input Directory");
-        input_dir = new AtomicReference<>();
-        btn_input_dir.setOnAction(e -> {
-            input_dir.set(input_dir_chooser.showDialog(stage));
-            t1.setText(input_dir.get().toPath().toString());
-        });
-
-        hb_in.getChildren().add(t1);
-        hb_in.getChildren().add(btn_input_dir);
-        hb_in.setAlignment(Pos.CENTER_RIGHT);
-        container.getChildren().add(hb_in);
-
-
-        //output directory
-        HBox hb_out = new HBox(10);
-        Text t2 = new Text("Output dir");
-
-        DirectoryChooser output_dir_chooser = new DirectoryChooser();
-        Button btn_output_dir = new Button("Select Output Directory");
-        output_dir = new AtomicReference<>();
-        btn_output_dir.setOnAction(e -> {
-            output_dir.set(output_dir_chooser.showDialog(stage));
-            t2.setText(output_dir.get().toPath().toString());
-        });
-
-        hb_out.getChildren().add(t2);
-        hb_out.getChildren().add(btn_output_dir);
-        hb_out.setAlignment(Pos.CENTER_RIGHT);
-        container.getChildren().add(hb_out);
-
-        return container;
-
     }
 }

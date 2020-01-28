@@ -15,6 +15,11 @@ public class CodeLine implements JavaElement, Text {
         return code.length();
     }
 
+    @Override
+    public String getText() {
+        return toString();
+    }
+
     public String toString() {
         return code;
     }
@@ -22,10 +27,5 @@ public class CodeLine implements JavaElement, Text {
     @Override
     public void setText(String text) {
         code = text;
-    }
-
-    @Override
-    public String getText() {
-        return toString();
     }
 }

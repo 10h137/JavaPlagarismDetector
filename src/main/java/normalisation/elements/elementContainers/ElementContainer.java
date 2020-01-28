@@ -3,7 +3,8 @@ package normalisation.elements.elementContainers;
 import normalisation.elements.Comment;
 import normalisation.elements.JavaElement;
 import normalisation.elements.Variable;
-import normalisation.util.*;
+import normalisation.util.ProtectionLevel;
+import normalisation.util.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,32 +19,34 @@ import static normalisation.util.MapFile.replacement_map;
  */
 public abstract class ElementContainer {
 
-    protected Comment comment = new Comment("");
     public List<JavaElement> body = new ArrayList<>();
+    private Comment comment = new Comment("");
+    String declaration = "";
+    String name = "";
+    ProtectionLevel protection_level = ProtectionLevel.PROTECTED;
 
-    protected String declaration = "";
-    protected String name = "";
-    protected ProtectionLevel protection_level = ProtectionLevel.PROTECTED;
-
-    public ProtectionLevel getProtection_level() {
+    private ProtectionLevel getProtection_level() {
         return protection_level;
     }
 
     /**
-     * recursively removes all comment objects
+     * Recursively removes all comment objects from this container and all sub-containers
      */
     public void removeComments() {
         comment.setText("");
         for (int i = 0; i < body.size(); i++) {
             JavaElement element = body.get(i);
-            if (element instanceof Comment) body.remove(i);
+            if (element instanceof Comment) {
+                body.remove(i);
+                i--;
+            }
             else if (element instanceof ElementContainer) ((ElementContainer) element).removeComments();
         }
     }
 
     /**
-     *  Replaces all data java data types and structure implementations with a corresponding interface or keyword
-     *  e.g HashMap -> Map, long -> Integer, BigInt -> Integer
+     * Replaces all data java data types and structure implementations with a corresponding interface or keyword
+     * e.g HashMap -> Map, long -> Integer, BigInt -> Integer
      */
     public void replaceInterfaces() {
         for (JavaElement javaElement : body) {
@@ -61,10 +64,11 @@ public abstract class ElementContainer {
     }
 
     /**
-     *  returns all element containers in the body
-     * @return
+     * Returns all element containers in the body
+     *
+     * @return list of element containers
      */
-    public List<ElementContainer> getContainers() {
+    private List<ElementContainer> getContainers() {
         return body.stream()
                 .filter(e -> e instanceof ElementContainer)
                 .map(ElementContainer.class::cast)
@@ -73,7 +77,7 @@ public abstract class ElementContainer {
 
 
     /**
-     * Normalises method names, //TODO
+     * Normalises method names //TODO
      */
     public void normaliseMethodNames() {
         List<ElementContainer> containers = getContainers();
@@ -90,10 +94,10 @@ public abstract class ElementContainer {
     }
 
     /**
-     *  Merges consecutive comments into single comment objects and merges comments with any element container they immediately precede
-     *  e.g. comments directly before a method will be merged with the method object, and the method object will have its comment attribute set to this comment
+     * Merges consecutive comments into single comment objects and merges comments with any element container they immediately precede
+     * e.g. comments directly before a method will be merged with the method object, and the method object will have its comment attribute set to this comment
      */
-    public void combineComments() {
+    void combineComments() {
 
         List<JavaElement> new_elements = new ArrayList<>();
         Comment combined_comment;
@@ -118,16 +122,18 @@ public abstract class ElementContainer {
     }
 
     /**
+     * Sets the comment attributed to the current container
      *
-     * @param class_comments
+     * @param container_comments
      */
-    public void setComment(Comment class_comments) {
-        this.comment = class_comments;
+    private void setComment(Comment container_comments) {
+        this.comment = container_comments;
     }
 
 
     /**
-     * recursivley generates the string representation of all the nested containers and the other elements in the body and combines them
+     * Recursively generates the string representation of all the nested containers and the other elements in the body and combines them
+     *
      * @return a string of the current element container e.g a java class's code or a methods code
      */
     public String toString() {
@@ -139,7 +145,7 @@ public abstract class ElementContainer {
         for (int i = 0; i < body.size(); i++) {
             JavaElement javaElement = body.get(i);
             String s = javaElement.toString();
-            sb.append(s + "\n");
+            sb.append(s).append("\n");
         }
 
         if (!(this instanceof JavaFile)) sb.append("}");
@@ -149,9 +155,10 @@ public abstract class ElementContainer {
 
     /**
      * Collects all variables in the containers body as well as nested variable objects contained in other element containers
+     *
      * @return List of all variables within this container and its sub-containers
      */
-    public List<Variable> getVariables() {
+    List<Variable> getVariables() {
         List<Variable> variables = new ArrayList<>();
         for (JavaElement javaElement : body) {
             if (javaElement instanceof Variable) variables.add((Variable) javaElement);
@@ -162,8 +169,8 @@ public abstract class ElementContainer {
     }
 
     /**
-     *  Sorts all elements in the body, element containers are sorted by lenth then protection level
-     *  Comments are sorted by length and placed before the sorted containers
+     * Sorts all elements in the body, element containers are sorted by length then protection level
+     * Comments are sorted by length and placed before the sorted containers
      */
     public void sortElements() {
         if (this instanceof Method) return;
@@ -188,7 +195,8 @@ public abstract class ElementContainer {
 
 
     /**
-     * calculates the total lenth of all elements
+     * Calculates the total length of all elements
+     *
      * @return total length
      */
     public int length() {
@@ -200,16 +208,17 @@ public abstract class ElementContainer {
 
 
     /**
+     * Replaces text in all elements and sub elements
      *
-     * @param target
-     * @param replacement
+     * @param target      - target string pattern
+     * @param replacement - replacement string
      */
-    public void replaceText(String target, String replacement) {
+    private void replaceText(String target, String replacement) {
         for (JavaElement javaElement : body) {
             if (javaElement instanceof ElementContainer)
                 ((ElementContainer) javaElement).replaceText(target, replacement);
             if (Arrays.asList(javaElement.getClass().getInterfaces()).contains(Text.class)) {
-                String old = ((Text)javaElement).getText();
+                String old = ((Text) javaElement).getText();
                 ((Text) javaElement).setText(old.replaceAll("\\b" + target + "\\b", replacement));
             }
         }
@@ -218,6 +227,7 @@ public abstract class ElementContainer {
 
     /**
      * Gets the name of the container e.g. class name
+     *
      * @return Container name
      */
     public String getName() {
@@ -225,10 +235,11 @@ public abstract class ElementContainer {
     }
 
     /**
-     *  Sets the name of the container
+     * Sets the name of the container
+     *
      * @param name new name
      */
-    public void setName(String name) {
+    private void setName(String name) {
         this.declaration = this.declaration.replace(this.name, name);
         this.name = name;
     }

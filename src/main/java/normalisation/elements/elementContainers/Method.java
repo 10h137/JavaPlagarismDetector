@@ -2,7 +2,8 @@ package normalisation.elements.elementContainers;
 
 import normalisation.elements.JavaElement;
 import normalisation.elements.Variable;
-import normalisation.util.*;
+import normalisation.util.ProtectionLevel;
+import normalisation.util.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,17 +16,15 @@ import static normalisation.util.Util.getComments;
 /**
  *
  */
-public class Method extends ElementContainer implements JavaElement, Text{
+public class Method extends ElementContainer implements JavaElement, Text {
 
     //TODO sort arguments alphabetically and length on data type
 
 
-    String return_type = "";
-    boolean is_static = false;
-    List<Variable> args = new ArrayList<>();
+    private boolean is_static = false;
+    private final List<Variable> args = new ArrayList<>();
 
     /**
-     *
      * @param lines
      */
     public Method(List<String> lines) {
@@ -35,7 +34,7 @@ public class Method extends ElementContainer implements JavaElement, Text{
         //lines.remove(0);
         boolean in_comment = false;
         for (String line : lines) {
-           getComments(body, in_comment, line, true);
+            in_comment = getComments(body, in_comment, line, true);
         }
         // removes
         body.remove(0);
@@ -43,35 +42,25 @@ public class Method extends ElementContainer implements JavaElement, Text{
 
     }
 
-
-
-
-    @Override
-    public List<Variable> getVariables(){
-        List<Variable> variables = super.getVariables();
-        variables.addAll(args);
-        return variables;
-    }
-
-
     /**
+     * Parses the method declaration, setting the methods instance variables
      *
      * @param declaration
      */
-    public void parseDeclaration(String declaration) {
+    private void parseDeclaration(String declaration) {
         declaration = declaration.replace("{", "");
 
         String[] s = declaration.split("\\(");
         int split_index = declaration.indexOf("(");
-        String start = declaration.substring(0, split_index-1);
-        String end = declaration.substring(split_index+1, findLastIndex(declaration, ')'));
+        String start = declaration.substring(0, split_index - 1);
+        String end = declaration.substring(split_index + 1, findLastIndex(declaration, ')'));
         end = end.replace(")", "");
 
         String[] dec = start.split("\\s+");
         String[] args = end.split("\\s*,\\s*");
 
         name = dec[dec.length - 1];
-        return_type = dec[dec.length - 2];
+        String return_type = dec[dec.length - 2];
 
         List<String> protection_strings = Arrays.stream(ProtectionLevel.values())
                 .map(ProtectionLevel::getString)
@@ -96,11 +85,24 @@ public class Method extends ElementContainer implements JavaElement, Text{
                 .forEach(arg -> this.args.add(new Variable(arg)));
     }
 
+    /**
+     * @param str
+     * @param c
+     * @return
+     */
+    private static int findLastIndex(String str, Character c) {
+        // Traverse from right
+        for (int i = str.length() - 1; i >= 0; i--) {
+            if (str.charAt(i) == c) return i;
+        }
+        return -1;
+    }
 
     @Override
-    public void setText(String text) {
-        this.declaration = text;
-        parseDeclaration(declaration);
+    public List<Variable> getVariables() {
+        List<Variable> variables = super.getVariables();
+        variables.addAll(args);
+        return variables;
     }
 
     @Override
@@ -108,19 +110,9 @@ public class Method extends ElementContainer implements JavaElement, Text{
         return declaration;
     }
 
-    /**
-     *
-     * @param str
-     * @param x
-     * @return
-     */
-    static int findLastIndex(String str, Character x)
-    {
-        // Traverse from right
-        for (int i = str.length() - 1; i >= 0; i--)
-            if (str.charAt(i) == x)
-                return i;
-
-        return -1;
+    @Override
+    public void setText(String text) {
+        this.declaration = text;
+        parseDeclaration(declaration);
     }
 }

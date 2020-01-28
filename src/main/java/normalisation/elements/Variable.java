@@ -5,55 +5,23 @@ import normalisation.util.Text;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Variable implements JavaElement, Text {
-    boolean is_final;
-    ProtectionLevel protection_level = null;
-    boolean is_static;
+    private boolean is_final;
+    private ProtectionLevel protection_level = null;
+    private boolean is_static;
     boolean global;
     // change to enum or object
     private String type;
     private String name;
-
-    public String getDeclaration() {
-        return declaration;
-    }
-
     private String declaration = "";
 
     public Variable(String line) {
-    parseDeclaration(line);
+        parseDeclaration(line);
     }
 
-
-    public void setName(String name){
-        declaration = declaration.replace(this.name, name);
-        this.name = name;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String toString() {
-        return declaration;
-    }
-
-    @Override
-    public int length() {
-        return declaration.length();
-    }
-
-
-    //TODO  fix for multi line variable declaration
-
-    public void parseDeclaration(String line){
+    private void parseDeclaration(String line) {
         this.declaration = line.trim().strip();
         // add variable parsing
 
@@ -69,7 +37,8 @@ public class Variable implements JavaElement, Text {
         try {
             Integer.parseInt(s[0].strip());
             i = 1;
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
         for (; i < s.length - 2; i++) {
             if (!is_final) is_final = s[i].equals("final");
             if (!is_static) is_static = s[i].equals("static");
@@ -82,14 +51,43 @@ public class Variable implements JavaElement, Text {
 
     }
 
-    @Override
-    public void setText(String text) {
-        this.declaration = text;
-        parseDeclaration(declaration);
+    public String getDeclaration() {
+        return declaration;
     }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        declaration = declaration.replace(this.name, name);
+        this.name = name;
+    }
+
+    @Override
+    public int length() {
+        return declaration.length();
+    }
+
+
+    //TODO  fix for multi line variable declaration
 
     @Override
     public String getText() {
         return toString();
+    }
+
+    public String toString() {
+        return declaration;
+    }
+
+    @Override
+    public void setText(String text) {
+        this.declaration = text;
+        parseDeclaration(declaration);
     }
 }

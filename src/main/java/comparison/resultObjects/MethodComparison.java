@@ -1,7 +1,7 @@
 package comparison.resultObjects;
 
-import normalisation.elements.elementContainers.Method;
 import normalisation.elements.Variable;
+import normalisation.elements.elementContainers.Method;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
@@ -10,33 +10,25 @@ import java.util.stream.Collectors;
 /**
  *
  */
-public class MethodComparison{
+public class MethodComparison {
 
-    int var_count_score;
-    int var_type_score;
-    int var_name_score;
-    int exact_declaration_score;
-    int line_count_score;
-    int method_size_score;
-    int string_similarity;
-
-    public Method getM1() {
-        return m1;
-    }
-
-    public Method getM2() {
-        return m2;
-    }
-
-    public Method m1;
-    public Method m2;
+    public final Method m1;
+    public final Method m2;
+    private final int var_count_score;
+    private final int var_type_score;
+    private final int var_name_score;
+    private final int exact_declaration_score;
+    private final int line_count_score;
+    private final int method_size_score;
+    private final int string_similarity;
 
     /**
-     *  Compares two methods on a range of properties (matching variable count etc) and calculates set of scores
+     * Compares two methods on a range of properties (matching variable count etc) and calculates set of scores
+     *
      * @param m1 1st method
      * @param m2 2nd method
      */
-    public MethodComparison(Method m1, Method m2){
+    public MethodComparison(Method m1, Method m2) {
 
         this.m1 = m1;
         this.m2 = m2;
@@ -63,32 +55,32 @@ public class MethodComparison{
 
         method_size_score = (int) (((double) Math.min(m1.length(), m2.length()) / (double) Math.max(m1.length(), m2.length())) * 100);
 
+        // normalisation steps performed before string comparison
         String new1 = m1.toString().replaceAll("\\s+", "");
-        new1 =new1.replaceAll(";", "");
-        new1 =new1.replaceAll("\\)", "");
-        new1 =new1.replaceAll("\\(", "");
-        new1 =new1.replaceAll("\\{", "");
-        new1 =new1.replaceAll("}", "");
-
-
+        new1 = new1.replaceAll(";", "");
+        new1 = new1.replaceAll("\\)", "");
+        new1 = new1.replaceAll("\\(", "");
+        new1 = new1.replaceAll("\\{", "");
+        new1 = new1.replaceAll("}", "");
 
 
         String new2 = m2.toString().replaceAll("\\s+", "");
-        new2 =new2.replaceAll(";", "");
-        new2 =new2.replaceAll("\\)", "");
-        new2 =new2.replaceAll("\\(", "");
-        new2 =new2.replaceAll("\\{", "");
-        new2 =new2.replaceAll("}", "");
+        new2 = new2.replaceAll(";", "");
+        new2 = new2.replaceAll("\\)", "");
+        new2 = new2.replaceAll("\\(", "");
+        new2 = new2.replaceAll("\\{", "");
+        new2 = new2.replaceAll("}", "");
         string_similarity = (int) (StringUtils.getJaroWinklerDistance(new1, new2) * 100);
     }
 
     /**
-     * This method counts the number of matching pairs between two string lists and returns a match percentage
+     * Counts the number of matching pairs between two string lists and returns a match percentage
+     *
      * @param s1 1st list of strings
      * @param s2 2nd list of strings
      * @return integer 0-100%
      */
-    public int getMatchScore(List<String> s1, List<String> s2) {
+    private int getMatchScore(List<String> s1, List<String> s2) {
         int s1_size = s1.size();
         int s2_size = s2.size();
         int var_type_match_count = 0;
@@ -107,47 +99,57 @@ public class MethodComparison{
             }
         }
         int r = (int) (((double) var_type_match_count / (double) Math.max(s1_size, s2_size)) * 100);
-        if(r>100) System.out.println(var_type_match_count + " " + s1_size + " " + s2_size);
+        if (r > 100) System.out.println(var_type_match_count + " " + s1_size + " " + s2_size);
         return r;
     }
 
+    public Method getM1() {
+        return m1;
+    }
 
-
+    public Method getM2() {
+        return m2;
+    }
 
     /**
-     *  Combines all scores into a singe int value
+     * Combines all scores into a singe int value
+     *
      * @return combined comparison score 0-100
      */
-    public int getTotalScore(){
+    public int getTotalScore() {
         return (var_count_score + var_type_score + var_name_score + exact_declaration_score + line_count_score + method_size_score + string_similarity) / 7;
     }
 
 
-
-    public String getReport(){
+    public String getReport() {
 
         StringBuilder sb = new StringBuilder();
-        sb.append("Comparing " + m1.getName() + " and " + m2.getName() + "\n");
+        sb.append("Comparing ").append(m1.getName()).append(" and ").append(m2.getName()).append("\n");
         sb.append("Variable count ");
-        sb.append(var_count_score + "%\n");
+        sb.append(var_count_score).append("%\n");
         sb.append("Type count ");
-        sb.append(var_type_score + "%\n");
+        sb.append(var_type_score).append("%\n");
         sb.append("Variable Name match ");
-        sb.append(var_name_score + "%\n");
+        sb.append(var_name_score).append("%\n");
         sb.append("Declaration match ");
-        sb.append(exact_declaration_score + "%\n");
+        sb.append(exact_declaration_score).append("%\n");
         sb.append("Line count ");
-        sb.append(line_count_score + "%\n");
+        sb.append(line_count_score).append("%\n");
         sb.append("Method Size ");
-        sb.append(method_size_score + "%\n");
+        sb.append(method_size_score).append("%\n");
         sb.append("String comparison ");
-        sb.append(string_similarity + "%\n");
+        sb.append(string_similarity).append("%\n");
 
         return sb.toString();
 
     }
 
-    public String getName(){
+    /**
+     * Generates a name string for the method comparison
+     *
+     * @return comparison name
+     */
+    public String getName() {
         return m1.getName() + " <--> " + m2.getName();
     }
 

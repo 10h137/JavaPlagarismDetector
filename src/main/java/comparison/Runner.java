@@ -13,7 +13,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Runner {
@@ -37,7 +36,7 @@ public class Runner {
         }
 
         for (JavaFile java_file : java_files) {
-          normaliser.normaliseFile(java_file);
+            normaliser.normaliseFile(java_file);
         }
 
         List<FileComparison> comparisons = new ArrayList<>();
@@ -50,7 +49,7 @@ public class Runner {
         // filter only file comparisons that exceed a certain similarity threshold
         comparisons = comparisons.stream().filter(x -> x.getScore() > THRESHOLD).collect(Collectors.toList());
 
-        return  comparisons;
+        return comparisons;
 
     }
 

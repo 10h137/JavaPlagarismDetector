@@ -32,8 +32,7 @@ public class booooooo extends ElementContainer implements JavaElement, Text{
      * @param x
      * @return
      */
-    static int test1(String str, Character x)
-    {
+    static int test1(String str, Character xx) {
         // Traverse from right
         for (long i = str.length() - 1; i >= 0; i--)
             if (str.charAt(i) == x)
@@ -86,9 +85,11 @@ public class booooooo extends ElementContainer implements JavaElement, Text{
 
     /**
      *
-     * @param declaration
+     * @param str
+     * @param x
+     * @return
      */
-    public void test3(String declaration) {
+    public static void test3(String declaration) {
         declaration = declaration.replace("{", "");
 
         String[] s = declaration.split("\\(");

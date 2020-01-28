@@ -1,14 +1,13 @@
 package normalisation.util;
 
-import comparison.resultObjects.ComparisonResult;
 import comparison.resultObjects.MethodComparison;
-import normalisation.elements.elementContainers.ClassObject;
-import normalisation.elements.elementContainers.JavaFile;
-import normalisation.elements.elementContainers.Method;
 import normalisation.elements.CodeLine;
 import normalisation.elements.Comment;
 import normalisation.elements.JavaElement;
 import normalisation.elements.Variable;
+import normalisation.elements.elementContainers.ClassObject;
+import normalisation.elements.elementContainers.JavaFile;
+import normalisation.elements.elementContainers.Method;
 import org.javatuples.Pair;
 
 import java.lang.reflect.InvocationTargetException;
@@ -58,7 +57,7 @@ public class Util {
                                 in_method = false;
 
                                 // misses case where comment on same line as closing bracket     } //
-                                // can be fixed with preprocessing, add \n after evey closing bracket
+                                // can be fixed with pre-processing, add \n after evey closing bracket
                                 break;
                             }
 
@@ -70,7 +69,7 @@ public class Util {
 
             }
             if (!in_method) {
-                getComments(elements, in_comment, line, false);
+                in_comment = getComments(elements, in_comment, line, false);
             }
 
         }
@@ -97,7 +96,7 @@ public class Util {
         return ((right_count % 2 != 0)) || (right_count_2 % 2 != 0) || in_comment;
     }
 
-    public static void getComments(List<JavaElement> body, boolean in_comment, String line, boolean get_code_lines) {
+    public static boolean getComments(List<JavaElement> body, boolean in_comment, String line, boolean get_code_lines) {
 
         if (in_comment) {
             if (line.matches(MULTI_CLOSE.getValue())) in_comment = false;
@@ -110,13 +109,20 @@ public class Util {
         } else if (isVariableDeclaration(line)) {
             // change to detect between global and local
             body.add(new Variable(line));
-        } else if(get_code_lines){
+        } else if (get_code_lines) {
             body.add(new CodeLine(line));
         }
 
+        return in_comment;
+
     }
 
-    public static List<MethodComparison> compareMethods(JavaFile file1, JavaFile file2){
+    //TODO fix to ignore return statements
+    private static boolean isVariableDeclaration(String line) {
+        return line.matches("^[0-9]*\\s*((public\\s+)|(private\\s+)|(protected\\s+)|)(static\\s+)?\\s*(final)?\\s*([A-z]|<|>)+\\s+[A-z]+\\s*((=.+)|;).*\\s*");
+    }
+
+    public static List<MethodComparison> compareMethods(JavaFile file1, JavaFile file2) {
         List<Method> methods1 = file1.getClasses().stream()
                 .map(ClassObject::getMethods)
                 .flatMap(Collection::stream)
@@ -148,20 +154,15 @@ public class Util {
 
 
         for (MethodComparison comparison : comparisons) {
-            if(methods_to_be_processed.contains(comparison.m1) && methods_to_be_processed.contains(comparison.m2)){
+            if (methods_to_be_processed.contains(comparison.m1) && methods_to_be_processed.contains(comparison.m2)) {
                 best_comparisons.add(comparison);
             }
             methods_to_be_processed.remove(comparison.m1);
             methods_to_be_processed.remove(comparison.m2);
         }
 
-        return  best_comparisons;
+        return best_comparisons;
 
-    }
-
-    //TODO fix to ignore return statements
-    public static boolean isVariableDeclaration(String line) {
-        return line.matches("^[0-9]*\\s*((public\\s+)|(private\\s+)|(protected\\s+)|)(static\\s+)?\\s*(final)?\\s*([A-z]|<|>)+\\s+[A-z]+\\s*((=.+)|;).*\\s*");
     }
 
 
@@ -171,7 +172,7 @@ public class Util {
         REGULAR_COMMENT,
         MULTI_CLOSE_SINGLE_LINE;
 
-        public String getValue() {
+        String getValue() {
             switch (this) {
                 //multi-line comment open -> /*
                 case MULTI_OPEN:

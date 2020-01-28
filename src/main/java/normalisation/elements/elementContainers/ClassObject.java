@@ -13,7 +13,6 @@ import static normalisation.util.Util.getElements;
 public class ClassObject extends ElementContainer implements JavaElement {
 
     private boolean is_abstract = false;
-    private boolean is_interface = false;
 
     public ClassObject(List<String> lines) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         parseDeclaration(lines.get(0));
@@ -26,13 +25,13 @@ public class ClassObject extends ElementContainer implements JavaElement {
      *
      * @param declaration_line
      */
-    public void parseDeclaration(String declaration_line) {
+    private void parseDeclaration(String declaration_line) {
         this.declaration = declaration_line;
         String[] s = declaration_line.split("\\s+");
         int class_word_index = 0;
         for (int i = 0; i < s.length; i++) {
             if (s[i].equals("class") || s[i].equals("interface")) {
-                is_interface =  s[i].equals("interface");
+                boolean is_interface = s[i].equals("interface");
                 class_word_index = i;
                 break;
             }
@@ -47,7 +46,8 @@ public class ClassObject extends ElementContainer implements JavaElement {
         try {
             Integer.parseInt(s[0].strip());
             i = 1;
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
         for (; i < class_word_index; i++) {
             if (!is_abstract) is_abstract = s[i].equals("abstract");
             if (protection_strings.contains(s[i]) && !s[i].isBlank()) {
@@ -59,12 +59,14 @@ public class ClassObject extends ElementContainer implements JavaElement {
 
     }
 
-
-public List<Method> getMethods(){
+    /**
+     * Returns a list of all methods within the class
+     *
+     * @return lst of method objects
+     */
+    public List<Method> getMethods() {
         return body.stream().filter(x -> x instanceof Method).map(Method.class::cast).collect(Collectors.toList());
-}
-
-
+    }
 
 
 }
