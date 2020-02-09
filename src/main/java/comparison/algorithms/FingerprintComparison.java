@@ -14,6 +14,9 @@ public class FingerprintComparison implements ComparisonAlgorithm {
         int file1_size = file1.length();
         int file2_size = file2.length();
 
+        System.out.println(file1.toString() + "\n\n\n\n");
+        System.out.println(file2.toString());
+
         return file1_size > file2_size ? hash2.similarity(hash1) : hash1.similarity(hash2);
     }
 

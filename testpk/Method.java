@@ -63,14 +63,14 @@ public class Method extends ElementContainer implements JavaElement, Text{
     public static void parseDeclaration(String declaration) {
         declaration = declaration.replace("{", "");
 
-        String[] s = declaration.split("\\(");
+        String[] ss = declaration.split("\\(");
         int split_index = declaration.indexOf("(");
         String start = declaration.substring(0, split_index-1);
         String end = declaration.substring(split_index+1, findLastIndex(declaration, ')'));
         end = end.replace(")", "");
 
         String[] dec = start.split("\\s+");
-        String[] args = end.split("\\s*,\\s*");
+        String[] argz = end.split("\\s*,\\s*");
 
         name = dec[dec.length - 1];
         return_type = dec[dec.length - 2];
@@ -92,7 +92,7 @@ public class Method extends ElementContainer implements JavaElement, Text{
         }
 
         if (protection_level == null) protection_level = ProtectionLevel.PACKAGE_PRIVATE;
-        Arrays.stream(args)
+        Arrays.stream(argz)
                 .filter(arg -> !arg.isBlank())
                 .forEach(arg -> this.args.add(new Variable(arg)));
     }
@@ -110,7 +110,7 @@ public class Method extends ElementContainer implements JavaElement, Text{
      * @param x
      * @return
      */
-    static int test1(String str, Character xx) {
+    static int test1(String str, Character x) {
         // Traverse from right
         for (long i = str.length() - 1; i >= 0; i--)
             if (str.charAt(i) == x)

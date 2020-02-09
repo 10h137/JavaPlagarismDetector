@@ -167,6 +167,24 @@ public abstract class ElementContainer {
         return variables;
     }
 
+
+    public void normaliseVariables(){
+
+        getContainers().forEach(ElementContainer::normaliseVariables);
+        List<Variable> variables = body.stream().filter(x -> x instanceof Variable).map(Variable.class::cast).collect(Collectors.toList());
+        if(this instanceof Method) ((Method) this).standardiseArgs();
+        for (int i = 0; i < variables.size(); i++) {
+            Variable current_var = variables.get(i);
+            String new_name = this.name +"Var" + i;
+            String old_name = current_var.getName();
+            current_var.setName(new_name);
+            this.replaceText(old_name, new_name);
+        }
+
+
+    }
+
+
     /**
      * Sorts all elements in the body, element containers are sorted by length then protection level
      * Comments are sorted by length and placed before the sorted containers
@@ -212,7 +230,8 @@ public abstract class ElementContainer {
      * @param target      - target string pattern
      * @param replacement - replacement string
      */
-    private void replaceText(String target, String replacement) {
+     void replaceText(String target, String replacement) {
+         declaration = declaration.replaceAll("\\b" + target + "\\b", replacement);
         for (JavaElement javaElement : body) {
             if (javaElement instanceof ElementContainer)
                 ((ElementContainer) javaElement).replaceText(target, replacement);

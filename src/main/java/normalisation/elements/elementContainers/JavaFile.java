@@ -40,14 +40,14 @@ public class JavaFile extends ElementContainer {
 
         // pads brackets with spaces
         for (int i = 0; i < lines.size(); i++) {
-            lines.set(i, lines.get(i).replaceAll("\\(", " ( "));
-            lines.set(i, lines.get(i).replaceAll("\\)", " ) "));
-            lines.set(i, lines.get(i).replaceAll("\\{", " { "));
-            lines.set(i, lines.get(i).replaceAll("}", " } "));
-            lines.set(i, lines.get(i).replaceAll(";", " ; "));
-            lines.set(i, lines.get(i).replaceAll("=", " = "));
-            lines.set(i, lines.get(i).replaceAll("=\\s*=", " == "));
-
+            String new_line = lines.get(i).replaceAll("\\(", " ( ")
+                    .replaceAll("\\)", " ) ")
+                    .replaceAll("\\{", " { ")
+                    .replaceAll("}", " } ")
+                    .replaceAll(";", " ; ")
+                    .replaceAll("=", " = ")
+                    .replaceAll("=\\s*=", " == ");
+            lines.set(i, new_line);
             String line = lines.get(i);
             char[] charArray = line.toCharArray();
             for (int j = 0; j < charArray.length; j++) {
@@ -85,7 +85,7 @@ public class JavaFile extends ElementContainer {
      */
     private List<String> getImports(List<String> lines) {
         return lines.stream()
-                .filter(line -> line.matches("^[0-9]*\\s*import\\s+.*"))
+                .filter(line -> line.matches("^\\s*import\\s+.*"))
                 .collect(Collectors.toList());
     }
 

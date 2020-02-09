@@ -42,6 +42,18 @@ public class Method extends ElementContainer implements JavaElement, Text {
 
     }
 
+
+    public void standardiseArgs(){
+        for (int i = 0; i < args.size(); i++) {
+                Variable current_arg = args.get(i);
+                String new_name = this.name +"Arg" + i;
+                String old_name = current_arg.getName();
+                current_arg.setName(new_name);
+                this.replaceText(old_name, new_name);
+        }
+
+    }
+
     /**
      * Parses the method declaration, setting the methods instance variables
      *
@@ -81,6 +93,7 @@ public class Method extends ElementContainer implements JavaElement, Text {
         if (protection_level == null) protection_level = ProtectionLevel.PACKAGE_PRIVATE;
         this.args.clear();
         Arrays.stream(args)
+                .peek(System.out::println)
                 .filter(arg -> !arg.isBlank())
                 .forEach(arg -> this.args.add(new Variable(arg)));
     }

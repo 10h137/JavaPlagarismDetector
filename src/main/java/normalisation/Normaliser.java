@@ -38,8 +38,8 @@ public class Normaliser {
         SORT_CLASS_MEMBERS,
         ORDER_IMPORTS,
         STANDARDISE_METHOD_NAMES,
-        REDUCE_DATA_TYPES,
-        REDUCE_STRUCTURES;
+        REDUCE_TYPES,
+        STANDARDISE_VARIABLE_NAMES;
 
         /**
          * Methods to perform the corresponding normalisation process
@@ -61,10 +61,11 @@ public class Normaliser {
                 case STANDARDISE_METHOD_NAMES:
                     file.normaliseMethodNames();
                     break;
-                case REDUCE_DATA_TYPES:
+                case REDUCE_TYPES:
                     file.replaceInterfaces();
                     break;
-                case REDUCE_STRUCTURES:
+                case STANDARDISE_VARIABLE_NAMES:
+                    file.normaliseVariables();
                 default:
             }
         }

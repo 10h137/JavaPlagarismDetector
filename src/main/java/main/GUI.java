@@ -109,6 +109,7 @@ public class GUI extends Application {
             ComparisonAlgorithm selected_class;
             // TODO update selected item for expand button
             info.setText("");
+            selected_comparison = null;
             try {
                 // creates instance of selected class
                 selected_class = class_map.get(comboBox.getValue()).getConstructor().newInstance();
