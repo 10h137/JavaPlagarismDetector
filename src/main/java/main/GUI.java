@@ -5,6 +5,7 @@ import comparison.algorithms.ComparisonAlgorithm;
 import comparison.algorithms.FingerprintComparison;
 import comparison.algorithms.StringComparison;
 import comparison.resultObjects.FileComparison;
+import comparison.resultObjects.MethodComparison;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,8 +22,11 @@ import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import normalisation.Normaliser;
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -90,6 +94,8 @@ public class GUI extends Application {
         grid_pane.add(comparison_info, 1, 2);
         grid_pane.add(btn_expand_comparison, 1, 3);
         grid_pane.add(getRunButton(info, comparisons, comparison_selector), 0, 1);
+        grid_pane.add(getSaveButtons(), 0, 3);
+
 
         var scene = new Scene(grid_pane, 700, 500);
 
@@ -98,6 +104,42 @@ public class GUI extends Application {
         stage.show();
 
 
+    }
+
+
+    public HBox getSaveButtons(){
+        HBox h_box = new HBox(10);
+        Button btn_save = new Button("Save Selected");
+        btn_save.setOnAction(x -> {
+       writeComparison(selected_comparison);
+
+
+        });
+        Button btn_save_all = new Button("Save All");
+        btn_save_all.setOnAction(x -> {
+            file_comparison_objects.forEach(this::writeComparison);
+        });
+
+        h_box.getChildren().addAll(btn_save, btn_save_all);
+        return h_box;
+    }
+
+     void writeComparison(FileComparison comparison){
+        List<MethodComparison> method_comparisons = comparison.getMethod_comparisons();
+        StringBuilder sb = new StringBuilder();
+        sb.append(comparison.getName() + "\n");
+        sb.append("Algorithm score --> " + comparison.getScore() + "%\n\n");
+        for (MethodComparison method_comparison : method_comparisons) {
+            sb.append(method_comparison.getReport() + "\n");
+        }
+
+        try {
+            FileOutputStream out = new FileOutputStream(output_dir.get()+"/" + comparison.getName()+".txt");
+            out.write(sb.toString().getBytes());
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
