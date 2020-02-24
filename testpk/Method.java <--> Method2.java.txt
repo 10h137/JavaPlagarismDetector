@@ -1,0 +1,48 @@
+Method.java <--> Method2.java
+Algorithm score --> 100%
+
+Comparing ClassObject0Method3 and ClassObject0Method3
+Variable count 100%
+Type count 100%
+Variable Name match 100%
+Declaration match 100%
+Line count 100%
+Method Size 100%
+String comparison 100%
+
+Comparing ClassObject0Method2 and ClassObject0Method2
+Variable count 100%
+Type count 100%
+Variable Name match 100%
+Declaration match 100%
+Line count 100%
+Method Size 100%
+String comparison 100%
+
+Comparing ClassObject0Method1 and ClassObject0Method1
+Variable count 100%
+Type count 100%
+Variable Name match 100%
+Declaration match 100%
+Line count 100%
+Method Size 100%
+String comparison 100%
+
+Comparing ClassObject0Method0 and ClassObject0Method0
+Variable count 100%
+Type count 100%
+Variable Name match 100%
+Declaration match 100%
+Line count 100%
+Method Size 100%
+String comparison 100%
+
+Comparing ClassObject0Method4 and ClassObject0Method4
+Variable count 100%
+Type count 100%
+Variable Name match 100%
+Declaration match 88%
+Line count 100%
+Method Size 98%
+String comparison 86%
+

@@ -25,8 +25,9 @@ public class Variable implements JavaElement, Text {
 
         String dec = declaration.split("(\\s*=)|(\\s*;)")[0];
         String[] s = dec.split("\\s+");
-        name = s[s.length - 1];
-        type = s[s.length - 2];
+        //TODO may broken
+        name = s.length>=2? s[s.length - 1]:"N/A";
+        type = s.length>=2? s[s.length - 2]: "N/A";
 
         List<String> protection_strings = Arrays.stream(ProtectionLevel.values())
                 .map(ProtectionLevel::getString)

@@ -19,6 +19,10 @@ import static normalisation.util.MapFile.replacement_map;
  */
 public abstract class ElementContainer {
 
+    public int getElementCount() {
+        return body.size();
+    }
+
     public List<JavaElement> body = new ArrayList<>();
     String declaration = "";
     String name = "";
@@ -179,6 +183,7 @@ public abstract class ElementContainer {
             String old_name = current_var.getName();
             current_var.setName(new_name);
             this.replaceText(old_name, new_name);
+            //TODO known issue when method has aame name as variable, method name is renames as if it were var
         }
 
 
@@ -194,7 +199,7 @@ public abstract class ElementContainer {
         List<JavaElement> sorted_containers = getContainers().stream()
                 .peek(ElementContainer::sortElements)
                 .sorted(Comparator
-                        .comparingInt(ElementContainer::length)
+                        .comparingInt(ElementContainer::getElementCount)
                         .thenComparing(ElementContainer::getProtection_level)
                 )
                 .map(JavaElement.class::cast)

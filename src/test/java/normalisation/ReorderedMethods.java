@@ -1,0 +1,104 @@
+package normalisation;
+
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
+
+/**
+ * This is a test class which acts as a base file for all the normalisation features to be tested on
+ */
+public class TestClass {
+
+
+    /*  hello  */
+    public static void main(String[] args) {
+        cat("hbjjhbhjb",5);
+        dog(null);
+    }
+
+    /*
+
+     */
+    static final int foo = 0;
+    static Map<String,Long> bar = new HashMap<>();
+    final String pop = "blah blah";
+    boolean dolphin;
+
+
+
+
+
+    /**
+     * Cat procedure abcd abcd
+     * @param hat
+     * @param j
+     */
+    static public void cat(String hat, int j){
+        System.out.println(hat+ " " + j);
+        for (char c : hat.toCharArray()) {
+            System.out.println(c);
+        }
+    }
+
+
+    // bcdkscd cdsjcd cdscdc -
+    void t(){
+    }
+
+
+
+    /**
+     * Elephant method zzzz zzzz
+     * @return
+     */
+    private ArrayList<Double> elephant(){
+        LinkedList<Double> o = new LinkedList<>();
+        o.add(5d);
+        o.add(-1000d);
+        o.remove();
+        for (Double aDouble : o) {
+            System.out.println(aDouble);
+        }
+
+        return new ArrayList<>(o);
+    }
+
+    /**
+     * Method to ensure bracket matching is resistant to strings containing brackets
+     */
+    protected void brackets(){
+        String brackets = "{{()}{{{";
+
+    }
+
+    /**
+     * Dog function blah blah
+     * @param l
+     * @return
+     */
+    static boolean dog(Map<String,Integer> l){
+        final AtomicInteger sum = new AtomicInteger();
+
+        l.keySet().forEach(new Consumer<String>() {
+            @Override
+            public void accept(String x) {
+                sum.addAndGet(l.get(x));
+            }
+        });
+
+        l.keySet().forEach(x -> sum.addAndGet(l.get(x)));
+
+
+        l.keySet().forEach(x -> {
+            sum.addAndGet(l.get(x));
+        });
+
+        l.keySet().stream().map(x -> {
+            return sum.addAndGet(l.get(x));
+        });
+
+        return false;
+    }
+
+
+}

@@ -34,12 +34,14 @@ public class Normaliser {
      * Enums representing the normalisation features, each one has a connected method
      */
     public enum Features {
+        //TODO get order right
         REMOVE_COMMENTS,
-        SORT_CLASS_MEMBERS,
         ORDER_IMPORTS,
-        STANDARDISE_METHOD_NAMES,
         REDUCE_TYPES,
-        STANDARDISE_VARIABLE_NAMES;
+        SORT_CLASS_MEMBERS,
+        STANDARDISE_METHOD_NAMES,
+        STANDARDISE_VARIABLE_NAMES
+        ;
 
         /**
          * Methods to perform the corresponding normalisation process
