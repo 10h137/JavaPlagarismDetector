@@ -93,7 +93,6 @@ public class Method extends ElementContainer implements JavaElement, Text {
         if (protection_level == null) protection_level = ProtectionLevel.PACKAGE_PRIVATE;
         this.args.clear();
         Arrays.stream(args)
-                .peek(System.out::println)
                 .filter(arg -> !arg.isBlank())
                 .forEach(arg -> this.args.add(new Variable(arg)));
     }

@@ -7,6 +7,8 @@ import java.util.function.Consumer;
 
 public class TestClass {
 
+
+
     static final int foo = 0;
     static Map<String,Long> bar = new HashMap<>();
     final String pop = "blah blah";
@@ -14,8 +16,8 @@ public class TestClass {
 
 
     public static void main(String[] args) {
-            cat("hbjjhbhjb",5);
-            dog(null);
+        cat("hbjjhbhjb",5);
+        dog(null);
     }
 
 

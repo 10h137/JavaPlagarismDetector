@@ -148,10 +148,6 @@ public class Util {
         comparisons.sort(Comparator.comparingInt(MethodComparison::getTotalScore));
         Collections.reverse(comparisons);
 
-        for (MethodComparison comparison : comparisons) {
-            System.out.println(comparison.getReport());
-        }
-
 
         for (MethodComparison comparison : comparisons) {
             if (methods_to_be_processed.contains(comparison.m1) && methods_to_be_processed.contains(comparison.m2)) {

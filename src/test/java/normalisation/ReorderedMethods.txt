@@ -11,10 +11,7 @@ public class TestClass {
 
 
     /*  hello  */
-    public static void main(String[] args) {
-        cat("hbjjhbhjb",5);
-        dog(null);
-    }
+
 
     /*
 
@@ -25,7 +22,10 @@ public class TestClass {
     boolean dolphin;
 
 
-
+    public static void main(String[] args) {
+        cat("hbjjhbhjb",5);
+        dog(null);
+    }
 
 
     /**
@@ -40,8 +40,7 @@ public class TestClass {
         }
     }
 
-
-    // bcdkscd cdsjcd cdscdc -
+  // bcdkscd cdsjcd cdscdc -
     void t(){
     }
 
@@ -71,34 +70,33 @@ public class TestClass {
 
     }
 
-    /**
-     * Dog function blah blah
-     * @param l
-     * @return
-     */
-    static boolean dog(Map<String,Integer> l){
-        final AtomicInteger sum = new AtomicInteger();
+      /**
+       * Dog function blah blah
+       * @param l
+       * @return
+       */
+      static boolean dog(Map<String,Integer> l){
+          final AtomicInteger sum = new AtomicInteger();
 
-        l.keySet().forEach(new Consumer<String>() {
-            @Override
-            public void accept(String x) {
-                sum.addAndGet(l.get(x));
-            }
-        });
+          l.keySet().forEach(new Consumer<String>() {
+              @Override
+              public void accept(String x) {
+                  sum.addAndGet(l.get(x));
+              }
+          });
 
-        l.keySet().forEach(x -> sum.addAndGet(l.get(x)));
+          l.keySet().forEach(x -> sum.addAndGet(l.get(x)));
 
 
-        l.keySet().forEach(x -> {
-            sum.addAndGet(l.get(x));
-        });
+          l.keySet().forEach(x -> {
+              sum.addAndGet(l.get(x));
+          });
 
-        l.keySet().stream().map(x -> {
-            return sum.addAndGet(l.get(x));
-        });
+          l.keySet().stream().map(x -> {
+              return sum.addAndGet(l.get(x));
+          });
 
-        return false;
-    }
-
+          return false;
+      }
 
 }
