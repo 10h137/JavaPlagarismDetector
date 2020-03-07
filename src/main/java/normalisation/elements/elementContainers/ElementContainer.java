@@ -57,7 +57,7 @@ public abstract class ElementContainer {
                 for (String interface_key : replacement_map.keySet()) {
                     List<String> implementations = replacement_map.get(interface_key);
                     for (String implementation : implementations) {
-                        ((ElementContainer) javaElement).replaceText(implementation, interface_key);
+                        ((ElementContainer) javaElement).replaceText(implementation, interface_key, false);
                         ((ElementContainer) javaElement).replaceInterfaces();
                     }
                 }
@@ -90,7 +90,7 @@ public abstract class ElementContainer {
             String new_name = this.name + current_method.getClass().getSimpleName() + i;
             String old_name = current_method.getName();
             current_method.setName(new_name);
-            containers.forEach(method -> method.replaceText(old_name, new_name));
+            containers.forEach(method -> method.replaceText(old_name, new_name, true));
         }
 
         containers.forEach(ElementContainer::normaliseMethodNames);
@@ -182,7 +182,7 @@ public abstract class ElementContainer {
             String new_name = this.name +"Var" + i;
             String old_name = current_var.getName();
             current_var.setName(new_name);
-            this.replaceText(old_name, new_name);
+            this.replaceText(old_name, new_name, false);
             //TODO known issue when method has aame name as variable, method name is renames as if it were var
         }
 
@@ -235,11 +235,24 @@ public abstract class ElementContainer {
      * @param target      - target string pattern
      * @param replacement - replacement string
      */
-     void replaceText(String target, String replacement) {
-         declaration = declaration.replaceAll("\\b" + target + "\\b", replacement);
+     void replaceText(String target, String replacement, boolean method_name) {
+         if(method_name){
+             declaration = declaration.replaceAll("\\b" + target + "\\b\\w*\\(", replacement);
+         }else{
+             if(this instanceof Method){
+                 String[] s = declaration.split("\\(", 2);
+                 if(s.length>1){
+                     s[1] = s[1].replaceAll("\\b" + target + "\\b", replacement);
+                     declaration = s[0]+"("+s[1];
+                 }
+             }else{
+                 declaration = declaration.replaceAll("\\b" + target + "\\b", replacement);
+             }
+         }
         for (JavaElement javaElement : body) {
+            if(javaElement instanceof Variable && method_name) continue;
             if (javaElement instanceof ElementContainer)
-                ((ElementContainer) javaElement).replaceText(target, replacement);
+                ((ElementContainer) javaElement).replaceText(target, replacement, method_name);
             if (Arrays.asList(javaElement.getClass().getInterfaces()).contains(Text.class)) {
                 String old = ((Text) javaElement).getText();
                 ((Text) javaElement).setText(old.replaceAll("\\b" + target + "\\b", replacement));

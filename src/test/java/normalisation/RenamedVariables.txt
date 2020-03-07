@@ -30,8 +30,8 @@ public class TestClass {
 
     /**
      * Cat procedure abcd abcd
-     * @param y
-     * @param uuuuuuuuuuuuu
+     * @param hat
+     * @param j
      */
     static public void cat(String y, int uuuuuuuuuuuuu){
         System.out.println(y+ " " + uuuuuuuuuuuuu);
@@ -42,7 +42,7 @@ public class TestClass {
 
     /**
      * Dog function blah blah
-     * @param iiiiiiii
+     * @param l
      * @return
      */
     static boolean dog(Map<String,Integer> iiiiiiii){

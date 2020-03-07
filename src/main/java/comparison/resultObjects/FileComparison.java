@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class FileComparison {
+public class FileComparison implements Comparable{
 
 
     // TODO change
@@ -85,4 +85,8 @@ public class FileComparison {
     }
 
 
+    @Override
+    public int compareTo(Object o) {
+        return ((FileComparison) o).getScore() - this.getScore();
+    }
 }

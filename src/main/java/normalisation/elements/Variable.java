@@ -63,7 +63,7 @@ public class Variable implements JavaElement, Text {
     }
 
     public void setName(String name) {
-        declaration = declaration.replace(this.name, name);
+        declaration = declaration.replace("\b" + this.name + "\b", name);
         this.name = name;
     }
 

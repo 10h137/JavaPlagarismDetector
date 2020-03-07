@@ -49,7 +49,7 @@ public class Method extends ElementContainer implements JavaElement, Text {
                 String new_name = this.name +"Arg" + i;
                 String old_name = current_arg.getName();
                 current_arg.setName(new_name);
-                this.replaceText(old_name, new_name);
+                this.replaceText(old_name, new_name, false);
         }
 
     }

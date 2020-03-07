@@ -50,6 +50,9 @@ public class TestMain {
         JavaFile test = new JavaFile(new File(DIR_PREFIX + "RenamedVariables.txt"));
         n.normaliseFile(base);
         n.normaliseFile(test);
+        System.out.println(base.toString());
+        System.out.println("\n\n\n");
+        System.out.println(test.toString());
         FileComparison comp = new FileComparison(base, test, finger);Assert.assertEquals(100,comp.getScore());
     }
 

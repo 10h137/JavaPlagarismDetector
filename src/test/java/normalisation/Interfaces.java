@@ -22,9 +22,9 @@ public class TestClass {
     boolean dolphin;
 
 
-    public static void ddwdewdewd(String[] args) {
-        mkmkmlklmmk("hbjjhbhjb",5);
-        uuuuuuu(null);
+    public static void main(String[] args) {
+        cat("hbjjhbhjb",5);
+        dog(null);
     }
 
 
@@ -33,7 +33,7 @@ public class TestClass {
      * @param hat
      * @param j
      */
-    static public void mkmkmlklmmk(String hat, int j){
+    static public void cat(String hat, int j){
         System.out.println(hat+ " " + j);
         for (char c : hat.toCharArray()) {
             System.out.println(c);
@@ -45,7 +45,7 @@ public class TestClass {
      * @param l
      * @return
      */
-    static boolean uuuuuuu(Map<String,Integer> l){
+    static boolean dog(Map<String,Integer> l){
         final AtomicInteger sum = new AtomicInteger();
 
         l.keySet().forEach(new Consumer<String>() {
@@ -73,7 +73,7 @@ public class TestClass {
      * Elephant method zzzz zzzz
      * @return
      */
-    private ArrayList<Double> ppppppp(){
+    private ArrayList<Double> elephant(){
         LinkedList<Double> o = new LinkedList<>();
         o.add(5d);
         o.add(-1000d);
@@ -88,13 +88,22 @@ public class TestClass {
     /**
      * Method to ensure bracket matching is resistant to strings containing brackets
      */
-    protected void oooooooo(){
+    protected void brackets(){
         String brackets = "{{()}{{{";
 
     }
 
     // bcdkscd cdsjcd cdscdc -
-    void hhhhhh(){
+    void t(){
     }
+
+    public HashMap<Long,Double> inter(){
+        HashMap<Long,Double> map = new HashMap<>();
+        Float a;
+        LinkedList h;
+        ArrayList l;
+        return null;
+    }
+
 
 }

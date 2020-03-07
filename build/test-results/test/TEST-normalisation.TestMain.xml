@@ -1,178 +1,123 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="normalisation.TestMain" tests="7" skipped="0" failures="3" errors="0" timestamp="2020-02-24T19:44:46" hostname="pc5-012-l" time="0.743">
+<testsuite name="normalisation.TestMain" tests="7" skipped="0" failures="0" errors="0" timestamp="2020-03-04T00:17:35" hostname="kyles-Air" time="1.218">
   <properties/>
-  <testcase name="testRenamedMethods" classname="normalisation.TestMain" time="0.173">
-    <failure message="java.lang.AssertionError: expected:&lt;100&gt; but was:&lt;98&gt;" type="java.lang.AssertionError">java.lang.AssertionError: expected:&lt;100&gt; but was:&lt;98&gt;
-	at org.junit.Assert.fail(Assert.java:88)
-	at org.junit.Assert.failNotEquals(Assert.java:834)
-	at org.junit.Assert.assertEquals(Assert.java:645)
-	at org.junit.Assert.assertEquals(Assert.java:631)
-	at normalisation.TestMain.testRenamedMethods(TestMain.java:42)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
-	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:50)
-	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
-	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:47)
-	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
-	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:325)
-	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:78)
-	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:57)
-	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
-	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
-	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
-	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
-	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
-	at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
-	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecutor.runTestClass(JUnitTestClassExecutor.java:110)
-	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecutor.execute(JUnitTestClassExecutor.java:58)
-	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecutor.execute(JUnitTestClassExecutor.java:38)
-	at org.gradle.api.internal.tasks.testing.junit.AbstractJUnitTestClassProcessor.processTestClass(AbstractJUnitTestClassProcessor.java:62)
-	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.processTestClass(SuiteTestClassProcessor.java:51)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
-	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
-	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
-	at org.gradle.internal.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:32)
-	at org.gradle.internal.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:93)
-	at com.sun.proxy.$Proxy2.processTestClass(Unknown Source)
-	at org.gradle.api.internal.tasks.testing.worker.TestWorker.processTestClass(TestWorker.java:118)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
-	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
-	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
-	at org.gradle.internal.remote.internal.hub.MessageHubBackedObjectConnection$DispatchWrapper.dispatch(MessageHubBackedObjectConnection.java:175)
-	at org.gradle.internal.remote.internal.hub.MessageHubBackedObjectConnection$DispatchWrapper.dispatch(MessageHubBackedObjectConnection.java:157)
-	at org.gradle.internal.remote.internal.hub.MessageHub$Handler.run(MessageHub.java:404)
-	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:63)
-	at org.gradle.internal.concurrent.ManagedExecutorImpl$1.run(ManagedExecutorImpl.java:46)
-	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
-	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
-	at org.gradle.internal.concurrent.ThreadFactoryImpl$ManagedThreadRunnable.run(ThreadFactoryImpl.java:55)
-	at java.base/java.lang.Thread.run(Thread.java:834)
-</failure>
-  </testcase>
-  <testcase name="testReorderMethods" classname="normalisation.TestMain" time="0.06"/>
-  <testcase name="testNoComments" classname="normalisation.TestMain" time="0.017"/>
-  <testcase name="testRenamedVariables" classname="normalisation.TestMain" time="0.036">
-    <failure message="java.lang.AssertionError: expected:&lt;100&gt; but was:&lt;94&gt;" type="java.lang.AssertionError">java.lang.AssertionError: expected:&lt;100&gt; but was:&lt;94&gt;
-	at org.junit.Assert.fail(Assert.java:88)
-	at org.junit.Assert.failNotEquals(Assert.java:834)
-	at org.junit.Assert.assertEquals(Assert.java:645)
-	at org.junit.Assert.assertEquals(Assert.java:631)
-	at normalisation.TestMain.testRenamedVariables(TestMain.java:53)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
-	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:50)
-	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
-	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:47)
-	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
-	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:325)
-	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:78)
-	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:57)
-	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
-	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
-	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
-	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
-	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
-	at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
-	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecutor.runTestClass(JUnitTestClassExecutor.java:110)
-	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecutor.execute(JUnitTestClassExecutor.java:58)
-	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecutor.execute(JUnitTestClassExecutor.java:38)
-	at org.gradle.api.internal.tasks.testing.junit.AbstractJUnitTestClassProcessor.processTestClass(AbstractJUnitTestClassProcessor.java:62)
-	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.processTestClass(SuiteTestClassProcessor.java:51)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
-	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
-	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
-	at org.gradle.internal.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:32)
-	at org.gradle.internal.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:93)
-	at com.sun.proxy.$Proxy2.processTestClass(Unknown Source)
-	at org.gradle.api.internal.tasks.testing.worker.TestWorker.processTestClass(TestWorker.java:118)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
-	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
-	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
-	at org.gradle.internal.remote.internal.hub.MessageHubBackedObjectConnection$DispatchWrapper.dispatch(MessageHubBackedObjectConnection.java:175)
-	at org.gradle.internal.remote.internal.hub.MessageHubBackedObjectConnection$DispatchWrapper.dispatch(MessageHubBackedObjectConnection.java:157)
-	at org.gradle.internal.remote.internal.hub.MessageHub$Handler.run(MessageHub.java:404)
-	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:63)
-	at org.gradle.internal.concurrent.ManagedExecutorImpl$1.run(ManagedExecutorImpl.java:46)
-	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
-	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
-	at org.gradle.internal.concurrent.ThreadFactoryImpl$ManagedThreadRunnable.run(ThreadFactoryImpl.java:55)
-	at java.base/java.lang.Thread.run(Thread.java:834)
-</failure>
-  </testcase>
-  <testcase name="testReorderImports" classname="normalisation.TestMain" time="0.019"/>
-  <testcase name="testAllChanged" classname="normalisation.TestMain" time="0.424">
-    <failure message="java.lang.AssertionError: expected:&lt;100&gt; but was:&lt;99&gt;" type="java.lang.AssertionError">java.lang.AssertionError: expected:&lt;100&gt; but was:&lt;99&gt;
-	at org.junit.Assert.fail(Assert.java:88)
-	at org.junit.Assert.failNotEquals(Assert.java:834)
-	at org.junit.Assert.assertEquals(Assert.java:645)
-	at org.junit.Assert.assertEquals(Assert.java:631)
-	at normalisation.TestMain.testAllChanged(TestMain.java:103)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
-	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:50)
-	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
-	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:47)
-	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
-	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:325)
-	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:78)
-	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:57)
-	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
-	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
-	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
-	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
-	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
-	at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
-	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecutor.runTestClass(JUnitTestClassExecutor.java:110)
-	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecutor.execute(JUnitTestClassExecutor.java:58)
-	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecutor.execute(JUnitTestClassExecutor.java:38)
-	at org.gradle.api.internal.tasks.testing.junit.AbstractJUnitTestClassProcessor.processTestClass(AbstractJUnitTestClassProcessor.java:62)
-	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.processTestClass(SuiteTestClassProcessor.java:51)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
-	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
-	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
-	at org.gradle.internal.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:32)
-	at org.gradle.internal.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:93)
-	at com.sun.proxy.$Proxy2.processTestClass(Unknown Source)
-	at org.gradle.api.internal.tasks.testing.worker.TestWorker.processTestClass(TestWorker.java:118)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
-	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
-	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
-	at org.gradle.internal.remote.internal.hub.MessageHubBackedObjectConnection$DispatchWrapper.dispatch(MessageHubBackedObjectConnection.java:175)
-	at org.gradle.internal.remote.internal.hub.MessageHubBackedObjectConnection$DispatchWrapper.dispatch(MessageHubBackedObjectConnection.java:157)
-	at org.gradle.internal.remote.internal.hub.MessageHub$Handler.run(MessageHub.java:404)
-	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:63)
-	at org.gradle.internal.concurrent.ManagedExecutorImpl$1.run(ManagedExecutorImpl.java:46)
-	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
-	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
-	at org.gradle.internal.concurrent.ThreadFactoryImpl$ManagedThreadRunnable.run(ThreadFactoryImpl.java:55)
-	at java.base/java.lang.Thread.run(Thread.java:834)
-</failure>
-  </testcase>
-  <testcase name="testReorderGlobalVariables" classname="normalisation.TestMain" time="0.011"/>
-  <system-out><![CDATA[]]></system-out>
+  <testcase name="testRenamedMethods" classname="normalisation.TestMain" time="0.308"/>
+  <testcase name="testReorderMethods" classname="normalisation.TestMain" time="0.057"/>
+  <testcase name="testNoComments" classname="normalisation.TestMain" time="0.031"/>
+  <testcase name="testRenamedVariables" classname="normalisation.TestMain" time="0.089"/>
+  <testcase name="testReorderImports" classname="normalisation.TestMain" time="0.023"/>
+  <testcase name="testAllChanged" classname="normalisation.TestMain" time="0.69"/>
+  <testcase name="testReorderGlobalVariables" classname="normalisation.TestMain" time="0.013"/>
+  <system-out><![CDATA[import java.util.* ;
+import java.util.concurrent.atomic.AtomicInteger ;
+import java.util.function.Consumer ;
+package Var0 ;
+/**/n* This is a test class which acts as a base file for all the normalisation features to be tested on/n*/public class TestClass {
+/* hello *//n/*/n*/
+static final int TestClassVar0 = 0 ;
+final String TestClassVar1 = "blah blah" ;
+boolean TestClassVar2 ;
+public static void main ( String[] mainArg0 ) {
+cat ( "hbjjhbhjb",5 ) ;
+dog ( null ) ;
+}
+/**/n* Cat procedure abcd abcd/n* @param hat/n* @param j/n*/static public void cat ( String catArg0, int catArg1 ) {
+System.out.println ( catArg0+ " " + catArg1 ) ;
+for ( char c : catArg0.toCharArray ( ) ) {
+System.out.println ( c ) ;
+}
+}
+/**/n* Dog function blah blah/n* @param l/n* @return/n*/static boolean dog ( Map<String,Integer> dogArg1 ) {
+final AtomicInteger dogVar0 = new AtomicInteger ( ) ;
+dogArg1.keySet ( ) .forEach ( new Consumer<String> ( ) {
+@Override
+public void accept ( String x ) {
+dogVar0.addAndGet ( dogArg1.get ( x ) ) ;
+}
+} ) ;
+dogArg1.keySet ( ) .forEach ( x -> dogVar0.addAndGet ( dogArg1.get ( x ) ) ) ;
+dogArg1.keySet ( ) .forEach ( x -> {
+dogVar0.addAndGet ( dogArg1.get ( x ) ) ;
+} ) ;
+dogArg1.keySet ( ) .stream ( ) .map ( x -> {
+return dogVar0.addAndGet ( dogArg1.get ( x ) ) ;
+} ) ;
+return dogVar1 ;
+}
+/**/n* Elephant method zzzz zzzz/n* @return/n*/private ArrayList<Double> elephant ( ) {
+LinkedList<Double> elephantVar0 = new LinkedList<> ( ) ;
+elephantVar0.add ( 5d ) ;
+elephantVar0.add ( -1000d ) ;
+elephantVar0.remove ( ) ;
+for ( Double aDouble : elephantVar0 ) {
+System.out.println ( aDouble ) ;
+}
+return new ArrayList<> ( elephantVar0 ) ;
+}
+/**/n* Method to ensure bracket matching is resistant to strings containing brackets/n*/protected void brackets ( ) {
+String bracketsVar0 = " { { ( ) } { { { " ;
+}
+// bcdkscd cdsjcd cdscdc -void t ( ) {
+}
+}
+
+
+
+
+
+import java.util.* ;
+import java.util.concurrent.atomic.AtomicInteger ;
+import java.util.function.Consumer ;
+package Var0 ;
+/**/n* This is a test class which acts as a base file for all the normalisation features to be tested on/n*/public class TestClass {
+/* hello *//n/*/n*/
+static final int TestClassVar0 = 0 ;
+final String TestClassVar1 = "blah blah" ;
+boolean TestClassVar2 ;
+public static void main ( String[] mainArg0 ) {
+cat ( "hbjjhbhjb",5 ) ;
+dog ( null ) ;
+}
+/**/n* Cat procedure abcd abcd/n* @param hat/n* @param j/n*/static public void cat ( String catArg0, int catArg1 ) {
+System.out.println ( catArg0+ " " + catArg1 ) ;
+for ( char c : catArg0.toCharArray ( ) ) {
+System.out.println ( c ) ;
+}
+}
+/**/n* Dog function blah blah/n* @param l/n* @return/n*/static boolean dog ( Map<String,Integer> dogArg1 ) {
+final AtomicInteger dogVar0 = new AtomicInteger ( ) ;
+dogArg1.keySet ( ) .forEach ( new Consumer<String> ( ) {
+@Override
+public void accept ( String x ) {
+dogVar0.addAndGet ( dogArg1.get ( x ) ) ;
+}
+} ) ;
+dogArg1.keySet ( ) .forEach ( x -> dogVar0.addAndGet ( dogArg1.get ( x ) ) ) ;
+dogArg1.keySet ( ) .forEach ( x -> {
+dogVar0.addAndGet ( dogArg1.get ( x ) ) ;
+} ) ;
+dogArg1.keySet ( ) .stream ( ) .map ( x -> {
+return dogVar0.addAndGet ( dogArg1.get ( x ) ) ;
+} ) ;
+return dogVar1 ;
+}
+/**/n* Elephant method zzzz zzzz/n* @return/n*/private ArrayList<Double> elephant ( ) {
+LinkedList<Double> elephantVar0 = new LinkedList<> ( ) ;
+elephantVar0.add ( 5d ) ;
+elephantVar0.add ( -1000d ) ;
+elephantVar0.remove ( ) ;
+for ( Double aDouble : elephantVar0 ) {
+System.out.println ( aDouble ) ;
+}
+return new ArrayList<> ( elephantVar0 ) ;
+}
+/**/n* Method to ensure bracket matching is resistant to strings containing brackets/n*/protected void brackets ( ) {
+String bracketsVar0 = " { { ( ) } { { { " ;
+}
+// bcdkscd cdsjcd cdscdc -void t ( ) {
+}
+}
+
+]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

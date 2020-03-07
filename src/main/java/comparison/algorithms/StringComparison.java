@@ -11,13 +11,13 @@ public class StringComparison implements ComparisonAlgorithm {
      * @param file2
      * @return
      */
-    public static List<MatchMarker> tileStrings(String file1, String file2, int min_match_len, int initial_search_size){
-
-        String[] file1_words = file1.split("[\\s+|\\W+]");
-        String[] file2_words = file2.split("[\\s+|\\W+]");
-
-
-    }
+//    public static List<MatchMarker> tileStrings(String file1, String file2, int min_match_len, int initial_search_size){
+//
+//        String[] file1_words = file1.split("[\\s+|\\W+]");
+//        String[] file2_words = file2.split("[\\s+|\\W+]");
+//
+//
+//    }
 
 
 }
