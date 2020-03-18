@@ -98,8 +98,7 @@ public class MethodComparison {
 
             }
         }
-        int r = (int) (((double) var_type_match_count / (double) Math.max(s1_size, s2_size)) * 100);
-        return r;
+        return (int) (((double) var_type_match_count / (double) Math.max(s1_size, s2_size)) * 100);
     }
 
     public Method getM1() {

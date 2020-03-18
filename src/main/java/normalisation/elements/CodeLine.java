@@ -20,12 +20,12 @@ public class CodeLine implements JavaElement, Text {
         return toString();
     }
 
-    public String toString() {
-        return code;
-    }
-
     @Override
     public void setText(String text) {
         code = text;
+    }
+
+    public String toString() {
+        return code;
     }
 }

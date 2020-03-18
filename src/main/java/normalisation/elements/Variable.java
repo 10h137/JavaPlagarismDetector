@@ -12,8 +12,8 @@ public class Variable implements JavaElement, Text {
     private boolean is_final;
     private ProtectionLevel protection_level = null;
     private boolean is_static;
-    private String type;
-    private String name;
+    private String type = "";
+    private String name = "";
     private String declaration = "";
 
     public Variable(String line) {
@@ -26,8 +26,8 @@ public class Variable implements JavaElement, Text {
         String dec = declaration.split("(\\s*=)|(\\s*;)")[0];
         String[] s = dec.split("\\s+");
         //TODO may broken
-        name = s.length>=2? s[s.length - 1]:"N/A";
-        type = s.length>=2? s[s.length - 2]: "N/A";
+        name = s.length >= 2 ? s[s.length - 1] : "N/A";
+        type = s.length >= 2 ? s[s.length - 2] : "N/A";
 
         List<String> protection_strings = Arrays.stream(ProtectionLevel.values())
                 .map(ProtectionLevel::getString)
@@ -80,13 +80,13 @@ public class Variable implements JavaElement, Text {
         return toString();
     }
 
-    public String toString() {
-        return declaration;
-    }
-
     @Override
     public void setText(String text) {
         this.declaration = text;
         parseDeclaration(declaration);
+    }
+
+    public String toString() {
+        return declaration;
     }
 }

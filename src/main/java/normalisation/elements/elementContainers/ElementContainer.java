@@ -7,11 +7,11 @@ import normalisation.util.ProtectionLevel;
 import normalisation.util.Text;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.Arrays.asList;
 import static normalisation.util.MapFile.replacement_map;
 
 /**
@@ -19,15 +19,15 @@ import static normalisation.util.MapFile.replacement_map;
  */
 public abstract class ElementContainer {
 
-    public int getElementCount() {
-        return body.size();
-    }
-
     public List<JavaElement> body = new ArrayList<>();
     String declaration = "";
     String name = "";
     ProtectionLevel protection_level = ProtectionLevel.PROTECTED;
     private Comment comment = new Comment("");
+
+    public int getElementCount() {
+        return body.size();
+    }
 
     private ProtectionLevel getProtection_level() {
         return protection_level;
@@ -54,11 +54,13 @@ public abstract class ElementContainer {
     public void replaceInterfaces() {
         for (JavaElement javaElement : body) {
             if (javaElement instanceof ElementContainer) {
+                ElementContainer container = ((ElementContainer) javaElement);
                 for (String interface_key : replacement_map.keySet()) {
                     List<String> implementations = replacement_map.get(interface_key);
                     for (String implementation : implementations) {
-                        ((ElementContainer) javaElement).replaceText(implementation, interface_key, false);
-                        ((ElementContainer) javaElement).replaceInterfaces();
+                        container.declaration = container.declaration.replaceAll(implementation, interface_key);
+                        container.replaceVariableText(implementation, interface_key);
+                        container.replaceInterfaces();
                     }
                 }
             }
@@ -80,7 +82,7 @@ public abstract class ElementContainer {
 
 
     /**
-     * Normalises method names //TODO
+     * Normalises method names
      */
     public void normaliseMethodNames() {
         List<ElementContainer> containers = getContainers();
@@ -90,7 +92,7 @@ public abstract class ElementContainer {
             String new_name = this.name + current_method.getClass().getSimpleName() + i;
             String old_name = current_method.getName();
             current_method.setName(new_name);
-            containers.forEach(method -> method.replaceText(old_name, new_name, true));
+            containers.forEach(method -> method.replaceMethodName(old_name, new_name));
         }
 
         containers.forEach(ElementContainer::normaliseMethodNames);
@@ -172,17 +174,17 @@ public abstract class ElementContainer {
     }
 
 
-    public void normaliseVariables(){
+    public void normaliseVariables() {
 
         getContainers().forEach(ElementContainer::normaliseVariables);
         List<Variable> variables = body.stream().filter(x -> x instanceof Variable).map(Variable.class::cast).collect(Collectors.toList());
-        if(this instanceof Method) ((Method) this).standardiseArgs();
+        if (this instanceof Method) ((Method) this).standardiseArgs();
         for (int i = 0; i < variables.size(); i++) {
             Variable current_var = variables.get(i);
-            String new_name = this.name +"Var" + i;
+            String new_name = this.name + "Var" + i;
             String old_name = current_var.getName();
             current_var.setName(new_name);
-            this.replaceText(old_name, new_name, false);
+            this.replaceVariableText(old_name, new_name);
             //TODO known issue when method has aame name as variable, method name is renames as if it were var
         }
 
@@ -195,7 +197,6 @@ public abstract class ElementContainer {
      * Comments are sorted by length and placed before the sorted containers
      */
     public void sortElements() {
-        if (this instanceof Method) return;
         List<JavaElement> sorted_containers = getContainers().stream()
                 .peek(ElementContainer::sortElements)
                 .sorted(Comparator
@@ -230,32 +231,44 @@ public abstract class ElementContainer {
 
 
     /**
-     * Replaces text in all elements and sub elements
+     * Replaces variable related text in all elements and sub elements
      *
      * @param target      - target string pattern
      * @param replacement - replacement string
      */
-     void replaceText(String target, String replacement, boolean method_name) {
-         if(method_name){
-             declaration = declaration.replaceAll("\\b" + target + "\\b\\w*\\(", replacement);
-         }else{
-             if(this instanceof Method){
-                 String[] s = declaration.split("\\(", 2);
-                 if(s.length>1){
-                     s[1] = s[1].replaceAll("\\b" + target + "\\b", replacement);
-                     declaration = s[0]+"("+s[1];
-                 }
-             }else{
-                 declaration = declaration.replaceAll("\\b" + target + "\\b", replacement);
-             }
-         }
+    void replaceVariableText(String target, String replacement) {
+
+        String[] s = declaration.split("\\(", 2);
+        if (s.length > 1) {
+            s[1] = s[1].replaceAll("\\b" + target + "\\b", replacement);
+            declaration = s[0] + "(" + s[1];
+        }
+
         for (JavaElement javaElement : body) {
-            if(javaElement instanceof Variable && method_name) continue;
             if (javaElement instanceof ElementContainer)
-                ((ElementContainer) javaElement).replaceText(target, replacement, method_name);
-            if (Arrays.asList(javaElement.getClass().getInterfaces()).contains(Text.class)) {
+                ((ElementContainer) javaElement).replaceVariableText(target, replacement);
+            else if (asList(javaElement.getClass().getInterfaces()).contains(Text.class)) {
                 String old = ((Text) javaElement).getText();
                 ((Text) javaElement).setText(old.replaceAll("\\b" + target + "\\b", replacement));
+            }
+        }
+    }
+
+
+    /**
+     * Replaces method name in all elements and sub elements
+     *
+     * @param target      - target string pattern
+     * @param replacement - replacement string
+     */
+    void replaceMethodName(String target, String replacement) {
+        declaration = declaration.replaceFirst("\\b" + target + "\\b\\s*\\(", replacement);
+        for (JavaElement javaElement : body) {
+            if (javaElement instanceof ElementContainer)
+                ((ElementContainer) javaElement).replaceMethodName(target, replacement);
+            else if (asList(javaElement.getClass().getInterfaces()).contains(Text.class)) {
+                String old = ((Text) javaElement).getText();
+                ((Text) javaElement).setText(old.replaceAll("\\b" + target + "\\b\\s*\\(", replacement));
             }
         }
     }
@@ -276,7 +289,7 @@ public abstract class ElementContainer {
      * @param name new name
      */
     private void setName(String name) {
-        this.declaration = this.declaration.replace(this.name, name);
+        this.declaration = this.declaration.replaceFirst(this.name, name);
         this.name = name;
     }
 

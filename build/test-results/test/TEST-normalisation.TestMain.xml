@@ -1,66 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="normalisation.TestMain" tests="7" skipped="0" failures="0" errors="0" timestamp="2020-03-04T00:17:35" hostname="kyles-Air" time="1.218">
+<testsuite name="normalisation.TestMain" tests="8" skipped="0" failures="0" errors="0" timestamp="2020-03-15T07:23:55" hostname="kyles-MacBook-Air.local" time="2.221">
   <properties/>
-  <testcase name="testRenamedMethods" classname="normalisation.TestMain" time="0.308"/>
-  <testcase name="testReorderMethods" classname="normalisation.TestMain" time="0.057"/>
-  <testcase name="testNoComments" classname="normalisation.TestMain" time="0.031"/>
-  <testcase name="testRenamedVariables" classname="normalisation.TestMain" time="0.089"/>
-  <testcase name="testReorderImports" classname="normalisation.TestMain" time="0.023"/>
-  <testcase name="testAllChanged" classname="normalisation.TestMain" time="0.69"/>
-  <testcase name="testReorderGlobalVariables" classname="normalisation.TestMain" time="0.013"/>
+  <testcase name="testRenamedMethods" classname="normalisation.TestMain" time="0.343"/>
+  <testcase name="testReorderMethods" classname="normalisation.TestMain" time="0.046"/>
+  <testcase name="testNoComments" classname="normalisation.TestMain" time="0.023"/>
+  <testcase name="testRenamedVariables" classname="normalisation.TestMain" time="0.063"/>
+  <testcase name="testReorderImports" classname="normalisation.TestMain" time="0.021"/>
+  <testcase name="testReduceStructures" classname="normalisation.TestMain" time="1.035"/>
+  <testcase name="testAllChanged" classname="normalisation.TestMain" time="0.665"/>
+  <testcase name="testReorderGlobalVariables" classname="normalisation.TestMain" time="0.023"/>
   <system-out><![CDATA[import java.util.* ;
 import java.util.concurrent.atomic.AtomicInteger ;
 import java.util.function.Consumer ;
-package Var0 ;
+package normalisation ;
 /**/n* This is a test class which acts as a base file for all the normalisation features to be tested on/n*/public class TestClass {
 /* hello *//n/*/n*/
-static final int TestClassVar0 = 0 ;
-final String TestClassVar1 = "blah blah" ;
-boolean TestClassVar2 ;
-public static void main ( String[] mainArg0 ) {
+static final Integer foo = 0 ;
+final String pop = "blah blah" ;
+boolean dolphin ;
+public static void main ( String[] args ) {
 cat ( "hbjjhbhjb",5 ) ;
 dog ( null ) ;
 }
-/**/n* Cat procedure abcd abcd/n* @param hat/n* @param j/n*/static public void cat ( String catArg0, int catArg1 ) {
-System.out.println ( catArg0+ " " + catArg1 ) ;
-for ( char c : catArg0.toCharArray ( ) ) {
+/**/n* Cat procedure abcd abcd/n* @param hat/n* @param j/n*/static public void cat ( String hat, Integer j ) {
+System.out.println ( hat+ " " + j ) ;
+for ( char c : hat.toCharArray ( ) ) {
 System.out.println ( c ) ;
 }
 }
-/**/n* Dog function blah blah/n* @param l/n* @return/n*/static boolean dog ( Map<String,Integer> dogArg1 ) {
-final AtomicInteger dogVar0 = new AtomicInteger ( ) ;
-dogArg1.keySet ( ) .forEach ( new Consumer<String> ( ) {
+/**/n* Dog function blah blah/n* @param l/n* @return/n*/static boolean dog ( Map<String,Integer> l ) {
+final Integer sum = new Integer ( ) ;
+l.keySet ( ) .forEach ( new Consumer<String> ( ) {
 @Override
 public void accept ( String x ) {
-dogVar0.addAndGet ( dogArg1.get ( x ) ) ;
+sum.addAndGet ( l.get ( x ) ) ;
 }
 } ) ;
-dogArg1.keySet ( ) .forEach ( x -> dogVar0.addAndGet ( dogArg1.get ( x ) ) ) ;
-dogArg1.keySet ( ) .forEach ( x -> {
-dogVar0.addAndGet ( dogArg1.get ( x ) ) ;
+l.keySet ( ) .forEach ( x -> sum.addAndGet ( l.get ( x ) ) ) ;
+l.keySet ( ) .forEach ( x -> {
+sum.addAndGet ( l.get ( x ) ) ;
 } ) ;
-dogArg1.keySet ( ) .stream ( ) .map ( x -> {
-return dogVar0.addAndGet ( dogArg1.get ( x ) ) ;
+l.keySet ( ) .stream ( ) .map ( x -> {
+return sum.addAndGet ( l.get ( x ) ) ;
 } ) ;
-return dogVar1 ;
+return false ;
 }
-/**/n* Elephant method zzzz zzzz/n* @return/n*/private ArrayList<Double> elephant ( ) {
-LinkedList<Double> elephantVar0 = new LinkedList<> ( ) ;
-elephantVar0.add ( 5d ) ;
-elephantVar0.add ( -1000d ) ;
-elephantVar0.remove ( ) ;
-for ( Double aDouble : elephantVar0 ) {
+/**/n* Elephant method zzzz zzzz/n* @return/n*/private List<Decimal> elephant ( ) {
+List<Decimal> o = new List<> ( ) ;
+o.add ( 5d ) ;
+o.add ( -1000d ) ;
+o.remove ( ) ;
+for ( Decimal aDouble : o ) {
 System.out.println ( aDouble ) ;
 }
-return new ArrayList<> ( elephantVar0 ) ;
+return new List<> ( o ) ;
 }
 /**/n* Method to ensure bracket matching is resistant to strings containing brackets/n*/protected void brackets ( ) {
-String bracketsVar0 = " { { ( ) } { { { " ;
+String brackets = " { { ( ) } { { { " ;
 }
 // bcdkscd cdsjcd cdscdc -void t ( ) {
 }
+public Map<Integer,Decimal> Integerer ( ) {
+Map<Integer,Decimal> map = new Map<> ( ) ;
+Decimal a ;
+List h ;
+List<String> l ;
+return null ;
 }
-
+}
 
 
 
@@ -68,53 +75,60 @@ String bracketsVar0 = " { { ( ) } { { { " ;
 import java.util.* ;
 import java.util.concurrent.atomic.AtomicInteger ;
 import java.util.function.Consumer ;
-package Var0 ;
+package normalisation ;
 /**/n* This is a test class which acts as a base file for all the normalisation features to be tested on/n*/public class TestClass {
 /* hello *//n/*/n*/
-static final int TestClassVar0 = 0 ;
-final String TestClassVar1 = "blah blah" ;
-boolean TestClassVar2 ;
-public static void main ( String[] mainArg0 ) {
+static final Integer foo = 0 ;
+final String pop = "blah blah" ;
+boolean dolphin ;
+public static void main ( String[] args ) {
 cat ( "hbjjhbhjb",5 ) ;
 dog ( null ) ;
 }
-/**/n* Cat procedure abcd abcd/n* @param hat/n* @param j/n*/static public void cat ( String catArg0, int catArg1 ) {
-System.out.println ( catArg0+ " " + catArg1 ) ;
-for ( char c : catArg0.toCharArray ( ) ) {
+/**/n* Cat procedure abcd abcd/n* @param hat/n* @param j/n*/static public void cat ( String hat, Integer j ) {
+System.out.println ( hat+ " " + j ) ;
+for ( char c : hat.toCharArray ( ) ) {
 System.out.println ( c ) ;
 }
 }
-/**/n* Dog function blah blah/n* @param l/n* @return/n*/static boolean dog ( Map<String,Integer> dogArg1 ) {
-final AtomicInteger dogVar0 = new AtomicInteger ( ) ;
-dogArg1.keySet ( ) .forEach ( new Consumer<String> ( ) {
+/**/n* Dog function blah blah/n* @param l/n* @return/n*/static boolean dog ( Map<String,Integer> l ) {
+final Integer sum = new Integer ( ) ;
+l.keySet ( ) .forEach ( new Consumer<String> ( ) {
 @Override
 public void accept ( String x ) {
-dogVar0.addAndGet ( dogArg1.get ( x ) ) ;
+sum.addAndGet ( l.get ( x ) ) ;
 }
 } ) ;
-dogArg1.keySet ( ) .forEach ( x -> dogVar0.addAndGet ( dogArg1.get ( x ) ) ) ;
-dogArg1.keySet ( ) .forEach ( x -> {
-dogVar0.addAndGet ( dogArg1.get ( x ) ) ;
+l.keySet ( ) .forEach ( x -> sum.addAndGet ( l.get ( x ) ) ) ;
+l.keySet ( ) .forEach ( x -> {
+sum.addAndGet ( l.get ( x ) ) ;
 } ) ;
-dogArg1.keySet ( ) .stream ( ) .map ( x -> {
-return dogVar0.addAndGet ( dogArg1.get ( x ) ) ;
+l.keySet ( ) .stream ( ) .map ( x -> {
+return sum.addAndGet ( l.get ( x ) ) ;
 } ) ;
-return dogVar1 ;
+return false ;
 }
-/**/n* Elephant method zzzz zzzz/n* @return/n*/private ArrayList<Double> elephant ( ) {
-LinkedList<Double> elephantVar0 = new LinkedList<> ( ) ;
-elephantVar0.add ( 5d ) ;
-elephantVar0.add ( -1000d ) ;
-elephantVar0.remove ( ) ;
-for ( Double aDouble : elephantVar0 ) {
+/**/n* Elephant method zzzz zzzz/n* @return/n*/private List<Decimal> elephant ( ) {
+List<Decimal> o = new List<> ( ) ;
+o.add ( 5d ) ;
+o.add ( -1000d ) ;
+o.remove ( ) ;
+for ( Decimal aDouble : o ) {
 System.out.println ( aDouble ) ;
 }
-return new ArrayList<> ( elephantVar0 ) ;
+return new List<> ( o ) ;
 }
 /**/n* Method to ensure bracket matching is resistant to strings containing brackets/n*/protected void brackets ( ) {
-String bracketsVar0 = " { { ( ) } { { { " ;
+String brackets = " { { ( ) } { { { " ;
 }
 // bcdkscd cdsjcd cdscdc -void t ( ) {
+}
+public Map<Integer,Decimal> Integerer ( ) {
+Map<Integer,Decimal> map = new Map<> ( ) ;
+Decimal a ;
+List h ;
+List<String> l ;
+return null ;
 }
 }
 

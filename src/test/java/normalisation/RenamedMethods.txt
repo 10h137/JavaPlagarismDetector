@@ -97,4 +97,12 @@ public class TestClass {
     void hhhhhh(){
     }
 
+        public HashMap<Long,Double> inter(){
+            HashMap<Long,Double> map = new HashMap<>();
+            Float a;
+            LinkedList h;
+            ArrayList<String> l;
+            return null;
+        }
+
 }

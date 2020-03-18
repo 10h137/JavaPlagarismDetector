@@ -2,7 +2,6 @@ package normalisation.elements.elementContainers;
 
 import normalisation.elements.JavaElement;
 import normalisation.elements.Variable;
-import normalisation.util.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,17 +14,16 @@ import static normalisation.util.Util.getComments;
 /**
  *
  */
-public class Method extends ElementContainer implements JavaElement, Text{
+public class Method extends ElementContainer implements JavaElement, Text {
 
     //TODO sort arguments alphabetically and length on data type
 
 
+    final List<Variable> args = new ArrayList<>();
     String return_type = "";
     boolean is_static = false;
-    final List<Variable> args = new ArrayList<>();
 
     /**
-     *
      * @param lines
      */
     public Method(List<String> lines) {
@@ -43,19 +41,7 @@ public class Method extends ElementContainer implements JavaElement, Text{
 
     }
 
-
-
-
-    @Override
-    public List<Variable> getVariables(){
-        List<Variable> variables = super.getVariables();
-        variables.addAll(args);
-        return variables;
-    }
-
-
     /**
-     *
      * @param str
      * @param x
      * @return
@@ -65,8 +51,8 @@ public class Method extends ElementContainer implements JavaElement, Text{
 
         String[] ss = declaration.split("\\(");
         int split_index = declaration.indexOf("(");
-        String start = declaration.substring(0, split_index-1);
-        String end = declaration.substring(split_index+1, findLastIndex(declaration, ')'));
+        String start = declaration.substring(0, split_index - 1);
+        String end = declaration.substring(split_index + 1, findLastIndex(declaration, ')'));
         end = end.replace(")", "");
 
         String[] dec = start.split("\\s+");
@@ -97,15 +83,7 @@ public class Method extends ElementContainer implements JavaElement, Text{
                 .forEach(arg -> this.args.add(new Variable(arg)));
     }
 
-
-    @Override
-    public void setText(String text) {
-        this.declaration = text;
-        parseDeclaration(declaration);
-    }
-
     /**
-     *
      * @param str
      * @param x
      * @return
@@ -117,5 +95,18 @@ public class Method extends ElementContainer implements JavaElement, Text{
                 return i;
 
         return -1;
+    }
+
+    @Override
+    public List<Variable> getVariables() {
+        List<Variable> variables = super.getVariables();
+        variables.addAll(args);
+        return variables;
+    }
+
+    @Override
+    public void setText(String text) {
+        this.declaration = text;
+        parseDeclaration(declaration);
     }
 }

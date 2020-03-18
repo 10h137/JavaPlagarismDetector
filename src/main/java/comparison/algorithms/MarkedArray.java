@@ -2,7 +2,7 @@ package comparison.algorithms;
 
 public class MarkedArray {
 
-    private String[][] array;
+    private final String[][] array;
 
     public MarkedArray(String text) {
         String[] split_text = text.split("\\w+");
@@ -10,8 +10,8 @@ public class MarkedArray {
         array[0] = split_text;
     }
 
-    public String get(int index){
-        if(index > array[0].length) return null;
+    public String get(int index) {
+        if (index > array[0].length) return null;
         return array[0][index];
     }
 
@@ -31,7 +31,7 @@ public class MarkedArray {
         return distanceToNext(index, true);
     }
 
-    public int size(){
+    public int size() {
         return array[0].length;
     }
 

@@ -9,15 +9,12 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class Runner {
-
 
 
     public static List<FileComparison> run(EnumSet<Normaliser.Features> enabled_features, File input_dir, ComparisonAlgorithm algorithm) throws IOException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
@@ -55,23 +52,22 @@ public class Runner {
 
 
     /**
-     *
      * @param dir
      * @return
      * @throws IOException
      */
     static List<File> recurseDir(File dir) throws IOException {
         List<File> files = new ArrayList<>();
-       Files.walk(dir.toPath())
-               .filter(x -> !x.toFile().equals(dir))
-               .forEach(x -> {
-                    if(Files.isDirectory(x)){
+        Files.walk(dir.toPath())
+                .filter(x -> !x.toFile().equals(dir))
+                .forEach(x -> {
+                    if (Files.isDirectory(x)) {
                         try {
                             files.addAll(recurseDir(x.toFile()));
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                    }else{
+                    } else {
                         files.add(x.toFile());
                     }
                 });

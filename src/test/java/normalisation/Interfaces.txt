@@ -97,11 +97,11 @@ public class TestClass {
     void t(){
     }
 
-    public HashMap<Long,Double> inter(){
-        HashMap<Long,Double> map = new HashMap<>();
-        Float a;
-        LinkedList h;
-        ArrayList l;
+    public Map<Integer,Decimal> inter(){
+        Map<Integer,Decimal> map = new Map<>();
+        Decimal a;
+        List h;
+        List<String> l;
         return null;
     }
 

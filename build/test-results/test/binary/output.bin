@@ -1,112 +1,125 @@
-import java.util.* ;
-3import java.util.concurrent.atomic.AtomicInteger ;
-%import java.util.function.Consumer ;
-package Var0 ;
-…/**/n* This is a test class which acts as a base file for all the normalisation features to be tested on/n*/public class TestClass {
-/* hello *//n/*/n*/
-%static final int TestClassVar0 = 0 ;
-+final String TestClassVar1 = "blah blah" ;
-boolean TestClassVar2 ;
-0public static void main ( String[] mainArg0 ) {
-cat ( "hbjjhbhjb",5 ) ;
-dog ( null ) ;
-}
-u/**/n* Cat procedure abcd abcd/n* @param hat/n* @param j/n*/static public void cat ( String catArg0, int catArg1 ) {
-0System.out.println ( catArg0+ " " + catArg1 ) ;
-+for ( char c : catArg0.toCharArray ( ) ) {
-System.out.println ( c ) ;
-}
-}
-m/**/n* Dog function blah blah/n* @param l/n* @return/n*/static boolean dog ( Map<String,Integer> dogArg1 ) {
-6final AtomicInteger dogVar0 = new AtomicInteger ( ) ;
-9dogArg1.keySet ( ) .forEach ( new Consumer<String> ( ) {
-
+import java.util.* ;
+3import java.util.concurrent.atomic.AtomicInteger ;
+%import java.util.function.Consumer ;
+package normalisation ;
+…/**/n* This is a test class which acts as a base file for all the normalisation features to be tested on/n*/public class TestClass {
+/* hello *//n/*/n*/
+static final Integer foo = 0 ;
+!final String pop = "blah blah" ;
+boolean dolphin ;
+,public static void main ( String[] args ) {
+cat ( "hbjjhbhjb",5 ) ;
+dog ( null ) ;
+}
+o/**/n* Cat procedure abcd abcd/n* @param hat/n* @param j/n*/static public void cat ( String hat, Integer j ) {
+&System.out.println ( hat+ " " + j ) ;
+'for ( char c : hat.toCharArray ( ) ) {
+System.out.println ( c ) ;
+}
+}
+g/**/n* Dog function blah blah/n* @param l/n* @return/n*/static boolean dog ( Map<String,Integer> l ) {
+&final Integer sum = new Integer ( ) ;
+3l.keySet ( ) .forEach ( new Consumer<String> ( ) {
+
 @Override
-"public void accept ( String x ) {
-*dogVar0.addAndGet ( dogArg1.get ( x ) ) ;
-}
-} ) ;
-OdogArg1.keySet ( ) .forEach ( x -> dogVar0.addAndGet ( dogArg1.get ( x ) ) ) ;
-%dogArg1.keySet ( ) .forEach ( x -> {
-*dogVar0.addAndGet ( dogArg1.get ( x ) ) ;
-} ) ;
--dogArg1.keySet ( ) .stream ( ) .map ( x -> {
-1return dogVar0.addAndGet ( dogArg1.get ( x ) ) ;
-} ) ;
-return dogVar1 ;
-}
-X/**/n* Elephant method zzzz zzzz/n* @return/n*/private ArrayList<Double> elephant ( ) {
-9LinkedList<Double> elephantVar0 = new LinkedList<> ( ) ;
-elephantVar0.add ( 5d ) ;
-elephantVar0.add ( -1000d ) ;
-elephantVar0.remove ( ) ;
-(for ( Double aDouble : elephantVar0 ) {
-!System.out.println ( aDouble ) ;
-}
-*return new ArrayList<> ( elephantVar0 ) ;
-}
-v/**/n* Method to ensure bracket matching is resistant to strings containing brackets/n*/protected void brackets ( ) {
-,String bracketsVar0 = " { { ( ) } { { { " ;
-}
-'// bcdkscd cdsjcd cdscdc -void t ( ) {
-}
-}
-
-
-
-
-
-import java.util.* ;
-3import java.util.concurrent.atomic.AtomicInteger ;
-%import java.util.function.Consumer ;
-package Var0 ;
-…/**/n* This is a test class which acts as a base file for all the normalisation features to be tested on/n*/public class TestClass {
-/* hello *//n/*/n*/
-%static final int TestClassVar0 = 0 ;
-+final String TestClassVar1 = "blah blah" ;
-boolean TestClassVar2 ;
-0public static void main ( String[] mainArg0 ) {
-cat ( "hbjjhbhjb",5 ) ;
-dog ( null ) ;
-}
-u/**/n* Cat procedure abcd abcd/n* @param hat/n* @param j/n*/static public void cat ( String catArg0, int catArg1 ) {
-0System.out.println ( catArg0+ " " + catArg1 ) ;
-+for ( char c : catArg0.toCharArray ( ) ) {
-System.out.println ( c ) ;
-}
-}
-m/**/n* Dog function blah blah/n* @param l/n* @return/n*/static boolean dog ( Map<String,Integer> dogArg1 ) {
-6final AtomicInteger dogVar0 = new AtomicInteger ( ) ;
-9dogArg1.keySet ( ) .forEach ( new Consumer<String> ( ) {
-
+"public void accept ( String x ) {
+ sum.addAndGet ( l.get ( x ) ) ;
+}
+} ) ;
+?l.keySet ( ) .forEach ( x -> sum.addAndGet ( l.get ( x ) ) ) ;
+l.keySet ( ) .forEach ( x -> {
+ sum.addAndGet ( l.get ( x ) ) ;
+} ) ;
+'l.keySet ( ) .stream ( ) .map ( x -> {
+'return sum.addAndGet ( l.get ( x ) ) ;
+} ) ;
+return false ;
+}
+T/**/n* Elephant method zzzz zzzz/n* @return/n*/private List<Decimal> elephant ( ) {
+#List<Decimal> o = new List<> ( ) ;
+o.add ( 5d ) ;
+o.add ( -1000d ) ;
+o.remove ( ) ;
+for ( Decimal aDouble : o ) {
+!System.out.println ( aDouble ) ;
+}
+return new List<> ( o ) ;
+}
+v/**/n* Method to ensure bracket matching is resistant to strings containing brackets/n*/protected void brackets ( ) {
+(String brackets = " { { ( ) } { { { " ;
+}
+'// bcdkscd cdsjcd cdscdc -void t ( ) {
+}
+,public Map<Integer,Decimal> Integerer ( ) {
++Map<Integer,Decimal> map = new Map<> ( ) ;
+Decimal a ;
+	List h ;
+List<String> l ;
+return null ;
+}
+}
+
+
+
+
+import java.util.* ;
+3import java.util.concurrent.atomic.AtomicInteger ;
+%import java.util.function.Consumer ;
+package normalisation ;
+…/**/n* This is a test class which acts as a base file for all the normalisation features to be tested on/n*/public class TestClass {
+/* hello *//n/*/n*/
+static final Integer foo = 0 ;
+!final String pop = "blah blah" ;
+boolean dolphin ;
+,public static void main ( String[] args ) {
+cat ( "hbjjhbhjb",5 ) ;
+dog ( null ) ;
+}
+o/**/n* Cat procedure abcd abcd/n* @param hat/n* @param j/n*/static public void cat ( String hat, Integer j ) {
+&System.out.println ( hat+ " " + j ) ;
+'for ( char c : hat.toCharArray ( ) ) {
+System.out.println ( c ) ;
+}
+}
+g/**/n* Dog function blah blah/n* @param l/n* @return/n*/static boolean dog ( Map<String,Integer> l ) {
+&final Integer sum = new Integer ( ) ;
+3l.keySet ( ) .forEach ( new Consumer<String> ( ) {
+
 @Override
-"public void accept ( String x ) {
-*dogVar0.addAndGet ( dogArg1.get ( x ) ) ;
-}
-} ) ;
-OdogArg1.keySet ( ) .forEach ( x -> dogVar0.addAndGet ( dogArg1.get ( x ) ) ) ;
-%dogArg1.keySet ( ) .forEach ( x -> {
-*dogVar0.addAndGet ( dogArg1.get ( x ) ) ;
-} ) ;
--dogArg1.keySet ( ) .stream ( ) .map ( x -> {
-1return dogVar0.addAndGet ( dogArg1.get ( x ) ) ;
-} ) ;
-return dogVar1 ;
-}
-X/**/n* Elephant method zzzz zzzz/n* @return/n*/private ArrayList<Double> elephant ( ) {
-9LinkedList<Double> elephantVar0 = new LinkedList<> ( ) ;
-elephantVar0.add ( 5d ) ;
-elephantVar0.add ( -1000d ) ;
-elephantVar0.remove ( ) ;
-(for ( Double aDouble : elephantVar0 ) {
-!System.out.println ( aDouble ) ;
-}
-*return new ArrayList<> ( elephantVar0 ) ;
-}
-v/**/n* Method to ensure bracket matching is resistant to strings containing brackets/n*/protected void brackets ( ) {
-,String bracketsVar0 = " { { ( ) } { { { " ;
-}
-'// bcdkscd cdsjcd cdscdc -void t ( ) {
-}
-}
-
+"public void accept ( String x ) {
+ sum.addAndGet ( l.get ( x ) ) ;
+}
+} ) ;
+?l.keySet ( ) .forEach ( x -> sum.addAndGet ( l.get ( x ) ) ) ;
+l.keySet ( ) .forEach ( x -> {
+ sum.addAndGet ( l.get ( x ) ) ;
+} ) ;
+'l.keySet ( ) .stream ( ) .map ( x -> {
+'return sum.addAndGet ( l.get ( x ) ) ;
+} ) ;
+return false ;
+}
+T/**/n* Elephant method zzzz zzzz/n* @return/n*/private List<Decimal> elephant ( ) {
+#List<Decimal> o = new List<> ( ) ;
+o.add ( 5d ) ;
+o.add ( -1000d ) ;
+o.remove ( ) ;
+for ( Decimal aDouble : o ) {
+!System.out.println ( aDouble ) ;
+}
+return new List<> ( o ) ;
+}
+v/**/n* Method to ensure bracket matching is resistant to strings containing brackets/n*/protected void brackets ( ) {
+(String brackets = " { { ( ) } { { { " ;
+}
+'// bcdkscd cdsjcd cdscdc -void t ( ) {
+}
+,public Map<Integer,Decimal> Integerer ( ) {
++Map<Integer,Decimal> map = new Map<> ( ) ;
+Decimal a ;
+	List h ;
+List<String> l ;
+return null ;
+}
+}
+

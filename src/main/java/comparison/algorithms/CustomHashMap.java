@@ -7,16 +7,15 @@ import java.util.Map;
 
 public class CustomHashMap {
 
-    private Map<Integer, List<Integer>> map = new HashMap<>();
+    private final Map<Integer, List<Integer>> map = new HashMap<>();
 
-    public List<Integer> get(int length){
+    public List<Integer> get(int length) {
         return map.getOrDefault(length, null);
     }
 
-    public void add(int size, int hash){
+    public void add(int size, int hash) {
         map.computeIfAbsent(size, x -> new ArrayList<>()).add(hash);
     }
-
 
 
 }

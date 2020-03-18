@@ -76,4 +76,12 @@ public class TestClass {
     void t(){
     }
 
+        public HashMap<Long,Double> inter(){
+            HashMap<Long,Double> map = new HashMap<>();
+            Float a;
+            LinkedList h;
+            ArrayList<String> l;
+            return null;
+        }
+
 }

@@ -40,8 +40,7 @@ public class Normaliser {
         REDUCE_TYPES,
         SORT_CLASS_MEMBERS,
         STANDARDISE_METHOD_NAMES,
-        STANDARDISE_VARIABLE_NAMES
-        ;
+        STANDARDISE_VARIABLE_NAMES;
 
         /**
          * Methods to perform the corresponding normalisation process

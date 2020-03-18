@@ -3,7 +3,6 @@ package normalisation.elements.elementContainers;
 import normalisation.elements.JavaElement;
 import normalisation.elements.Variable;
 import normalisation.util.ProtectionLevel;
-import normalisation.util.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +15,7 @@ import static normalisation.util.Util.getComments;
 /**
  *
  */
-public class Method extends ElementContainer implements JavaElement, Text {
+public class Method extends ElementContainer implements JavaElement {
 
     //TODO sort arguments alphabetically and length on data type
 
@@ -43,13 +42,13 @@ public class Method extends ElementContainer implements JavaElement, Text {
     }
 
 
-    public void standardiseArgs(){
+    public void standardiseArgs() {
         for (int i = 0; i < args.size(); i++) {
-                Variable current_arg = args.get(i);
-                String new_name = this.name +"Arg" + i;
-                String old_name = current_arg.getName();
-                current_arg.setName(new_name);
-                this.replaceText(old_name, new_name, false);
+            Variable current_arg = args.get(i);
+            String new_name = this.name + "Arg" + i;
+            String old_name = current_arg.getName();
+            current_arg.setName(new_name);
+            this.replaceVariableText(old_name, new_name);
         }
 
     }
@@ -65,7 +64,7 @@ public class Method extends ElementContainer implements JavaElement, Text {
         String[] s = declaration.split("\\(");
         int split_index = declaration.indexOf("(");
         String start = declaration.substring(0, split_index - 1);
-        String end = declaration.substring(split_index + 1, findLastIndex(declaration, ')'));
+        String end = declaration.substring(split_index + 1, declaration.lastIndexOf(')'));
         end = end.replace(")", "");
 
         String[] dec = start.split("\\s+");
@@ -97,18 +96,6 @@ public class Method extends ElementContainer implements JavaElement, Text {
                 .forEach(arg -> this.args.add(new Variable(arg)));
     }
 
-    /**
-     * @param str
-     * @param c
-     * @return
-     */
-    private static int findLastIndex(String str, Character c) {
-        // Traverse from right
-        for (int i = str.length() - 1; i >= 0; i--) {
-            if (str.charAt(i) == c) return i;
-        }
-        return -1;
-    }
 
     @Override
     public List<Variable> getVariables() {
@@ -117,14 +104,9 @@ public class Method extends ElementContainer implements JavaElement, Text {
         return variables;
     }
 
+    //TODO sort args in declaration
     @Override
-    public String getText() {
-        return declaration;
-    }
+    public void sortElements() {
 
-    @Override
-    public void setText(String text) {
-        this.declaration = text;
-        parseDeclaration(declaration);
     }
 }

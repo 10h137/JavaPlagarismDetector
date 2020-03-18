@@ -24,7 +24,7 @@ public class StringComparison implements ComparisonAlgorithm {
 
     public List<Match> RKR_GST(String T, String P, int min_match_len, int initial_search_len) {
 
-        List<Match> tiles = new ArrayList();
+        List<Match> tiles = new ArrayList<>();
         List<Queue<Match>> match_queues =new ArrayList<>();
 
         int search_len = initial_search_len;
@@ -69,7 +69,7 @@ public class StringComparison implements ComparisonAlgorithm {
             if(distance_to_tile == -1) {
                 distance_to_tile = T.size() - i;
                 no_next_tile = true;
-            };
+            }
         }
 
         return 0;

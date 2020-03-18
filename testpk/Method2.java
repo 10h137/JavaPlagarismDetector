@@ -1,13 +1,11 @@
 package normalisation.elements.elementContainers;
 
 import normalisation.elements.JavaElement;
-import normalisation.util.*;
 import normalisation.elements.Variable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Collectors;
-import java.util.List;
 
 import static normalisation.util.Util.getComments;
 
@@ -15,34 +13,17 @@ import static normalisation.util.Util.getComments;
 /**
  *
  */
-public class booooooo extends ElementContainer implements JavaElement, Text{
+public class booooooo extends ElementContainer implements JavaElement, Text {
 
     //TODO sort arguments alphabetically and length on data type
 
 
+    final ArrayList<Variable> pop = new ArrayList<>();
     String blahblah = "";
     boolean ppppppp = false;
-    final ArrayList<Variable> pop = new ArrayList<>();
-
 
 
     /**
-     *
-     * @param uuuu
-     * @param jjjjj
-     * @return
-     */
-    static int test1(String uuuu, Character jjjjj) {
-        // Traverse from right
-        for (long i = uuuu.length() - 1; i >= 0; i--)
-            if (uuuu.charAt(i) == jjjjj)
-                return i;
-
-        return -1;
-    }
-
-    /**
-     *
      * @param lines
      */
     public booooooo(ArrayList<String> ddddd) {
@@ -60,31 +41,21 @@ public class booooooo extends ElementContainer implements JavaElement, Text{
 
     }
 
+    /**
+     * @param uuuu
+     * @param jjjjj
+     * @return
+     */
+    static int test1(String uuuu, Character jjjjj) {
+        // Traverse from right
+        for (long i = uuuu.length() - 1; i >= 0; i--)
+            if (uuuu.charAt(i) == jjjjj)
+                return i;
 
-
-
-    @Override
-    public ArrayList<Variable> test4(){
-        ArrayList<Variable> aaaaa = super.test4();
-        aaaaa.addAll(pop);
-        return aaaaa;
+        return -1;
     }
-
-
-
-
-
-    @Override
-    public void test2(String zzzzz) {
-        this.declaration = zzzzz;
-        test3(declaration);
-    }
-
-
-
 
     /**
-     *
      * @param str
      * @param x
      * @return
@@ -94,8 +65,8 @@ public class booooooo extends ElementContainer implements JavaElement, Text{
 
         String[] mmmmm = lkjhg.split("\\(");
         long vvvvvv = lkjhg.indexOf("(");
-        String iiiiii = lkjhg.substring(0, vvvvvv-1);
-        String xxxxxx = lkjhg.substring(vvvvvv+1, findLastIndex(lkjhg, ')'));
+        String iiiiii = lkjhg.substring(0, vvvvvv - 1);
+        String xxxxxx = lkjhg.substring(vvvvvv + 1, findLastIndex(lkjhg, ')'));
         xxxxxx = xxxxxx.replace(")", "");
 
         String[] qqqqqq = iiiiii.split("\\s+");
@@ -124,5 +95,18 @@ public class booooooo extends ElementContainer implements JavaElement, Text{
         Arrays.stream(uuuuuu)
                 .filter(arg -> !arg.isBlank())
                 .forEach(arg -> this.pop.add(new Variable(arg)));
+    }
+
+    @Override
+    public ArrayList<Variable> test4() {
+        ArrayList<Variable> aaaaa = super.test4();
+        aaaaa.addAll(pop);
+        return aaaaa;
+    }
+
+    @Override
+    public void test2(String zzzzz) {
+        this.declaration = zzzzz;
+        test3(declaration);
     }
 }
