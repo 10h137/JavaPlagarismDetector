@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="normalisation.TestMain" tests="8" skipped="0" failures="0" errors="0" timestamp="2020-03-15T07:23:55" hostname="kyles-MacBook-Air.local" time="2.221">
+<testsuite name="normalisation.TestMain" tests="8" skipped="0" failures="0" errors="0" timestamp="2020-03-18T00:43:42" hostname="pc5-013-l" time="1.27">
   <properties/>
-  <testcase name="testRenamedMethods" classname="normalisation.TestMain" time="0.343"/>
-  <testcase name="testReorderMethods" classname="normalisation.TestMain" time="0.046"/>
-  <testcase name="testNoComments" classname="normalisation.TestMain" time="0.023"/>
-  <testcase name="testRenamedVariables" classname="normalisation.TestMain" time="0.063"/>
-  <testcase name="testReorderImports" classname="normalisation.TestMain" time="0.021"/>
-  <testcase name="testReduceStructures" classname="normalisation.TestMain" time="1.035"/>
-  <testcase name="testAllChanged" classname="normalisation.TestMain" time="0.665"/>
-  <testcase name="testReorderGlobalVariables" classname="normalisation.TestMain" time="0.023"/>
+  <testcase name="testRenamedMethods" classname="normalisation.TestMain" time="0.161"/>
+  <testcase name="testReorderMethods" classname="normalisation.TestMain" time="0.04"/>
+  <testcase name="testNoComments" classname="normalisation.TestMain" time="0.015"/>
+  <testcase name="testRenamedVariables" classname="normalisation.TestMain" time="0.031"/>
+  <testcase name="testReorderImports" classname="normalisation.TestMain" time="0.016"/>
+  <testcase name="testReduceStructures" classname="normalisation.TestMain" time="0.559"/>
+  <testcase name="testAllChanged" classname="normalisation.TestMain" time="0.434"/>
+  <testcase name="testReorderGlobalVariables" classname="normalisation.TestMain" time="0.012"/>
   <system-out><![CDATA[import java.util.* ;
 import java.util.concurrent.atomic.AtomicInteger ;
 import java.util.function.Consumer ;

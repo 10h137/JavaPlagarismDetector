@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static normalisation.util.Util.getElements;
 
 public class ClassObject extends ElementContainer implements JavaElement {
 

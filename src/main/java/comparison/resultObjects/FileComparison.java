@@ -1,11 +1,11 @@
 package comparison.resultObjects;
 
 import comparison.algorithms.ComparisonAlgorithm;
+import normalisation.elements.elementContainers.ClassObject;
 import normalisation.elements.elementContainers.JavaFile;
-import normalisation.util.Util;
+import normalisation.elements.elementContainers.Method;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class FileComparison implements Comparable {
@@ -32,7 +32,7 @@ public class FileComparison implements Comparable {
         this.file1 = file1;
         this.file2 = file2;
         // get all method comparisons that exceed a certain similarity threshold
-        method_comparisons = Util.compareMethods(file1, file2).stream()
+        method_comparisons = compareMethods(file1, file2).stream()
                 .filter(x -> x.getTotalScore() > THRESHOLD)
                 .collect(Collectors.toList());
         algorithm_score = (int) (alg.compareFiles(file1, file2) * 100);
@@ -88,5 +88,45 @@ public class FileComparison implements Comparable {
     @Override
     public int compareTo(Object o) {
         return ((FileComparison) o).getScore() - this.getScore();
+    }
+
+
+    public static List<MethodComparison> compareMethods(JavaFile file1, JavaFile file2) {
+        List<Method> methods1 = file1.getClasses().stream()
+                .map(ClassObject::getMethods)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+
+        List<Method> methods2 = file2.getClasses().stream()
+                .map(ClassObject::getMethods)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+
+        Set<Method> methods_to_be_processed = new HashSet<>(methods1);
+        methods_to_be_processed.addAll(methods2);
+
+        List<MethodComparison> comparisons = new ArrayList<>();
+        for (int i = 0; i < methods1.size(); i++) {
+            for (int j = i; j < methods2.size(); j++) {
+                comparisons.add(new MethodComparison(methods1.get(i), methods2.get(j)));
+            }
+        }
+
+        List<MethodComparison> best_comparisons = new ArrayList<>();
+        // TODO check if in descending order
+        comparisons.sort(Comparator.comparingInt(MethodComparison::getTotalScore));
+        Collections.reverse(comparisons);
+
+
+        for (MethodComparison comparison : comparisons) {
+            if (methods_to_be_processed.contains(comparison.m1) && methods_to_be_processed.contains(comparison.m2)) {
+                best_comparisons.add(comparison);
+            }
+            methods_to_be_processed.remove(comparison.m1);
+            methods_to_be_processed.remove(comparison.m2);
+        }
+
+        return best_comparisons;
+
     }
 }

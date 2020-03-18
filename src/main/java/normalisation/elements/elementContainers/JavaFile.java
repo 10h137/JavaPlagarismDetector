@@ -9,8 +9,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static normalisation.util.Util.checkInString;
-import static normalisation.util.Util.getElements;
 
 
 /**

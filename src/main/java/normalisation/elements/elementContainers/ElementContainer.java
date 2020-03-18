@@ -1,18 +1,22 @@
 package normalisation.elements.elementContainers;
 
+import normalisation.elements.CodeLine;
 import normalisation.elements.Comment;
 import normalisation.elements.JavaElement;
 import normalisation.elements.Variable;
+import normalisation.util.CommentPatterns;
 import normalisation.util.ProtectionLevel;
 import normalisation.util.Text;
+import org.javatuples.Pair;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
+import static normalisation.util.CommentPatterns.*;
 import static normalisation.util.MapFile.replacement_map;
+
 
 /**
  *
@@ -24,6 +28,108 @@ public abstract class ElementContainer {
     String name = "";
     ProtectionLevel protection_level = ProtectionLevel.PROTECTED;
     private Comment comment = new Comment("");
+
+    public static List<JavaElement> getElements(String pattern, List<String> lines, Class<? extends JavaElement> element_class) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        Stack<Character> brackets = new Stack<>();
+        List<JavaElement> elements = new ArrayList<>();
+
+        boolean in_method = false;
+        boolean in_comment = false;
+
+
+        Pair<Integer, Integer> current_method = new Pair<>(0, 0);
+        for (int i = 0; i < lines.size(); i++) {
+
+            String line = lines.get(i);
+
+            if (line.matches(pattern) && !in_method) {
+                in_method = true;
+                current_method = current_method.setAt0(i);
+            }
+
+            if (in_method) {
+                char[] chars = line.toCharArray();
+                for (int j = 0; j < chars.length; j++) {
+                    char aChar = chars[j];
+                    if (aChar == '{' || aChar == '}') {
+                        // checks if bracket in string
+                        if (checkInString(line, j)) continue;
+
+                        if (!brackets.isEmpty() && aChar != brackets.peek()) {
+                            brackets.pop();
+                            if (brackets.empty()) {
+                                current_method = current_method.setAt1(i);
+                                JavaElement element = element_class
+                                        .getDeclaredConstructor(List.class)
+                                        .newInstance(lines.subList(current_method.getValue0(), current_method.getValue1()));
+                                elements.add(element);
+
+                                current_method = new Pair<>(0, 0);
+                                in_method = false;
+
+                                // misses case where comment on same line as closing bracket     } //
+                                // can be fixed with pre-processing, add \n after evey closing bracket
+                                break;
+                            }
+
+                        } else {
+                            brackets.push(aChar);
+                        }
+                    }
+                }
+
+            }
+            if (!in_method) {
+                in_comment = getComments(elements, in_comment, line, false);
+            }
+
+        }
+        return elements;
+
+    }
+
+    public static boolean checkInString(String line, int index) {
+        char[] right = line.substring(index).toCharArray();
+        int right_count = 0;
+        int right_count_2 = 0;
+        for (char c : right) {
+            if (c == '"') right_count++;
+            if (c == '\'') right_count_2++;
+
+        }
+
+        // TODO fix for all comment patterns
+        boolean in_comment = Arrays.stream(values())
+                .map(CommentPatterns::getValue)
+                .anyMatch(line::matches);
+        return ((right_count % 2 != 0)) || (right_count_2 % 2 != 0) || in_comment;
+    }
+
+    public static boolean getComments(List<JavaElement> body, boolean in_comment, String line, boolean get_code_lines) {
+
+        if (in_comment) {
+            if (line.matches(MULTI_CLOSE.getValue())) in_comment = false;
+            body.add(new Comment(line));
+        } else if (line.matches(MULTI_OPEN.getValue())) {
+            if (!line.matches(MULTI_CLOSE_SINGLE_LINE.getValue())) in_comment = true;
+            body.add(new Comment(line));
+        } else if (line.matches(REGULAR_COMMENT.getValue())) {
+            body.add(new Comment(line));
+        } else if (isVariableDeclaration(line)) {
+            // change to detect between global and local
+            body.add(new Variable(line));
+        } else if (get_code_lines) {
+            body.add(new CodeLine(line));
+        }
+
+        return in_comment;
+
+    }
+
+    //TODO fix to ignore return statements
+    private static boolean isVariableDeclaration(String line) {
+        return line.matches("^[0-9]*\\s*((public\\s+)|(private\\s+)|(protected\\s+)|)(static\\s+)?\\s*(final)?\\s*([A-z0-9]|[|]|<|>)+\\s+[A-z]+\\s*((=.+)|;).*\\s*");
+    }
 
     public int getElementCount() {
         return body.size();
@@ -80,7 +186,6 @@ public abstract class ElementContainer {
                 .collect(Collectors.toList());
     }
 
-
     /**
      * Normalises method names
      */
@@ -135,7 +240,6 @@ public abstract class ElementContainer {
         this.comment = container_comments;
     }
 
-
     /**
      * Recursively generates the string representation of all the nested containers and the other elements in the body and combines them
      *
@@ -157,7 +261,6 @@ public abstract class ElementContainer {
         return sb.toString();
     }
 
-
     /**
      * Collects all variables in the containers body as well as nested variable objects contained in other element containers
      *
@@ -172,7 +275,6 @@ public abstract class ElementContainer {
         }
         return variables;
     }
-
 
     public void normaliseVariables() {
 
@@ -190,7 +292,6 @@ public abstract class ElementContainer {
 
 
     }
-
 
     /**
      * Sorts all elements in the body, element containers are sorted by length then protection level
@@ -216,7 +317,6 @@ public abstract class ElementContainer {
 
     }
 
-
     /**
      * Calculates the total length of all elements
      *
@@ -228,7 +328,6 @@ public abstract class ElementContainer {
                 .reduce(Integer::sum)
                 .orElse(0) + comment.length();
     }
-
 
     /**
      * Replaces variable related text in all elements and sub elements
@@ -254,6 +353,7 @@ public abstract class ElementContainer {
         }
     }
 
+    //TODO fix for escaped quotations in string
 
     /**
      * Replaces method name in all elements and sub elements
@@ -273,7 +373,6 @@ public abstract class ElementContainer {
         }
     }
 
-
     /**
      * Gets the name of the container e.g. class name
      *
@@ -292,5 +391,6 @@ public abstract class ElementContainer {
         this.declaration = this.declaration.replaceFirst(this.name, name);
         this.name = name;
     }
+
 
 }
