@@ -1,0 +1,86 @@
+package normalisation;
+
+import java.util.function.Consumer;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.*;
+
+
+public class TestClass {
+
+
+    boolean rrrr;
+    static final int qqqqq = 0;
+    final String eeeeeeeeeeeee = "blah blah";
+    static Map<String,Long> wwwwww = new HashMap<>();
+
+
+    private ArrayList<Double> oiewkjdewqdpoewdpoqe(){
+        LinkedList<Double> ppppppppppppppppp = new LinkedList<>();
+        ppppppppppppppppp.add(5d);
+        ppppppppppppppppp.add(-1000d);
+        ppppppppppppppppp.remove();
+        for (Double aDouble : ppppppppppppppppp) {
+            System.out.println(aDouble);
+        }
+
+        return new ArrayList<>(ppppppppppppppppp);
+    }
+
+
+
+    protected void dasdasdasdas(){
+        String aaa = "{{()}{{{";
+
+    }
+    static public void llllflff(String y, int uuuuuuuuuuuuu){
+        System.out.println(y+ " " + uuuuuuuuuuuuu);
+        for (char c : y.toCharArray()) {
+            System.out.println(c);
+        }
+    }
+
+
+    static boolean sasasqasasas(Map<String,Integer> iiiiiiii){
+        final AtomicInteger oooooooo = new AtomicInteger();
+
+        iiiiiiii.keySet().forEach(new Consumer<String>() {
+            @Override
+            public void accept(String x) {
+                oooooooo.addAndGet(iiiiiiii.get(x));
+            }
+        });
+
+        iiiiiiii.keySet().forEach(x -> oooooooo.addAndGet(iiiiiiii.get(x)));
+
+
+        iiiiiiii.keySet().forEach(x -> {
+            oooooooo.addAndGet(iiiiiiii.get(x));
+        });
+
+        iiiiiiii.keySet().stream().map(x -> {
+            return oooooooo.addAndGet(iiiiiiii.get(x));
+        });
+
+        return false;
+    }
+
+
+
+    void fdkjfcdf(){
+    }
+
+
+
+    public static void ywyeywqeywyqeewtqet(String[] tt) {
+        llllflff("hbjjhbhjb",5);
+        sasasqasasas(null);
+    }
+
+        public HashMap<Long,Double> inter(){
+            HashMap<Long,Double> map = new HashMap<>();
+            Float a;
+            LinkedList h;
+            ArrayList<String> l;
+            return null;
+        }
+}

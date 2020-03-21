@@ -21,8 +21,9 @@ public class StringComparison implements ComparisonAlgorithm {
 
         match_list.clear();
         tiles.clear();
-        String longer = (file1.toString().length() > file2.toString().length()) ? file1.toString() : file2.toString();
-        String shorter = (file1.toString().length() > file2.toString().length()) ? file2.toString() : file1.toString();
+        boolean file1_bigger = file1.toString().length() > file2.toString().length();
+        String longer = file1_bigger ? file1.toString() : file2.toString();
+        String shorter = file1_bigger ? file2.toString() : file1.toString();
         tiles = RKR_GST(longer, shorter, 5, 20);
 
         MarkedArray T_vals = new MarkedArray(longer);
@@ -32,8 +33,6 @@ public class StringComparison implements ComparisonAlgorithm {
 
         return getScore(T_vals, P_vals);
 
-
-//        return 0d;
     }
 
     public List<Match> RKR_GST(String T, String P, int min_match_len, int initial_search_len) {
@@ -53,7 +52,6 @@ public class StringComparison implements ComparisonAlgorithm {
             if(s.contains(search_len))break;
             s.add(search_len);
             int l_max = scanPattern(T_vals, P_vals, search_len);
-//            System.out.println("l-max" + l_max);
             if (l_max > (2 * search_len)) search_len = l_max;
             else {
                 markStrings(T_vals, P_vals);
@@ -73,112 +71,7 @@ public class StringComparison implements ComparisonAlgorithm {
         //((double) 2 * coverage) / ((double) (P.size() + T.size()));
         return ((double) coverage) / ((double) ( T.size())) ;
     }
-//
-//    private static int scanPattern(List<Queue<Match>> match_queues, MarkedArray TextString, MarkedArray PatternString, int search_len) {
-//
-//        int longest_match = 0;
-//        Queue<Match> match_queue = new LinkedList<>();
-//        CustomHashMap map = new CustomHashMap();
-//
-//        boolean no_next_tile = false;
-//        int text_index = 0;
-//        while (text_index < TextString.size() - 1) {
-//            if (TextString.isMarked(text_index)) {
-//                text_index++;
-//                continue;
-//            }
-//
-//            int distance_to_tile = TextString.getNextTileIndex(text_index) - text_index;
-//            if (distance_to_tile < 0) {
-//                distance_to_tile = TextString.size() - text_index;
-//                no_next_tile = true;
-//            }
-//
-//            if (distance_to_tile < search_len) {
-//                if (no_next_tile) {
-//                    text_index = TextString.size();
-//                } else {
-//                    text_index = TextString.getNextUnmarkedTokenIndex(text_index);
-//                    if (text_index == -1) text_index = TextString.size();
-//                }
-//            } else {
-//
-//                map.add(generateHash(TextString.getString(text_index, text_index + search_len - 1)), text_index);
-//                text_index++;
-//            }
-//
-//        }
-//
-//
-//        no_next_tile = false;
-//        int pattern_index = 0;
-//        while (pattern_index < PatternString.size()) {
-//
-//            if (PatternString.isMarked(pattern_index)) {
-//                pattern_index++;
-//                continue;
-//            }
-//
-//            int distance_to_tile = PatternString.getNextTileIndex(pattern_index) - pattern_index;
-//            if (distance_to_tile < 0) {
-//                distance_to_tile = PatternString.size() - pattern_index;
-//                no_next_tile = true;
-//            }
-//
-//            if (distance_to_tile < search_len) {
-//                if (no_next_tile) {
-//                    pattern_index = PatternString.size();
-//                } else {
-//                    pattern_index = PatternString.getNextUnmarkedTokenIndex(pattern_index);
-//                    if (pattern_index < 0) {
-//                        pattern_index = PatternString.size();
-//                    }
-//                }
-//            } else {
-//
-//                String str = PatternString.getString(pattern_index, pattern_index + search_len - 1);
-//                int hash = generateHash(str);
-//                List<Integer> vals = map.get(hash);
-//                if (vals != null) {
-//                    for (Integer val : vals) {
-//                        String T_string = TextString.getString(val, val + search_len - 1);
-//                        if (T_string.equals(str)) {
-//                            int T_index = val;
-//                            int new_search_len = search_len;
-//
-//                            while (pattern_index + new_search_len < PatternString.size() && T_index + new_search_len < TextString.size()
-//                                    && PatternString.get(pattern_index + new_search_len).equals(TextString.get(T_index + new_search_len))
-//                                    && !PatternString.isMarked(pattern_index + new_search_len)
-//                                    && !TextString.isMarked(T_index + new_search_len)) {
-//                                new_search_len++;
-//                            }
-//
-//                            if (new_search_len > 2 * search_len) return new_search_len;
-//                            else {
-//                                if (longest_match < search_len) {
-//                                    longest_match = search_len;
-//                                }
-//                                Match match = new Match(pattern_index, T_index, new_search_len);
-//                                match_queue.add(match);
-//                            }
-//                        }
-//
-//                    }
-//                }
-//
-//                pattern_index++;
-//
-//            }
-//
-//
-//        }
-//
-//
-//        if (match_queue.isEmpty()) {
-//            match_list.add(match_queue);
-//        }
-//        return longest_match;
-//    }
+
 
     private void markStrings(MarkedArray T, MarkedArray P) {
         for (Queue<Match> queue : match_list) {
@@ -241,9 +134,6 @@ public class StringComparison implements ComparisonAlgorithm {
         int longest_match = 0;
         Queue<Match> match_queue = new LinkedList<>();
         MarkedArray arr = text ? text_string : pattern_string;
-//
-//        System.out.println(pattern_string.size());
-//        System.out.println(text_string.size());
 
         boolean no_next_tile = false;
         int current_index = 0;
