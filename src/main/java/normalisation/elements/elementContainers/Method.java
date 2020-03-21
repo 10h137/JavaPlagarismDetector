@@ -22,6 +22,7 @@ public class Method extends ElementContainer implements JavaElement {
     private final List<Variable> args = new ArrayList<>();
     private boolean is_static = false;
 
+
     /**
      * @param lines
      */
@@ -37,7 +38,7 @@ public class Method extends ElementContainer implements JavaElement {
         // removes
         body.remove(0);
         combineComments();
-
+        original_string = this.toString();
     }
 
 
@@ -108,4 +109,5 @@ public class Method extends ElementContainer implements JavaElement {
     public void sortElements() {
 
     }
+
 }

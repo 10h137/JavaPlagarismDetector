@@ -7,10 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -24,7 +21,7 @@ import java.util.stream.Collectors;
 
 public class ExpandedGUI {
 
-
+    static boolean norm = true;
     /**
      * Creates a new window expanding the currently selected comparison
      *
@@ -153,14 +150,25 @@ public class ExpandedGUI {
         Text comparison_info = new Text();
         VBox.setMargin(comparison_info, new Insets(10));
 
-        list_info_container.getChildren().addAll(method_list, comparison_info);
+        HBox btn_box = new HBox(10);
+        Button btn_toggle = new Button("Toggle text");
+        Text txt_toggle = new Text("Normalised");
+        btn_box.getChildren().addAll(btn_toggle, txt_toggle);
+        btn_toggle.setOnAction(x -> {
+            MethodComparison comparison =  method_comparisons.get(method_list.getSelectionModel().getSelectedIndex());
+            norm = !norm;
+            set(method_txt_1, method_txt_2, comparison);
+            txt_toggle.setText(norm?"Normalised" : "Original");
+
+        });
+
+        list_info_container.getChildren().addAll(method_list, comparison_info, btn_box);
 
         // set actions for file comparison list
         // on clicked update info text
         method_list.setOnMouseClicked(l -> {
             MethodComparison comparison = method_comparisons.get(method_list.getSelectionModel().getSelectedIndex());
-            method_txt_1.setText(comparison.getM1().toString());
-            method_txt_2.setText(comparison.getM2().toString());
+            set(method_txt_1, method_txt_2, comparison);
             comparison_info.setText(comparison.getReport());
 
         });
@@ -168,8 +176,7 @@ public class ExpandedGUI {
         method_list.setOnKeyPressed(x -> {
             if (x.getCode() == KeyCode.DOWN || x.getCode() == KeyCode.UP) {
                 MethodComparison comparison = method_comparisons.get(method_list.getSelectionModel().getSelectedIndex());
-                method_txt_1.setText(comparison.getM1().toString());
-                method_txt_2.setText(comparison.getM2().toString());
+                set(method_txt_1, method_txt_2, comparison);
                 comparison_info.setText(comparison.getReport());
             }
         });
@@ -181,5 +188,16 @@ public class ExpandedGUI {
         method_tab.setContent(method_container);
 
         return method_tab;
+    }
+
+
+    static void set(Text method_txt_1, Text method_txt_2, MethodComparison comp){
+        if(norm){
+            method_txt_1.setText(comp.getM1().toString());
+            method_txt_2.setText(comp.getM2().toString());
+        }else{
+            method_txt_1.setText(comp.getM1().originalString());
+            method_txt_2.setText(comp.getM2().originalString());
+        }
     }
 }

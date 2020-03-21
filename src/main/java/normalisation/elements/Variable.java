@@ -15,9 +15,11 @@ public class Variable implements JavaElement, Text {
     private String type = "";
     private String name = "";
     private String declaration = "";
+    private String original_string;
 
     public Variable(String line) {
         parseDeclaration(line);
+        original_string = this.toString();
     }
 
     private void parseDeclaration(String line) {
@@ -88,5 +90,10 @@ public class Variable implements JavaElement, Text {
 
     public String toString() {
         return declaration;
+    }
+
+    @Override
+    public String originalString() {
+        return original_string;
     }
 }

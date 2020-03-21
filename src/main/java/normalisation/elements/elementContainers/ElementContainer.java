@@ -28,6 +28,8 @@ public abstract class ElementContainer {
     String name = "";
     ProtectionLevel protection_level = ProtectionLevel.PROTECTED;
     private Comment comment = new Comment("");
+    String original_string;
+
 
     public static List<JavaElement> getElements(String pattern, List<String> lines, Class<? extends JavaElement> element_class) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         Stack<Character> brackets = new Stack<>();
@@ -390,6 +392,10 @@ public abstract class ElementContainer {
     private void setName(String name) {
         this.declaration = this.declaration.replaceFirst(this.name, name);
         this.name = name;
+    }
+
+    public String originalString(){
+        return original_string;
     }
 
 

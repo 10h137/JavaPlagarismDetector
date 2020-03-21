@@ -2,6 +2,7 @@ package normalisation;
 
 import comparison.algorithms.ComparisonAlgorithm;
 import comparison.algorithms.FingerprintComparison;
+import comparison.algorithms.StringComparison;
 import comparison.resultObjects.FileComparison;
 import normalisation.elements.elementContainers.JavaFile;
 import org.junit.Assert;
@@ -118,5 +119,16 @@ public class TestMain {
         FileComparison comp = new FileComparison(base, test, finger);
 
         Assert.assertEquals(100, comp.getScore());
+    }
+
+    @Test
+    public void testStringAlgorithm() throws Exception {
+
+        JavaFile base = new JavaFile(new File(DIR_PREFIX + "TestClass.java"));
+        JavaFile test = new JavaFile(new File(DIR_PREFIX + "AllChanged.txt"));
+        ComparisonAlgorithm str = new StringComparison();
+        FileComparison comp = new FileComparison(base,test,str);
+        System.out.println(comp.getScore());
+
     }
 }

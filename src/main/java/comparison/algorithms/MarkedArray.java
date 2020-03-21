@@ -2,24 +2,25 @@ package comparison.algorithms;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class MarkedArray {
 
     private final String[][] array;
 
     public MarkedArray(String text) {
-        String[] split_text = text.split("\\w+");
+        String[] split_text = text.split("\\s+");
         array = new String[2][split_text.length];
         array[0] = split_text;
         for (int i = 0; i < array[1].length; i++) {
             array[1][i] = "";
         }
-        System.out.println(Arrays.toString(array[0]));
-        System.out.println(Arrays.toString(array[1]));
 
     }
 
+    public void print(){
+        System.out.println(Arrays.toString(array[0]));
+        System.out.println(Arrays.toString(array[1]));
+    }
     public String get(int index) {
         if (index > array[0].length) return null;
         return array[0][index];
@@ -34,26 +35,27 @@ public class MarkedArray {
     }
 
     public int getNextUnmarkedTokenIndex(int index) {
-        return distanceToNext(index, false);
+        return indexOfNext(index, false);
     }
 
     public int getNextTileIndex(int index) {
-        return distanceToNext(index, true);
+        return indexOfNext(index, true);
     }
+    public int distanceToNextTile(int index ) { return index = getNextTileIndex(index); }
 
     public int size() {
         return array[0].length;
     }
 
-    private int distanceToNext(int index, boolean marked) {
-        int next_marked = -1;
+    private int indexOfNext(int index, boolean marked) {
+        int next = -1;
         for (int i = index + 1; i < array[1].length; i++) {
-            if (marked && !array[1][i].isEmpty()) {
-                next_marked = i;
+            if (marked && isMarked(i)) {
+                next = i;
                 break;
             }
         }
-        return next_marked;
+        return next;
     }
 
     public String getString(int start, int end){

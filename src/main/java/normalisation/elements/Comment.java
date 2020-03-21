@@ -7,6 +7,7 @@ import java.util.List;
 public class Comment implements JavaElement, Text {
 
     private String comment = "";
+    private String original_string;
 
     public Comment(String comment) {
         this.comment = comment;
@@ -21,10 +22,16 @@ public class Comment implements JavaElement, Text {
             if (i != comments.size() - 1) sb.append("/n");
         }
         comment = sb.toString();
+        original_string = this.toString();
     }
 
     public String toString() {
         return comment;
+    }
+
+    @Override
+    public String originalString() {
+        return original_string;
     }
 
     @Override

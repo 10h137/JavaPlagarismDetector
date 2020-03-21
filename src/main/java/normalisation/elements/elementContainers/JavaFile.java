@@ -1,5 +1,7 @@
 package normalisation.elements.elementContainers;
 
+import normalisation.elements.JavaElement;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -14,7 +16,7 @@ import java.util.stream.Collectors;
 /**
  *
  */
-public class JavaFile extends ElementContainer {
+public class JavaFile extends ElementContainer implements JavaElement {
 
     private List<String> imports;
     private File file;
@@ -25,6 +27,7 @@ public class JavaFile extends ElementContainer {
         imports = getImports(lines);
         combineComments();
         this.file = file;
+        this.original_string = this.toString();
     }
 
     /**
@@ -101,6 +104,8 @@ public class JavaFile extends ElementContainer {
         }
         return sb.toString() + super.toString();
     }
+
+
 
     public void sortImports() {
         Collections.sort(imports);

@@ -17,6 +17,7 @@ public class ClassObject extends ElementContainer implements JavaElement {
         parseDeclaration(lines.get(0));
         body = getElements(".+\\(.*\\).*\\{\\s*", lines, Method.class);
         combineComments();
+        this.original_string = this.toString();
     }
 
     /**
