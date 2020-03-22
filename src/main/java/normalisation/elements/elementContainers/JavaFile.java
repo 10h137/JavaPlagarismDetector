@@ -5,6 +5,7 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 /**
  *
  */
+
 public class JavaFile extends ElementContainer implements JavaElement {
 
     private List<String> imports;

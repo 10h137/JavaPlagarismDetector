@@ -3,6 +3,8 @@ package comparison.algorithms;
 import com.github.s3curitybug.similarityuniformfuzzyhash.UniformFuzzyHash;
 import normalisation.elements.elementContainers.JavaFile;
 
+import static com.github.s3curitybug.similarityuniformfuzzyhash.UniformFuzzyHash.SimilarityTypes.ARITHMETIC_MEAN;
+
 public class FingerprintComparison implements ComparisonAlgorithm {
 
     @Override
@@ -16,7 +18,7 @@ public class FingerprintComparison implements ComparisonAlgorithm {
 
         if (file1_size == 0 || file2_size == 0) return 0;
 
-        return file1_size > file2_size ? hash2.similarity(hash1) : hash1.similarity(hash2);
+        return file1_size > file2_size ? hash2.similarity(hash1, ARITHMETIC_MEAN) : hash1.similarity(hash2,ARITHMETIC_MEAN);
     }
 
 

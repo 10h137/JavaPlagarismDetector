@@ -1,6 +1,8 @@
 package normalisation.elements;
 
-public interface JavaElement {
+import java.io.Serializable;
+
+public interface JavaElement extends Serializable {
 
     String toString();
 

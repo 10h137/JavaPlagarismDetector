@@ -34,8 +34,14 @@ public class MarkedArray {
         array[1][index] = "*";
     }
 
-    public int getNextUnmarkedTokenIndex(int index) {
-        return indexOfNext(index, false);
+    public int getNextUnmarkedTokenIndexAfterTile(int index) {
+        int next_tile = index + distanceToNextTile(index);
+        if(next_tile < index) return array[0].length;
+        for (int i = next_tile; i < array[0].length; i++) {
+            if(!isMarked(i)) return i;
+        }
+
+        return array[0].length;
     }
 
     public int getNextTileIndex(int index) {

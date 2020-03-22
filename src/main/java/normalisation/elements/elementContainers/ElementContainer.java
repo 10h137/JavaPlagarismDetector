@@ -9,6 +9,7 @@ import normalisation.util.ProtectionLevel;
 import normalisation.util.Text;
 import org.javatuples.Pair;
 
+import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -21,7 +22,7 @@ import static normalisation.util.MapFile.replacement_map;
 /**
  *
  */
-public abstract class ElementContainer {
+public abstract class ElementContainer implements JavaElement {
 
     public List<JavaElement> body = new ArrayList<>();
     String declaration = "";

@@ -5,10 +5,11 @@ import normalisation.elements.elementContainers.ClassObject;
 import normalisation.elements.elementContainers.JavaFile;
 import normalisation.elements.elementContainers.Method;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class FileComparison implements Comparable {
+public class FileComparison implements Comparable, Serializable {
 
 
     // TODO change
@@ -81,6 +82,7 @@ public class FileComparison implements Comparable {
         for (MethodComparison method_comparison : method_comparisons) {
             sb.append(method_comparison.getReport()).append("\n");
         }
+
         return sb.toString();
     }
 

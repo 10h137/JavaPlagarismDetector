@@ -27,7 +27,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static main.ExpandedGUI.expandedWindow;
@@ -79,7 +78,9 @@ public class GUI extends Application {
         // button to expand the selected comparison in a new window
         Button btn_expand_comparison = new Button("Expand Comparison");
         GridPane.setHalignment(btn_expand_comparison, HPos.CENTER);
-        btn_expand_comparison.setOnAction(x -> expandedWindow(selected_comparison));
+        btn_expand_comparison.setOnAction(x -> {
+            if (selected_comparison != null) expandedWindow(selected_comparison);
+        });
 
         // creates layout
         GridPane grid_pane = new GridPane();
@@ -128,9 +129,12 @@ public class GUI extends Application {
         // set actions for file comparison list
         // on clicked update info text
         comparisons.setOnMouseClicked(l -> {
-            selected_comparison = file_comparison_objects.get(comparisons.getSelectionModel().getSelectedIndex());
-            String report_string = selected_comparison.getReport();
-            info.setText(report_string);
+            int selected_index = comparisons.getSelectionModel().getSelectedIndex();
+            if (selected_index < file_comparison_objects.size()) {
+                selected_comparison = file_comparison_objects.get(selected_index);
+                String report_string = selected_comparison.getReport();
+                info.setText(report_string);
+            }
         });
         // on arrow key actions update info text to new selection
         comparisons.setOnKeyPressed(x -> {

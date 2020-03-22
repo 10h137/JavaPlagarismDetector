@@ -1,16 +1,20 @@
 package comparison.resultObjects;
 
+import com.github.s3curitybug.similarityuniformfuzzyhash.UniformFuzzyHash;
 import normalisation.elements.Variable;
 import normalisation.elements.elementContainers.Method;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.github.s3curitybug.similarityuniformfuzzyhash.UniformFuzzyHash.SimilarityTypes.ARITHMETIC_MEAN;
 
 /**
  *
  */
-public class MethodComparison {
+public class MethodComparison implements Serializable {
 
     public final Method m1;
     public final Method m2;
@@ -70,7 +74,7 @@ public class MethodComparison {
         new2 = new2.replaceAll("\\(", "");
         new2 = new2.replaceAll("\\{", "");
         new2 = new2.replaceAll("}", "");
-        string_similarity = (int) (StringUtils.getJaroWinklerDistance(new1, new2) * 100);
+        string_similarity = (int) ((new UniformFuzzyHash(new1, 5)).similarity(new UniformFuzzyHash(new2,5 ),ARITHMETIC_MEAN) * 100);
     }
 
     /**

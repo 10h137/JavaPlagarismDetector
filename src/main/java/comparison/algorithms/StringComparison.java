@@ -7,8 +7,8 @@ import java.util.*;
 public class StringComparison implements ComparisonAlgorithm {
 
 
-    public  List<Queue<Match>> match_list = new ArrayList<>();
-    private  List<Match> tiles = new ArrayList<>();
+    public List<Queue<Match>> match_list = new ArrayList<>();
+    private List<Match> tiles = new ArrayList<>();
 
     /**
      * Executes the Running-Karp-Rabin-Greedy-String-Tiling algorithm
@@ -49,7 +49,7 @@ public class StringComparison implements ComparisonAlgorithm {
         MarkedArray P_vals = new MarkedArray(P);
         Set<Integer> s = new HashSet<>();
         while (true) {
-            if(s.contains(search_len))break;
+            if (s.contains(search_len)) break;
             s.add(search_len);
             int l_max = scanPattern(T_vals, P_vals, search_len);
             if (l_max > (2 * search_len)) search_len = l_max;
@@ -69,9 +69,26 @@ public class StringComparison implements ComparisonAlgorithm {
         int coverage = tiles.stream().map(x -> x.len).reduce(Integer::sum).orElse(0);
         System.out.println("Coverage " + coverage);
         //((double) 2 * coverage) / ((double) (P.size() + T.size()));
-        return ((double) coverage) / ((double) ( T.size())) ;
+        if (coverage > T.size()) {
+            for (Match tile : tiles) {
+                System.out.println(T.getString(tile.s_pos, tile.s_pos + tile.len));
+                List<Match> ls = new ArrayList<>();
+                ls.addAll(tiles);
+                ls.remove(tile);
+                if (isOccluded(tile, ls)) {
+                    System.out.println("bbbbbbbbbbbbbbb");
+                }
+            }
+        }
+        return ((double) coverage) / ((double) (T.size()));
     }
 
+    private int scanPattern(MarkedArray text_string, MarkedArray pattern_string, int search_len) {
+        CustomHashMap map = new CustomHashMap();
+
+        scan(text_string, pattern_string, true, search_len, map);
+        return scan(text_string, pattern_string, false, search_len, map);
+    }
 
     private void markStrings(MarkedArray T, MarkedArray P) {
         for (Queue<Match> queue : match_list) {
@@ -89,43 +106,10 @@ public class StringComparison implements ComparisonAlgorithm {
         match_list.clear();
     }
 
-    private static int generateHash(String str) {
-        int hashValue = 0;
-        for (int i = 0; i < str.length(); i++) {
-            hashValue = ((hashValue << 1) + (int) str.charAt(i));
-        }
-        return hashValue;
-    }
-
     private boolean isOccluded(Match match, List<Match> tiles) {
-        for (Match tile : tiles) {
-            return (Math.max(match.p_pos, tile.p_pos) <= Math.min(match.p_pos + match.len, tile.p_pos + tile.len)
-                    ||
-                    Math.max(match.s_pos, tile.s_pos) <= Math.min(match.s_pos + match.len, tile.s_pos + tile.len)
-            );
-
-        }
-        return false;
-    }
-
-//    private  boolean isOccluded(Match match, List<Match> tiles) {
-//        if(tiles.equals(null) || tiles == null || tiles.size() == 0)
-//            return false;
-//        for (Match matches : tiles) {
-//            if ((matches.p_pos + matches.len == match.p_pos
-//                    + match.len)
-//                    && (matches.s_pos + matches.len == match.s_pos
-//                    + match.len))
-//                return true;
-//        }
-//        return false;
-//    }
-
-    private int scanPattern(MarkedArray text_string, MarkedArray pattern_string, int search_len){
-        CustomHashMap map = new CustomHashMap();
-
-        scan(text_string, pattern_string, true, search_len, map);
-        return scan(text_string, pattern_string, false, search_len, map);
+        return tiles.stream().anyMatch(tile -> Math.max(match.p_pos, tile.p_pos) <= Math.min(match.p_pos + match.len, tile.p_pos + tile.len)
+                ||
+                Math.max(match.s_pos, tile.s_pos) <= Math.min(match.s_pos + match.len, tile.s_pos + tile.len));
     }
 
     private int scan(MarkedArray text_string, MarkedArray pattern_string, boolean text, int search_len, CustomHashMap map) {
@@ -138,6 +122,7 @@ public class StringComparison implements ComparisonAlgorithm {
         boolean no_next_tile = false;
         int current_index = 0;
         while (current_index < arr.size() - 1) {
+            // if current token is marked, move to next token
             if (arr.isMarked(current_index)) {
                 current_index++;
                 continue;
@@ -150,17 +135,17 @@ public class StringComparison implements ComparisonAlgorithm {
             }
 
             if (distance_to_tile < search_len) {
+                // if not enough space left for another tile, skip to end and break out of loop
                 if (no_next_tile) {
                     current_index = arr.size();
                 } else {
-                    current_index = arr.getNextUnmarkedTokenIndex(current_index);
+                    current_index = arr.getNextUnmarkedTokenIndexAfterTile(current_index);
                     if (current_index < 0) current_index = arr.size();
                 }
             } else {
                 if (text) {
                     // if the text string is being processed
                     map.add(generateHash(arr.getString(current_index, current_index + search_len - 1)), current_index);
-                    current_index++;
                 } else {
                     // if the pattern string is being processed
                     String pattern_substring = arr.getString(current_index, current_index + search_len - 1);
@@ -190,8 +175,8 @@ public class StringComparison implements ComparisonAlgorithm {
                         }
                     }
 
-                    current_index++;
                 }
+                current_index++;
             }
 
         }
@@ -200,6 +185,14 @@ public class StringComparison implements ComparisonAlgorithm {
             match_list.add(match_queue);
         }
         return longest_match;
+    }
+
+    private static int generateHash(String str) {
+        int hashValue = 0;
+        for (int i = 0; i < str.length(); i++) {
+            hashValue = ((hashValue << 1) + (int) str.charAt(i));
+        }
+        return hashValue;
     }
 
 

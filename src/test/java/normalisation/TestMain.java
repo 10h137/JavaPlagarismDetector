@@ -8,7 +8,7 @@ import normalisation.elements.elementContainers.JavaFile;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.File;
+import java.io.*;
 import java.util.EnumSet;
 
 public class TestMain {
@@ -127,8 +127,28 @@ public class TestMain {
         JavaFile base = new JavaFile(new File(DIR_PREFIX + "TestClass.java"));
         JavaFile test = new JavaFile(new File(DIR_PREFIX + "AllChanged.txt"));
         ComparisonAlgorithm str = new StringComparison();
-        FileComparison comp = new FileComparison(base,test,str);
+        FileComparison comp = new FileComparison(base, test, str);
         System.out.println(comp.getScore());
 
+
     }
+
+
+    @Test
+    public void write() throws Exception {
+
+        JavaFile base = new JavaFile(new File(DIR_PREFIX + "TestClass.java"));
+
+        ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream("ooo.txt"));
+        os.writeObject(base);
+
+        ObjectInputStream is = new ObjectInputStream(new FileInputStream("ooo.txt"));
+        JavaFile a = (JavaFile) is.readObject();
+
+        System.out.println(a.getClasses().get(0));
+        System.out.println(a);
+
+
+    }
+
 }
