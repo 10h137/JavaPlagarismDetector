@@ -2,6 +2,7 @@ package normalisation.elements.elementContainers;
 
 import normalisation.elements.JavaElement;
 import normalisation.elements.Variable;
+import normalisation.util.CommentPatterns;
 import normalisation.util.ProtectionLevel;
 
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static normalisation.util.CommentPatterns.values;
 
 
 /**
@@ -21,7 +23,7 @@ public class Method extends ElementContainer implements JavaElement {
 
     private final List<Variable> args = new ArrayList<>();
     private boolean is_static = false;
-
+    private String return_type = "";
 
     /**
      * @param lines
@@ -67,11 +69,20 @@ public class Method extends ElementContainer implements JavaElement {
         String end = declaration.substring(split_index + 1, declaration.lastIndexOf(')'));
         end = end.replace(")", "");
 
+        // replace commas separating variables with ~ and leave commas that are between arrow brackets for generics <cds, cdscds>
         String[] dec = start.split("\\s+");
-        String[] args = end.split("\\s*,\\s*");
+        char[] t = end.toCharArray();
+        for (int i = 0; i < t.length; i++) {
+            if(t[i] == ',' && !checkInArrowBrackets(end, i)){
+                t[i]= '~';
+            }
+        }
+
+        String[] args = String.valueOf(t).split("\\s*~\\s*");
+
 
         name = dec[dec.length - 1];
-        String return_type = dec[dec.length - 2];
+        return_type = dec[dec.length - 2];
 
         List<String> protection_strings = Arrays.stream(ProtectionLevel.values())
                 .map(ProtectionLevel::getString)
@@ -96,6 +107,20 @@ public class Method extends ElementContainer implements JavaElement {
                 .forEach(arg -> this.args.add(new Variable(arg)));
     }
 
+    public static boolean checkInArrowBrackets(String line, int index) {
+        char[] right = line.substring(index).toCharArray();
+        int right_count = 0;
+        for (char c : right) {
+            if (c == '>') right_count++;
+
+        }
+
+        // TODO fix for all comment patterns
+        boolean in_comment = Arrays.stream(values())
+                .map(CommentPatterns::getValue)
+                .anyMatch(line::matches);
+        return ((right_count % 2 != 0)) || in_comment;
+    }
 
     @Override
     public List<Variable> getVariables() {

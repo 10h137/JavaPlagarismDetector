@@ -28,8 +28,6 @@ public class StringComparison implements ComparisonAlgorithm {
 
         MarkedArray T_vals = new MarkedArray(longer);
         MarkedArray P_vals = new MarkedArray(shorter);
-        System.out.println("T size " + T_vals.size());
-        System.out.println("P size " + P_vals.size());
 
         return getScore(T_vals, P_vals);
 
@@ -67,17 +65,11 @@ public class StringComparison implements ComparisonAlgorithm {
 
     public double getScore(MarkedArray P, MarkedArray T) {
         int coverage = tiles.stream().map(x -> x.len).reduce(Integer::sum).orElse(0);
-        System.out.println("Coverage " + coverage);
         //((double) 2 * coverage) / ((double) (P.size() + T.size()));
         if (coverage > T.size()) {
             for (Match tile : tiles) {
-                System.out.println(T.getString(tile.s_pos, tile.s_pos + tile.len));
-                List<Match> ls = new ArrayList<>();
-                ls.addAll(tiles);
+                List<Match> ls = new ArrayList<>(tiles);
                 ls.remove(tile);
-                if (isOccluded(tile, ls)) {
-                    System.out.println("bbbbbbbbbbbbbbb");
-                }
             }
         }
         return ((double) coverage) / ((double) (T.size()));

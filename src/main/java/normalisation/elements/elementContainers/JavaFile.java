@@ -26,7 +26,7 @@ public class JavaFile extends ElementContainer implements JavaElement {
 
     public JavaFile(File file) throws IOException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         List<String> lines = preProcess(Files.readAllLines(Paths.get(file.getAbsolutePath())));
-        body = getElements(".*class\\s+.*\\{\\s*", lines, ClassObject.class);
+        body = getElements(".*(class|interface)\\s+.*\\{\\s*", lines, ClassObject.class);
         imports = getImports(lines);
         combineComments();
         this.file = file;

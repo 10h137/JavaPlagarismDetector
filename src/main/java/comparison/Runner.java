@@ -85,7 +85,6 @@ public class Runner extends Task<List<FileComparison>> {
                 continue;
 
             }
-            System.out.println(file.getName());
             try {
                 java_files.add(new JavaFile(file));
             } catch (Exception e) {
@@ -97,8 +96,6 @@ public class Runner extends Task<List<FileComparison>> {
 
         file_count.setText("Files -> " + java_files.size());
         for (JavaFile java_file : java_files) {
-            java_file.getClasses().get(0).getMethods().forEach(x -> System.out.println(x + "\n\n\n"));
-            System.out.println("\n\n\n------");
             normaliser.normaliseFile(java_file);
             percent += normalisation_percentage;
             this.updateProgress(percent, 100);
@@ -121,14 +118,12 @@ public class Runner extends Task<List<FileComparison>> {
             }
         }
 
-        System.out.println("pppp");
         // filter only file comparisons that exceed a certain similarity threshold
         comparisons = comparisons.stream()
                 .filter(x -> x.getScore() > THRESHOLD)
                 .sorted()
                 .collect(Collectors.toList());
         this.comparisons = comparisons;
-        System.out.println(comparisons.size());
         return comparisons;
 
     }

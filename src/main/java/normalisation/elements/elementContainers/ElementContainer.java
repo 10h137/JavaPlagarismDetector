@@ -12,6 +12,8 @@ import org.javatuples.Pair;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
@@ -130,8 +132,8 @@ public abstract class ElementContainer implements JavaElement {
     }
 
     //TODO fix to ignore return statements
-    private static boolean isVariableDeclaration(String line) {
-        return line.matches("^[0-9]*\\s*((public\\s+)|(private\\s+)|(protected\\s+)|)(static\\s+)?\\s*(final)?\\s*([A-z0-9]|[|]|<|>)+\\s+[A-z]+\\s*((=.+)|;).*\\s*");
+    public static boolean isVariableDeclaration(String line) {
+        return line.matches("^[0-9]*\\s*((public\\s+)|(private\\s+)|(protected\\s+)|)(static\\s+)?\\s*(final)?\\s*([A-z0-9]|[|]|<|>)+\\s+[A-z]+\\s*((=.+)|;).*\\s*") && !line.matches("\\breturn\\b.*");
     }
 
     public int getElementCount() {
@@ -269,7 +271,7 @@ public abstract class ElementContainer implements JavaElement {
      *
      * @return List of all variables within this container and its sub-containers
      */
-    List<Variable> getVariables() {
+    public List<Variable> getVariables() {
         List<Variable> variables = new ArrayList<>();
         for (JavaElement javaElement : body) {
             if (javaElement instanceof Variable) variables.add((Variable) javaElement);

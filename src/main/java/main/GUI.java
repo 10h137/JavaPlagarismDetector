@@ -43,6 +43,7 @@ public class GUI extends Application {
     private FileComparison selected_comparison = null;
     private List<FileComparison> file_comparison_objects = new ArrayList<>();
     private Text file_count = new Text();
+    static Thread task;
 
     public static void main(String[] args) {
         launch(args);
@@ -258,8 +259,9 @@ public class GUI extends Application {
                 // generates comparisons
                 Runner runner = new Runner(enabled_features, input_dir.get(), selected_class, this, file_count);
                 progress.progressProperty().bind(runner.progressProperty().asObject());
-
-                Thread task = new Thread(runner);
+                if(task != null)
+                    task.stop();
+                task = new Thread(runner);
                 task.start();
 
             } catch (Exception e) {
