@@ -1,5 +1,6 @@
 package normalisation;
 
+import com.google.errorprone.annotations.Var;
 import comparison.algorithms.ComparisonAlgorithm;
 import comparison.algorithms.StringComparison;
 import comparison.resultObjects.FileComparison;
@@ -67,10 +68,13 @@ public class TestParse {
 
         JavaFile base = new JavaFile(new File(DIR_PREFIX + "TestClass.java"));
         base.getClasses().get(0).getVariables().forEach(x-> System.out.println(x + "\n"));
-        assertEquals(4, base.getClasses().get(0).getVariables().size());
+        assertEquals(4, base.getClasses().get(0).body.stream().filter(x -> x instanceof Variable).count());
 
     }
 
+    /**
+     * ensures some specific edge cases are not interpreted to be variables
+     */
     @Test
     public void testParseVariableDeclaration() throws Exception {
 

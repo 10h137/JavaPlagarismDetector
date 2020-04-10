@@ -37,7 +37,8 @@ public class TestPerformance {
     public void testStringAlgorithmPerformance() throws Exception {
         ComparisonAlgorithm alg = new StringComparison();
         long startTime = System.currentTimeMillis()/1000;
-        for(int i = 0 ; i< 1000 ; i ++){
+        int num_files = 1000;
+        for(int i = 0 ; i< num_files*num_files ; i ++){
             JavaFile base = new JavaFile(new File(DIR_PREFIX + "TestClass.java"));
             JavaFile test = new JavaFile(new File(DIR_PREFIX + "AllChanged.txt"));
             FileComparison comp = new FileComparison(base, test, alg);
@@ -53,7 +54,8 @@ public class TestPerformance {
     public void testFingerPrintAlgorithmPerformance() throws Exception {
         ComparisonAlgorithm alg = new FingerprintComparison();
         long startTime = System.currentTimeMillis()/1000;
-        for(int i = 0 ; i< 1000 ; i ++){
+        int num_files = 1000;
+        for(int i = 0 ; i< num_files*num_files ; i ++){
             JavaFile base = new JavaFile(new File(DIR_PREFIX + "TestClass.java"));
             JavaFile test = new JavaFile(new File(DIR_PREFIX + "AllChanged.txt"));
             FileComparison comp = new FileComparison(base, test, alg);
