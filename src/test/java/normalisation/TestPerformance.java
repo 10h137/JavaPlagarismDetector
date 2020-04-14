@@ -31,17 +31,20 @@ public class TestPerformance {
     public void testNormalisationPerformance() throws Exception {
         ComparisonAlgorithm alg = new StringComparison();
         long startTime = System.currentTimeMillis()/1000;
+        File myObj = new File("NormalisationTime.txt");
+        PrintWriter myWriter = new PrintWriter(new FileOutputStream(myObj));
         for(int i = 0 ; i< file_count ; i ++){
             Normaliser n = new Normaliser(EnumSet.allOf(Normaliser.Features.class));
-            JavaFile base = new JavaFile(new File(DIR_PREFIX + "TestClass.java"));
             JavaFile test = new JavaFile(new File(DIR_PREFIX + "AllChanged.txt"));
-            n.normaliseFile(base);
             n.normaliseFile(test);
-        }
+            if(i%100 == 0){
+                long endTime = System.currentTimeMillis()/1000;
+                long duration = (endTime - startTime);
+                myWriter.write("file count: " + i + " time: " + duration +"\n");
+                myWriter.flush();
+            }
 
-        long endTime = System.currentTimeMillis()/1000;
-        long duration = (endTime - startTime);
-        System.out.println(duration);
+        }
     }
 
     @Test
@@ -49,7 +52,7 @@ public class TestPerformance {
         ComparisonAlgorithm alg = new FingerprintComparison();
         long startTime = System.currentTimeMillis()/1000;
         File myObj = new File("FingerAlg.txt");
-        PrintWriter myWriter = new PrintWriter(new FileOutputStream("FingerAlg.txt"));
+        PrintWriter myWriter = new PrintWriter(new FileOutputStream(myObj));
 
         for(int i = 0 ; i< file_count*file_count ; i ++){
             if(file_counts.containsKey(i)){
@@ -72,7 +75,7 @@ public class TestPerformance {
         ComparisonAlgorithm alg = new StringComparison();
         long startTime = System.currentTimeMillis()/1000;
         File myObj = new File("StringComp.txt");
-        PrintWriter myWriter = new PrintWriter(new FileOutputStream("StringComp.txt"));
+        PrintWriter myWriter = new PrintWriter(new FileOutputStream(myObj));
 
         for(int i = 0 ; i< file_count*file_count ; i ++){
             if(file_counts.containsKey(i)){
