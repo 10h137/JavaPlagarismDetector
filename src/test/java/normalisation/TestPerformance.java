@@ -47,10 +47,10 @@ public class TestPerformance {
 
     @Test
     public void testStringAlgorithmPerformance() throws Exception {
-        ComparisonAlgorithm alg = new FingerprintComparison();
+        ComparisonAlgorithm alg = new StringComparison();
         long startTime = System.currentTimeMillis()/1000;
-        File myObj = new File("filename.txt");
-        PrintWriter myWriter = new PrintWriter(new FileOutputStream("filename.txt"));
+        File myObj = new File("StringComp.txt");
+        PrintWriter myWriter = new PrintWriter(new FileOutputStream("StringComp.txt"));
 
         for(int i = 0 ; i< file_count*file_count ; i ++){
             if(file_counts.containsKey(i)){
@@ -66,28 +66,29 @@ public class TestPerformance {
         }
 
         myWriter.close();
-
-        long endTime = System.currentTimeMillis()/1000;
-
-        long duration = (endTime - startTime);
-        System.out.println(duration);
     }
 
     @Test
     public void testFingerPrintAlgorithmPerformance() throws Exception {
         ComparisonAlgorithm alg = new FingerprintComparison();
         long startTime = System.currentTimeMillis()/1000;
-        int num_files = 1000;
-        for(int i = 0 ; i< num_files*num_files ; i ++){
+        File myObj = new File("FingerAlg.txt");
+        PrintWriter myWriter = new PrintWriter(new FileOutputStream("FingerAlg.txt"));
+
+        for(int i = 0 ; i< file_count*file_count ; i ++){
+            if(file_counts.containsKey(i)){
+                long endTime = System.currentTimeMillis()/1000;
+                long duration = (endTime - startTime);
+                myWriter.write("file count: " + file_counts.get(i) + " time: " + duration +"\n");
+                myWriter.flush();
+            }
+
             JavaFile base = new JavaFile(new File(DIR_PREFIX + "TestClass.java"));
             JavaFile test = new JavaFile(new File(DIR_PREFIX + "AllChanged.txt"));
             FileComparison comp = new FileComparison(base, test, alg);
         }
 
-        long endTime = System.currentTimeMillis()/1000;
-
-        long duration = (endTime - startTime);
-        System.out.println(duration);
+        myWriter.close();
     }
 
 }
