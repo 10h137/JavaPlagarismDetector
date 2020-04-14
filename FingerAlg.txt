@@ -1,0 +1,5 @@
+file count: 0 time: 0
+file count: 100 time: 67
+file count: 200 time: 249
+file count: 300 time: 546
+file count: 400 time: 1005

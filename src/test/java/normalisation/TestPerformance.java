@@ -27,25 +27,25 @@ public class TestPerformance {
             file_counts.put(i * i, i);
         };
     }
-    @Test
-    public void testNormalisationPerformance() throws Exception {
-        ComparisonAlgorithm alg = new StringComparison();
-        long startTime = System.currentTimeMillis()/1000;
-        File myObj = new File("NormalisationTime.txt");
-        PrintWriter myWriter = new PrintWriter(new FileOutputStream(myObj));
-        for(int i = 0 ; i< file_count ; i ++){
-            Normaliser n = new Normaliser(EnumSet.allOf(Normaliser.Features.class));
-            JavaFile test = new JavaFile(new File(DIR_PREFIX + "AllChanged.txt"));
-            n.normaliseFile(test);
-            if(i%100 == 0){
-                long endTime = System.currentTimeMillis()/1000;
-                long duration = (endTime - startTime);
-                myWriter.write("file count: " + i + " time: " + duration +"\n");
-                myWriter.flush();
-            }
-
-        }
-    }
+//    @Test
+//    public void testNormalisationPerformance() throws Exception {
+//        ComparisonAlgorithm alg = new StringComparison();
+//        long startTime = System.currentTimeMillis()/1000;
+//        File myObj = new File("NormalisationTime.txt");
+//        PrintWriter myWriter = new PrintWriter(new FileOutputStream(myObj));
+//        for(int i = 0 ; i< file_count ; i ++){
+//            Normaliser n = new Normaliser(EnumSet.allOf(Normaliser.Features.class));
+//            JavaFile test = new JavaFile(new File(DIR_PREFIX + "AllChanged.txt"));
+//            n.normaliseFile(test);
+//            if(i%100 == 0){
+//                long endTime = System.currentTimeMillis()/1000;
+//                long duration = (endTime - startTime);
+//                myWriter.write("file count: " + i + " time: " + duration +"\n");
+//                myWriter.flush();
+//            }
+//
+//        }
+//    }
 
     @Test
     public void testFingerPrintAlgorithmPerformance() throws Exception {
@@ -54,17 +54,21 @@ public class TestPerformance {
         File myObj = new File("FingerAlg.txt");
         PrintWriter myWriter = new PrintWriter(new FileOutputStream(myObj));
 
-        for(int i = 0 ; i< file_count*file_count ; i ++){
-            if(file_counts.containsKey(i)){
-                long endTime = System.currentTimeMillis()/1000;
-                long duration = (endTime - startTime);
-                myWriter.write("file count: " + file_counts.get(i) + " time: " + duration +"\n");
-                myWriter.flush();
-            }
+        JavaFile base = new JavaFile(new File(DIR_PREFIX + "TestClass.java"));
+        JavaFile test = new JavaFile(new File(DIR_PREFIX + "AllChanged.txt"));
 
-            JavaFile base = new JavaFile(new File(DIR_PREFIX + "TestClass.java"));
-            JavaFile test = new JavaFile(new File(DIR_PREFIX + "AllChanged.txt"));
-            FileComparison comp = new FileComparison(base, test, alg);
+        int comp_counter = 0;
+        for(int h = 0; h < file_count; h++){
+            for (int j = h+1 ; j< file_count; j++){
+                if(file_counts.containsKey(comp_counter)){
+                    long endTime = System.currentTimeMillis()/1000;
+                    long duration = (endTime - startTime);
+                    myWriter.write("file count: " + file_counts.get(comp_counter) + " time: " + duration +"\n");
+                    myWriter.flush();
+                }
+
+                FileComparison comp = new FileComparison(base, test, alg);
+            }
         }
 
         myWriter.close();
@@ -76,18 +80,22 @@ public class TestPerformance {
         long startTime = System.currentTimeMillis()/1000;
         File myObj = new File("StringComp.txt");
         PrintWriter myWriter = new PrintWriter(new FileOutputStream(myObj));
+        JavaFile base = new JavaFile(new File(DIR_PREFIX + "TestClass.java"));
+        JavaFile test = new JavaFile(new File(DIR_PREFIX + "AllChanged.txt"));
 
-        for(int i = 0 ; i< file_count*file_count ; i ++){
-            if(file_counts.containsKey(i)){
-                long endTime = System.currentTimeMillis()/1000;
-                long duration = (endTime - startTime);
-                myWriter.write("file count: " + file_counts.get(i) + " time: " + duration +"\n");
-                myWriter.flush();
+        int comp_counter = 0;
+        for(int h = 0; h < file_count; h++){
+            for (int j = h+1 ; j< file_count; j++){
+                if(file_counts.containsKey(comp_counter)){
+                    long endTime = System.currentTimeMillis()/1000;
+                    long duration = (endTime - startTime);
+                    myWriter.write("file count: " + file_counts.get(comp_counter) + " time: " + duration +"\n");
+                    myWriter.flush();
+                }
+
+
+                FileComparison comp = new FileComparison(base, test, alg);
             }
-
-            JavaFile base = new JavaFile(new File(DIR_PREFIX + "TestClass.java"));
-            JavaFile test = new JavaFile(new File(DIR_PREFIX + "AllChanged.txt"));
-            FileComparison comp = new FileComparison(base, test, alg);
         }
 
         myWriter.close();
