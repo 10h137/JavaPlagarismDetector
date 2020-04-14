@@ -1,5 +1,6 @@
 package comparison;
 
+import com.google.common.util.concurrent.AtomicDouble;
 import comparison.algorithms.ComparisonAlgorithm;
 import comparison.resultObjects.FileComparison;
 import javafx.concurrent.Task;
@@ -8,6 +9,7 @@ import main.GUI;
 import normalisation.Normaliser;
 import normalisation.Normaliser.Features;
 import normalisation.elements.elementContainers.JavaFile;
+import org.checkerframework.common.value.qual.IntRange;
 
 import java.io.File;
 import java.io.IOException;
