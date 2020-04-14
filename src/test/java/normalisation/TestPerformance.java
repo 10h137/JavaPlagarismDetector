@@ -68,6 +68,7 @@ public class TestPerformance {
                 }
 
                 FileComparison comp = new FileComparison(base, test, alg);
+                comp_counter++;
             }
         }
 
@@ -95,6 +96,7 @@ public class TestPerformance {
 
 
                 FileComparison comp = new FileComparison(base, test, alg);
+                comp_counter++;
             }
         }
 
