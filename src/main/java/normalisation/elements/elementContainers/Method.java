@@ -29,6 +29,8 @@ public class Method extends ElementContainer implements JavaElement {
     List<String> type_list;
     List<String> name_list;
     List<String> dec_list;
+    int final_size = -1;
+    int final_var_size = -1;
 
 
 
@@ -49,6 +51,21 @@ public class Method extends ElementContainer implements JavaElement {
         combineComments();
         original_string = this.toString();
     }
+
+    public int getFinalSize(){
+        if(final_size == -1){
+            final_size = body.size();
+        }
+        return final_size;
+    }
+
+    public int getFinalVarSize(){
+        if(final_var_size == -1){
+            final_var_size = this.getVariables().size();
+        }
+        return final_var_size;
+    }
+
 
     public List<String> getTypeList(){
         if(type_list==null){

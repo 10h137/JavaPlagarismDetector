@@ -1,12 +1,11 @@
 package comparison.resultObjects;
 
-import com.github.s3curitybug.similarityuniformfuzzyhash.UniformFuzzyHash;
-import normalisation.elements.Variable;
 import normalisation.elements.elementContainers.Method;
 
 import java.io.Serializable;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.github.s3curitybug.similarityuniformfuzzyhash.UniformFuzzyHash.SimilarityTypes.ARITHMETIC_MEAN;
 
@@ -30,14 +29,14 @@ public class MethodComparison implements Serializable {
      *
      * @param m1 1st method
      * @param m2 2nd method
-     */ 
+     */
     public MethodComparison(Method m1, Method m2) {
 
         this.m1 = m1;
         this.m2 = m2;
 
-        int m1_var_count = m1.getVariables().size();
-        int m2_var_count = m2.getVariables().size();
+        int m1_var_count = m1.getFinalVarSize();
+        int m2_var_count = m2.getFinalVarSize();
         var_count_score = (int) (((double) Math.min(m1_var_count, m2_var_count) / (double) Math.max(m1_var_count, m2_var_count)) * 100);
 
         List<String> m1_types = m1.getTypeList();
@@ -52,13 +51,13 @@ public class MethodComparison implements Serializable {
         List<String> m2_dec = m2.getDecList();
         exact_declaration_score = getMatchScore(m1_dec, m2_dec);
 
-        int m1_line_count = m1.body.size();
-        int m2_line_count = m2.body.size();
+        int m1_line_count = m1.getFinalSize();
+        int m2_line_count = m2.getFinalSize();
         line_count_score = (int) (((double) Math.min(m1_line_count, m2_line_count) / (double) Math.max(m1_line_count, m2_line_count)) * 100);
 
         method_size_score = (int) (((double) Math.min(m1.length(), m2.length()) / (double) Math.max(m1.length(), m2.length())) * 100);
 
-        string_similarity = (int) (m1.getHash().similarity(m2.getHash(),ARITHMETIC_MEAN) * 100);
+        string_similarity = (int) (m1.getHash().similarity(m2.getHash(), ARITHMETIC_MEAN) * 100);
     }
 
     /**
@@ -75,25 +74,25 @@ public class MethodComparison implements Serializable {
         Map<String, Integer> p1 = new HashMap<>();
         Map<String, Integer> p2 = new HashMap<>();
 
-        s1.forEach(s -> p1.put(s, p1.containsKey(s) ? p1.get(s) + 1 : 0));
+        s1.forEach(s -> p1.put(s, p1.containsKey(s) ? p1.get(s) + 1 : 1));
 
-        s2.forEach(s -> p2.put(s, p2.containsKey(s) ? p2.get(s) + 1 : 0));
+        s2.forEach(s -> p2.put(s, p2.containsKey(s) ? p2.get(s) + 1 : 1));
 
         int count = 0;
         for (String s : s1) {
-          if(p2.containsKey(s) && p1.containsKey(s)){
-              int new_p2_count = p2.get(s)- 1;
-              int new_p1_count = p1.get(s)- 1;
-              count++;
-              if(new_p2_count == 0 || new_p1_count == 0){
-                  p2.remove(s);
-                  p1.remove(s);
-              }else{
-                  p1.put(s,new_p1_count);
-                  p2.put(s,new_p2_count);
-              }
+            if (p2.containsKey(s) && p1.containsKey(s)) {
+                int new_p2_count = p2.get(s) - 1;
+                int new_p1_count = p1.get(s) - 1;
+                count++;
+                if (new_p2_count == 0 || new_p1_count == 0) {
+                    p2.remove(s);
+                    p1.remove(s);
+                } else {
+                    p1.put(s, new_p1_count);
+                    p2.put(s, new_p2_count);
+                }
 
-          }
+            }
         }
 
         return (int) (((double) count / (double) Math.max(s1_size, s2_size)) * 100);
