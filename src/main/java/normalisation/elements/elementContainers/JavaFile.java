@@ -1,11 +1,9 @@
 package normalisation.elements.elementContainers;
 
 import normalisation.elements.JavaElement;
-import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -23,6 +21,7 @@ public class JavaFile extends ElementContainer implements JavaElement {
 
     private List<String> imports;
     private File file;
+    private List<ClassObject> classes;
 
     public JavaFile(File file) throws IOException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         List<String> lines = preProcess(Files.readAllLines(Paths.get(file.getAbsolutePath())));
@@ -32,6 +31,8 @@ public class JavaFile extends ElementContainer implements JavaElement {
         this.file = file;
         this.original_string = this.toString();
     }
+
+
 
     /**
      * Normalises whitespace and numbers lines
@@ -99,6 +100,7 @@ public class JavaFile extends ElementContainer implements JavaElement {
 
     @Override
     public String toString() {
+
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < imports.size(); i++) {
             String anImport = imports.get(i);
@@ -120,10 +122,16 @@ public class JavaFile extends ElementContainer implements JavaElement {
      * @return list of ClassObject's
      */
     public List<ClassObject> getClasses() {
-        return body.stream().filter(x -> x instanceof ClassObject)
-                .map(ClassObject.class::cast)
-                .collect(Collectors.toList());
+        if(classes == null){
+            classes =  body.stream().filter(x -> x instanceof ClassObject)
+                    .map(ClassObject.class::cast)
+                    .collect(Collectors.toList());
+        }
+        return classes;
+
     }
+
+
 
 
 }

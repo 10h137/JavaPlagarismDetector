@@ -9,11 +9,8 @@ import normalisation.util.ProtectionLevel;
 import normalisation.util.Text;
 import org.javatuples.Pair;
 
-import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
@@ -32,6 +29,8 @@ public abstract class ElementContainer implements JavaElement {
     ProtectionLevel protection_level = ProtectionLevel.PROTECTED;
     private Comment comment = new Comment("");
     String original_string;
+    int length;
+
 
 
     public static List<JavaElement> getElements(String pattern, List<String> lines, Class<? extends JavaElement> element_class) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
@@ -92,6 +91,7 @@ public abstract class ElementContainer implements JavaElement {
         return elements;
 
     }
+
 
     public static boolean checkInString(String line, int index) {
         char[] right = line.substring(index).toCharArray();
@@ -327,12 +327,18 @@ public abstract class ElementContainer implements JavaElement {
      *
      * @return total length
      */
+
+    
     public int length() {
-        return body.stream()
-                .map(JavaElement::length)
-                .reduce(Integer::sum)
-                .orElse(0) + comment.length();
+        if(length==0){
+           length =  body.stream()
+                    .map(JavaElement::length)
+                    .reduce(Integer::sum)
+                    .orElse(0) + comment.length();
+        }
+        return length;
     }
+
 
     /**
      * Replaces variable related text in all elements and sub elements

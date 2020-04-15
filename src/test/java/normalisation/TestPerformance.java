@@ -1,108 +1,118 @@
 package normalisation;
 
+import com.github.s3curitybug.similarityuniformfuzzyhash.UniformFuzzyHash;
 import comparison.algorithms.ComparisonAlgorithm;
 import comparison.algorithms.FingerprintComparison;
 import comparison.algorithms.StringComparison;
 import comparison.resultObjects.FileComparison;
 import normalisation.elements.elementContainers.JavaFile;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class TestPerformance {
 
     final static String DIR_PREFIX = "src/test/java/normalisation/";
-    final static HashMap<Integer, Integer> file_counts = new HashMap<>() ;
-    final static int file_count = 5000;
+    final static Map<Integer, Integer> file_counts = new TreeMap<>();
+    final static int file_count = 10000;
 
     static {
-        for(int i = 0 ;i < file_count; i+=100) {
+        for (int i = 0; i <= file_count; i += 100) {
             file_counts.put(i * i, i);
-        };
+
+        }
     }
-//    @Test
-//    public void testNormalisationPerformance() throws Exception {
-//        ComparisonAlgorithm alg = new StringComparison();
-//        long startTime = System.currentTimeMillis()/1000;
-//        File myObj = new File("NormalisationTime.txt");
-//        PrintWriter myWriter = new PrintWriter(new FileOutputStream(myObj));
-//        for(int i = 0 ; i< file_count ; i ++){
-//            Normaliser n = new Normaliser(EnumSet.allOf(Normaliser.Features.class));
-//            JavaFile test = new JavaFile(new File(DIR_PREFIX + "AllChanged.txt"));
-//            n.normaliseFile(test);
-//            if(i%100 == 0){
-//                long endTime = System.currentTimeMillis()/1000;
-//                long duration = (endTime - startTime);
-//                myWriter.write("file count: " + i + " time: " + duration +"\n");
-//                myWriter.flush();
-//            }
-//
-//        }
-//    }
+    @Test
+    public void testNormalisationPerformance() throws Exception {
+        ComparisonAlgorithm alg = new StringComparison();
+        long startTime = System.currentTimeMillis()/1000;
+        File myObj = new File("NormalisationTime.txt");
+        PrintWriter myWriter = new PrintWriter(new FileOutputStream(myObj));
+        Normaliser n = new Normaliser(EnumSet.allOf(Normaliser.Features.class));
+
+        for(int i = 0 ; i< file_count ; i ++){
+            JavaFile test = new JavaFile(new File(DIR_PREFIX + "AllChanged.txt"));
+            n.normaliseFile(test);
+            if(i%100 == 0){
+                long endTime = System.currentTimeMillis()/1000;
+                long duration = (endTime - startTime);
+                myWriter.write("file count: " + i + " time: " + duration +"\n");
+                myWriter.flush();
+            }
+
+        }
+    }
 
     @Test
     public void testFingerPrintAlgorithmPerformance() throws Exception {
         ComparisonAlgorithm alg = new FingerprintComparison();
-        long startTime = System.currentTimeMillis()/1000;
         File myObj = new File("FingerAlg.txt");
         PrintWriter myWriter = new PrintWriter(new FileOutputStream(myObj));
 
         JavaFile base = new JavaFile(new File(DIR_PREFIX + "TestClass.java"));
         JavaFile test = new JavaFile(new File(DIR_PREFIX + "AllChanged.txt"));
 
-        int comp_counter = 0;
-        for(int h = 0; h < file_count; h++){
-            for (int j = h+1 ; j< file_count; j++){
-                if(file_counts.containsKey(comp_counter)){
-                    long endTime = System.currentTimeMillis()/1000;
-                    long duration = (endTime - startTime);
-                    myWriter.write("file count: " + file_counts.get(comp_counter) + " time: " + duration +"\n");
-                    myWriter.flush();
-                }
-
-                FileComparison comp = new FileComparison(base, test, alg);
-                comp_counter++;
-            }
+        // calculate average algorithm time
+        long startTime = System.nanoTime();
+        for (int h = 0; h < 20000; h++) {
+            FileComparison comp = new FileComparison(base, test, alg);
         }
+        long endTime = System.nanoTime();
+        long average_comparison_time = ((endTime - startTime) / (long) 20000);
 
+        long average_hash_time = getHashTime();
+        System.out.println(average_comparison_time);
+        for (Integer comparisons : file_counts.keySet()) {
+            int num_imput_files = file_counts.get(comparisons);
+            myWriter.write("file count: " + num_imput_files + " time: " +
+                    ((average_comparison_time * comparisons) + (average_hash_time * num_imput_files)) / 1000000000
+                    + "\n");
+        }
         myWriter.close();
+    }
+
+    public long getHashTime() throws Exception {
+        JavaFile base = new JavaFile(new File(DIR_PREFIX + "TestClass.java"));
+        // calculate average hash time
+        long startTime = System.nanoTime();
+        for (int i = 0; i < 20000; i++) {
+            UniformFuzzyHash a = new UniformFuzzyHash(base.toString(), 5);
+        }
+        long endTime = System.nanoTime();
+        return ((endTime - startTime) / (long) 20000);
     }
 
     @Test
     public void testStringAlgorithmPerformance() throws Exception {
         ComparisonAlgorithm alg = new StringComparison();
-        long startTime = System.currentTimeMillis()/1000;
         File myObj = new File("StringComp.txt");
         PrintWriter myWriter = new PrintWriter(new FileOutputStream(myObj));
         JavaFile base = new JavaFile(new File(DIR_PREFIX + "TestClass.java"));
         JavaFile test = new JavaFile(new File(DIR_PREFIX + "AllChanged.txt"));
 
-        int comp_counter = 0;
-        for(int h = 0; h < file_count; h++){
-            for (int j = h+1 ; j< file_count; j++){
-                if(file_counts.containsKey(comp_counter)){
-                    long endTime = System.currentTimeMillis()/1000;
-                    long duration = (endTime - startTime);
-                    myWriter.write("file count: " + file_counts.get(comp_counter) + " time: " + duration +"\n");
-                    myWriter.flush();
-                }
 
-
-                FileComparison comp = new FileComparison(base, test, alg);
-                comp_counter++;
-            }
+        // calculate average algorithm time
+        long startTime = System.nanoTime();
+        for (int h = 0; h < 20000; h++) {
+            FileComparison comp = new FileComparison(base, test, alg);
         }
+        long endTime = System.nanoTime();
+        long average_comparison_time = ((endTime - startTime) / (long) 20000);
 
+        System.out.println(average_comparison_time);
+        for (Integer comparisons : file_counts.keySet()) {
+            int num_imput_files = file_counts.get(comparisons);
+            myWriter.write("file count: " + num_imput_files + " time: " +
+                    (average_comparison_time * comparisons)/ 1000000000
+                    + "\n");
+        }
         myWriter.close();
     }
-
 
 
 }

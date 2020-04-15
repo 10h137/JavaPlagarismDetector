@@ -33,7 +33,8 @@ public class FileComparison implements Comparable, Serializable {
         this.file1 = file1;
         this.file2 = file2;
         // get all method comparisons that exceed a certain similarity threshold
-        method_comparisons = compareMethods(file1, file2).stream()
+        method_comparisons =
+                compareMethods(file1, file2).stream()
                 .filter(x -> x.getTotalScore() > THRESHOLD)
                 .collect(Collectors.toList());
         algorithm_score = (int) (alg.compareFiles(file1, file2) * 100);

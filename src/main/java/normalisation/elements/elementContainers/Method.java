@@ -1,5 +1,6 @@
 package normalisation.elements.elementContainers;
 
+import com.github.s3curitybug.similarityuniformfuzzyhash.UniformFuzzyHash;
 import normalisation.elements.JavaElement;
 import normalisation.elements.Variable;
 import normalisation.util.CommentPatterns;
@@ -24,6 +25,12 @@ public class Method extends ElementContainer implements JavaElement {
     private final List<Variable> args = new ArrayList<>();
     private boolean is_static = false;
     private String return_type = "";
+    private UniformFuzzyHash hash;
+    List<String> type_list;
+    List<String> name_list;
+    List<String> dec_list;
+
+
 
     /**
      * @param lines
@@ -43,6 +50,34 @@ public class Method extends ElementContainer implements JavaElement {
         original_string = this.toString();
     }
 
+    public List<String> getTypeList(){
+        if(type_list==null){
+            type_list= this.getVariables().stream().map(Variable::getType).collect(Collectors.toList());
+        }
+        return type_list;
+    }
+
+    public List<String> getNameList(){
+        if(name_list==null){
+            name_list= this.getVariables().stream().map(Variable::getName).collect(Collectors.toList());
+        }
+        return name_list;
+    }
+    public List<String> getDecList(){
+        if(dec_list==null){
+            dec_list= this.getVariables().stream().map(Variable::getDeclaration).collect(Collectors.toList());
+        }
+        return dec_list;
+    }
+
+
+
+    public UniformFuzzyHash getHash(){
+        if(hash == null){
+            hash = new UniformFuzzyHash(this.toString(), 5);
+        }
+        return hash;
+    }
 
     public void standardiseArgs() {
         for (int i = 0; i < args.size(); i++) {
