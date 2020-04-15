@@ -27,26 +27,7 @@ public class TestPerformance {
 
         }
     }
-    @Test
-    public void testNormalisationPerformance() throws Exception {
-        ComparisonAlgorithm alg = new StringComparison();
-        long startTime = System.currentTimeMillis()/1000;
-        File myObj = new File("NormalisationTime.txt");
-        PrintWriter myWriter = new PrintWriter(new FileOutputStream(myObj));
-        Normaliser n = new Normaliser(EnumSet.allOf(Normaliser.Features.class));
 
-        for(int i = 0 ; i< file_count ; i ++){
-            JavaFile test = new JavaFile(new File(DIR_PREFIX + "AllChanged.txt"));
-            n.normaliseFile(test);
-            if(i%100 == 0){
-                long endTime = System.currentTimeMillis()/1000;
-                long duration = (endTime - startTime);
-                myWriter.write("file count: " + i + " time: " + duration +"\n");
-                myWriter.flush();
-            }
-
-        }
-    }
 
     @Test
     public void testFingerPrintAlgorithmPerformance() throws Exception {
@@ -112,6 +93,28 @@ public class TestPerformance {
                     + "\n");
         }
         myWriter.close();
+    }
+
+
+    @Test
+    public void testNormalisationPerformance() throws Exception {
+        ComparisonAlgorithm alg = new StringComparison();
+        long startTime = System.currentTimeMillis()/1000;
+        File myObj = new File("NormalisationTime.txt");
+        PrintWriter myWriter = new PrintWriter(new FileOutputStream(myObj));
+        Normaliser n = new Normaliser(EnumSet.allOf(Normaliser.Features.class));
+
+        for(int i = 0 ; i< file_count ; i ++){
+            JavaFile test = new JavaFile(new File(DIR_PREFIX + "AllChanged.txt"));
+            n.normaliseFile(test);
+            if(i%100 == 0){
+                long endTime = System.currentTimeMillis()/1000;
+                long duration = (endTime - startTime);
+                myWriter.write("file count: " + i + " time: " + duration +"\n");
+                myWriter.flush();
+            }
+
+        }
     }
 
 
