@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'org.openjfx.javafxplugin' version '0.0.8'
+    id 'application'
 
 }
 
@@ -18,6 +19,11 @@ repositories {
 }
 
 sourceCompatibility = 11
+
+
+application {
+    mainClassName = 'main.GUI'
+}
 
 dependencies {
     compile group: 'commons-io', name: 'commons-io', version: '2.6'

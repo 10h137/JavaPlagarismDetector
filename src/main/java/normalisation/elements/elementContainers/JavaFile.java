@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,6 +24,7 @@ public class JavaFile extends ElementContainer implements JavaElement {
     private List<String> imports;
     private File file;
     private List<ClassObject> classes;
+    List<Method> final_methods;
 
     public JavaFile(File file) throws IOException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         List<String> lines = preProcess(Files.readAllLines(Paths.get(file.getAbsolutePath())));
@@ -32,7 +35,17 @@ public class JavaFile extends ElementContainer implements JavaElement {
         this.original_string = this.toString();
     }
 
+public List<Method> getFinalMethods(){
+        if(final_methods == null){
+            final_methods = this.getClasses().stream()
+                    .map(ClassObject::getMethods)
+                    .flatMap(Collection::stream)
+                    .collect(Collectors.toList());
+        }
 
+        return new ArrayList<>(final_methods);
+
+}
 
     /**
      * Normalises whitespace and numbers lines

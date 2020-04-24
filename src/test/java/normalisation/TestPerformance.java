@@ -10,7 +10,9 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.InvocationTargetException;
 import java.util.EnumSet;
 import java.util.Map;
 import java.util.TreeMap;
@@ -99,23 +101,30 @@ public class TestPerformance {
     @Test
     public void testNormalisationPerformance() throws Exception {
         ComparisonAlgorithm alg = new StringComparison();
-        long startTime = System.currentTimeMillis()/1000;
         File myObj = new File("NormalisationTime.txt");
         PrintWriter myWriter = new PrintWriter(new FileOutputStream(myObj));
         Normaliser n = new Normaliser(EnumSet.allOf(Normaliser.Features.class));
 
-        for(int i = 0 ; i< file_count ; i ++){
+        // calculate average algorithm time
+        long startTime = System.nanoTime();
+        for (int h = 0; h < 100; h++) {
             JavaFile test = new JavaFile(new File(DIR_PREFIX + "AllChanged.txt"));
             n.normaliseFile(test);
-            if(i%100 == 0){
-                long endTime = System.currentTimeMillis()/1000;
-                long duration = (endTime - startTime);
-                myWriter.write("file count: " + i + " time: " + duration +"\n");
-                myWriter.flush();
-            }
-
         }
+        long endTime = System.nanoTime();
+        long avg_normalise_time = ((endTime - startTime) / (long) 100);
+
+        System.out.println(avg_normalise_time);
+        for (Integer comparisons : file_counts.keySet()) {
+            int num_imput_files = file_counts.get(comparisons);
+            myWriter.write("file count: " + num_imput_files + " time: " +
+                    (avg_normalise_time * num_imput_files)/ 1000000000
+                    + "\n");
+        }
+        myWriter.close();
+
     }
+
 
 
 }

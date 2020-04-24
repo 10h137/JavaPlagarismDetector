@@ -95,23 +95,24 @@ public class FileComparison implements Comparable, Serializable {
 
 
     public static List<MethodComparison> compareMethods(JavaFile file1, JavaFile file2) {
-        List<Method> methods1 = file1.getClasses().stream()
-                .map(ClassObject::getMethods)
-                .flatMap(Collection::stream)
-                .collect(Collectors.toList());
+        List<Method> methods1 = file1.getFinalMethods();
+        List<Method> methods2 = file2.getFinalMethods();
 
-        List<Method> methods2 = file2.getClasses().stream()
-                .map(ClassObject::getMethods)
-                .flatMap(Collection::stream)
-                .collect(Collectors.toList());
+        int m1size = methods1.size();
+        int m2size = methods2.size();
+
 
         Set<Method> methods_to_be_processed = new HashSet<>(methods1);
         methods_to_be_processed.addAll(methods2);
 
         List<MethodComparison> comparisons = new ArrayList<>();
-        for (int i = 0; i < methods1.size(); i++) {
-            for (int j = i; j < methods2.size(); j++) {
-                comparisons.add(new MethodComparison(methods1.get(i), methods2.get(j)));
+        for (int i = 0; i < m1size; i++) {
+            for (int j = i; j < m2size; j++) {
+                MethodComparison c = new MethodComparison(methods1.get(i), methods2.get(j));
+                comparisons.add(c);
+                if(c.getTotalScore() == 100){
+                    break;
+                }
             }
         }
 
@@ -120,8 +121,11 @@ public class FileComparison implements Comparable, Serializable {
         comparisons.sort(Comparator.comparingInt(MethodComparison::getTotalScore));
         Collections.reverse(comparisons);
 
-
+        int min_method_size =Math.min(m1size, m2size);
         for (MethodComparison comparison : comparisons) {
+            if (best_comparisons.size() >= min_method_size){
+                break;
+            }
             if (methods_to_be_processed.contains(comparison.m1) && methods_to_be_processed.contains(comparison.m2)) {
                 best_comparisons.add(comparison);
             }
